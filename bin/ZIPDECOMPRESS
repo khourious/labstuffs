@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set=$(basename "$1")
+
+nohup unzip "$set".zip
+
+rm -rf nohup.out
