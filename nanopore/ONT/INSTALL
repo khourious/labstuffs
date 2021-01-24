@@ -4,12 +4,18 @@
 
 mkdir LIBRARIES RAW -v
 
-cp SCRIPTS/CADDE SCRIPTS/CONDA SCRIPTS/GUPPY $HOME/bin
+cp SCRIPTS/CONDA SCRIPTS/GUPPY SCRIPTS/ONT $HOME/bin
 
 bash $HOME/bin/GUPPY
 
 bash $HOME/bin/CONDA
 
-conda env create -f artic-ncov2019.yml
+conda create -y -n pycoQC python=3.6
 
-conda env create -f pycoqc.yml
+source activate pycoQC
+
+pip install pycoQC
+
+conda deactivate
+
+conda create -y -n artic -c conda-forge -c bioconda -c defaults artic exonerate
