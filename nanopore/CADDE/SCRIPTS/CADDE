@@ -6,7 +6,7 @@ fast5="$3"
 
 library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
 
-cd ~/Desktop/LIBRARIES/"$library"
+cd $HOME/CADDE/LIBRARIES/"$library"
 
 source activate artic-ncov2019
 
@@ -21,11 +21,16 @@ for i in `cat "$csv"`
 	do
 
 		sample=`echo "$i" | awk -F"," '{print $1}' | sed '/^$/d'`
+
 		barcode=`echo "$i"| awk -F"," '{print $2}' | sed '/^$/d'` ; barcodeNB=`echo "$barcode"| sed -e 's/BC//g'` ; mv barcode"$barcodeNB" BC"$barcodeNB"
+
 		pathref=`echo "$i" | awk -F"," '{print $3}' | sed '/^$/d'`
+
 		ref=`echo "$pathref" | sed -e 's/\/.*//g'`
-		min=`awk -F"\t" '{if (($4 !~ /LEFT_alt[0-9]*$/) && ($4 !~ /RIGHT_alt[0-9]*$/)) {print $0}}' ~/Desktop/PRIMER_SCHEMES/"$pathref"/"$ref".scheme.bed | awk -F"\t" '{print $2,$3}' | tr '\n' ' ' | awk '{for (i=1;i<=(NF/2);i=i+2) {print $(i*2+1)-$(i*2)}}' | sort -n | awk 'NR==1{print}' | awk '{print $1}'`
-		max=`awk -F"\t" '{if (($4 !~ /LEFT_alt[0-9]*$/) && ($4 !~ /RIGHT_alt[0-9]*$/)) {print $0}}' ~/Desktop/PRIMER_SCHEMES/"$pathref"/"$ref".scheme.bed | awk -F"\t" '{print $2,$3}' | tr '\n' ' ' | awk '{for (i=1;i<=(NF/2);i=i+2) {print $(i*2+1)-$(i*2)}}' | sort -nr | awk 'NR==1{print}' | awk '{print $1+200}'`
+
+		min=`awk -F"\t" '{if (($4 !~ /LEFT_alt[0-9]*$/) && ($4 !~ /RIGHT_alt[0-9]*$/)) {print $0}}' $HOME/CADDE/PRIMER_SCHEMES/"$pathref"/"$ref".scheme.bed | awk -F"\t" '{print $2,$3}' | tr '\n' ' ' | awk '{for (i=1;i<=(NF/2);i=i+2) {print $(i*2+1)-$(i*2)}}' | sort -n | awk 'NR==1{print}' | awk '{print $1}'`
+
+		max=`awk -F"\t" '{if (($4 !~ /LEFT_alt[0-9]*$/) && ($4 !~ /RIGHT_alt[0-9]*$/)) {print $0}}' $HOME/CADDE/PRIMER_SCHEMES/"$pathref"/"$ref".scheme.bed | awk -F"\t" '{print $2,$3}' | tr '\n' ' ' | awk '{for (i=1;i<=(NF/2);i=i+2) {print $(i*2+1)-$(i*2)}}' | sort -nr | awk 'NR==1{print}' | awk '{print $1+200}'`
 
 		artic guppyplex --min-length "$min" --max-length "$max" --directory "$barcode" --prefix "$library" ; mv "$library"_"$barcode".fastq "$barcode"_"$library".fastq
 
@@ -33,7 +38,7 @@ for i in `cat "$csv"`
 
 		artic minion --medaka --normalise 200 --threads 8 --scheme-directory ~/Desktop/PRIMER_SCHEMES --read-file "$barcode"_"$library".fastq "$pathref" "$sample"
 
-		~/Desktop/SCRIPTS/stats.sh "$sample" "$library" "$pathref"
+		$HOME/CADDE/SCRIPTS/stats.sh "$sample" "$library" "$pathref"
 
         done
 
