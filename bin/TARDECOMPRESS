@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set=$(basename "$1")
+
+nohup tar -xvf "$set"
+
+rm -rf nohup.out
