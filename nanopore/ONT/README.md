@@ -28,11 +28,27 @@ The csv file contains this format: sample,barcode,virus_reference/version -- NO 
 
 ---
 
-3. Then run the ONT script -- it requires 2 parameters:
+### RAMPART script for real-time analysis -- it requires 2 parameters:
+
+- The PATH to the csv file.
+
+- The PATH to the directory containing the fastq pass files obtained from MinKNOW fast basecalling during the sequencing.
+
+Then run the script using:
+
+```sh
+RAMPART $HOME/ONT/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/ONT/RAW/LIBRARY01_nCOV-19_20210123/../fastq_pass
+```
+
+---
+
+### ONT script for genome assembly -- it requires 2 parameters:
 
 - The PATH to the csv file
 
 - The PATH to the directory containing the raw files (fast5 files)
+
+Then run the script using:
 
 ```sh
 ONT $HOME/ONT/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/ONT/RAW/LIBRARY01_nCOV-19_20210123 
@@ -44,7 +60,9 @@ The consensus and stats results are in the ``CONSENSUS`` directory of the librar
 
 #### This pipeline can:
 
-- Basecall using guppy_basecaller.
+- Real-time analysis using RAMPART.
+
+- High accuracy basecall using guppy_basecaller.
 
 - Demultiplex using guppy_barcoder.
 

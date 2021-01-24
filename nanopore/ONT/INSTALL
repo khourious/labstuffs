@@ -4,11 +4,13 @@
 
 mkdir LIBRARIES RAW -v
 
-cp SCRIPTS/CONDA SCRIPTS/GUPPY SCRIPTS/ONT $HOME/bin
+cp SCRIPTS/CONDA SCRIPTS/GUPPY SCRIPTS/ONT SCRIPTS/RAMPART $HOME/bin
 
 bash $HOME/bin/GUPPY
 
 bash $HOME/bin/CONDA
+
+conda create -y -n rampart -c conda-forge -c bioconda -c defaults -c artic-network artic-porechop binlorry biopython minimap2 "python>=3.6" rampart "snakemake<5.11"
 
 conda create -y -n pycoQC python=3.6
 

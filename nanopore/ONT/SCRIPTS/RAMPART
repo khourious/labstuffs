@@ -1,0 +1,25 @@
+#!/bin/bash
+
+csv="$1"
+
+fasq_pass="$2"
+
+library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
+
+mkdir $HOME/ONT/LIBRARIES/"$library" -v
+
+cd $HOME/ONT/LIBRARIES/"$library"
+
+for i in `cat "$csv"`
+
+	do
+
+		pathref=`echo "$i" | awk -F"," '{print $3}' | sed '/^$/d'`
+
+		ref=`echo "$pathref" | sed -e 's/\/.*//g'`
+
+        done
+
+source activate rampart
+
+rampart --protocol $HOME/ONT/RAMPART/"$ref" --basecalledPath "$fasq_pass" --annotatedPath RAMPART --clearAnnotated
