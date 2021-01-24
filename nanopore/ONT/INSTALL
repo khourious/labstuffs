@@ -1,0 +1,15 @@
+#!/bin/bash
+
+[ ! -d $HOME/bin ] && mkdir -p $HOME/bin -v
+
+mkdir LIBRARIES RAW -v
+
+cp SCRIPTS/CADDE SCRIPTS/CONDA SCRIPTS/GUPPY $HOME/bin
+
+bash $HOME/bin/GUPPY
+
+bash $HOME/bin/CONDA
+
+conda env create -f artic-ncov2019.yml
+
+conda env create -f pycoqc.yml
