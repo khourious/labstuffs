@@ -8,17 +8,11 @@ library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
 
 cd ~/Desktop/LIBRARIES/"$library"
 
-sum=$(find -name "sequencing_summary*" | sed 's/\.//')
-
-summary=$(echo "~/Desktop/LIBRARIES/""$library""$sum")
-
 source activate artic-ncov2019
 
 guppy_barcoder --require_barcodes_both_ends -i "$fastq" -s ANALYSIS --arrangements_files "barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" -t 8 -r
 
 cd ANALYSIS
-
-artic gather --prefix "$library" --directory "$fastq" --fast5-directory "$fast5"
 
 echo "Sample@Nb of reads mapped@Average depth coverage@Bases covered >10x@Bases covered >25x@Reference covered (%)" | tr '@' '\t' > "$library".stats.txt
 
