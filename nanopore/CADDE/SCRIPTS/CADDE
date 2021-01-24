@@ -44,7 +44,7 @@ for i in `cat "$csv"`
 
 		artic guppyplex --min-length "$min" --max-length "$max" --directory "$barcode" --prefix "$library" ; mv "$library"_"$barcode".fastq "$barcode"_"$library".fastq
 
-		if [ `echo "$barcode" | awk '{if ($0 ~ /-/) {print "yes"} else 	{print "no"}}'` == "yes" ] ; then for i in `echo "$barcode" | tr '-' '\n'` ; do cat "$i"_"$library".fastq ; done > "$barcode"_"$library".fastq ; fi
+		if [ `echo "$barcode" | awk '{if ($0 ~ /-/) {print "yes"} else {print "no"}}'` == "yes" ] ; then for i in `echo "$barcode" | tr '-' '\n'` ; do cat "$i"_"$library".fastq ; done > "$barcode"_"$library".fastq ; fi
 
 		artic minion --threads 12 --medaka --normalise 200 --scheme-directory $HOME/CADDE/PRIMER_SCHEMES --read-file "$barcode"_"$library".fastq "$pathref" "$sample"
 
