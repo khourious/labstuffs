@@ -1,18 +1,23 @@
 #!/bin/bash
 
 csv="$1"
-fastq="$2"
-fast5="$3"
+fast5="$2"
 
 library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
 
+mkdir $HOME/CADDE/LIBRARIES/"$library" -v
+
 cd $HOME/CADDE/LIBRARIES/"$library"
 
-source activate artic-ncov2019
+guppy_basecaller -x auto --gpu_runners_per_device 64 --num_callers 46 -r -i "$fast5" -s mkdir $HOME/CADDE/LIBRARIES/"$library"/HAC_BASECALL -c dna_r9.4.1_450bps_hac.cfg --qscore_filtering --verbose_logs
 
-guppy_barcoder --require_barcodes_both_ends -i "$fastq" -s ANALYSIS --arrangements_files "barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" -t 8 -r
+mkdir ANALYSIS -v
 
 cd ANALYSIS
+
+guppy_barcoder --require_barcodes_both_ends -i $HOME/CADDE/LIBRARIES/"$library"/HAC_BASECALL -s ANALYSIS --arrangements_files "barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" -t 8 -r
+
+source activate artic-ncov2019
 
 echo "Sample@Nb of reads mapped@Average depth coverage@Bases covered >10x@Bases covered >25x@Reference covered (%)" | tr '@' '\t' > "$library".stats.txt
 
