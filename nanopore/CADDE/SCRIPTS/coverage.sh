@@ -1,4 +1,5 @@
 reference="$1"
+
 consensus="$2"
 
 sed -e '/>/! s/[nN]//g' "$consensus" > "$consensus".tmp
