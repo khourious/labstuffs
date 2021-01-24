@@ -1,5 +1,5 @@
-# [CADDE](https://www.caddecentre.org/) script
-Modified by lpmor22
+# ONT script
+Based on [CADDE](https://www.caddecentre.org/) project scripts and [ARTIC](https://artic.network/) bioinformatics workflow 
 
 ---
 
@@ -10,8 +10,8 @@ Modified by lpmor22
 ```sh
 sudo apt-get install -y npm
 sudo npm install -g github-files-fetcher
-fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/CADDE"
-cd CADDE
+fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/ONT"
+cd ONT
 chmod 700 -R INSTALL SCRIPTS
 bash INSTALL
 ```
@@ -21,21 +21,21 @@ bash INSTALL
 2. Create a csv file in ``CSV_FILES`` directory -- the csv file name corresponds to the library name.
 
 ```sh
-SSA_FIOCRUZ_LIBRARY01_20210112.csv
+LIBRARY01_nCOV-19_20210123.csv
 ```
 
 The csv file contains this format: sample,barcode,virus_reference/version -- NO HEADER!!
 
 ---
 
-3. Then run the CADDE script -- it requires 2 parameters:
-
-- The PATH to the csv file
+3. Then run the ONT script -- it requires 2 parameters:
 
 - The PATH to the directory containing the raw files (fast5 files)
 
+- The PATH to the csv file
+
 ```sh
-CADDE $HOME/ONT/CSV_FILES/SSA_FIOCRUZ_LIBRARY01_20210112.csv $HOME/ONT/RAW/SSA_FIOCRUZ_LIBRARY01_20210112 
+ONT $HOME/ONT/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/ONT/RAW/LIBRARY01_nCOV-19_20210123 
 ```
 
 The consensus and stats results are in the ``CONSENSUS`` directory of the library.
