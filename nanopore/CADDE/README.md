@@ -30,12 +30,12 @@ The csv file contains this format: sample,barcode,virus_reference/version -- NO 
 
 3. Then run the CADDE script -- it requires 2 parameters:
 
-- The PATH to the directory containing the raw files (fast5 files)
-
 - The PATH to the csv file
 
+- The PATH to the directory containing the raw files (fast5 files)
+
 ```sh
-CADDE $HOME/ONT/RAW/SSA_FIOCRUZ_LIBRARY01_20210112 $HOME/ONT/CSV_FILES/SSA_FIOCRUZ_LIBRARY01_20210112.csv
+CADDE $HOME/ONT/CSV_FILES/SSA_FIOCRUZ_LIBRARY01_20210112.csv $HOME/ONT/RAW/SSA_FIOCRUZ_LIBRARY01_20210112 
 ```
 
 The consensus and stats results are in the ``CONSENSUS`` directory of the library.
