@@ -1,6 +1,6 @@
 #!/bin/bash
 
-csv="$1"	
+csv="$1"
 fastq="$2"
 fast5="$3"
 
@@ -12,7 +12,7 @@ sum=$(find -name "sequencing_summary*" | sed 's/\.//')
 
 summary=$(echo "~/Desktop/LIBRARIES/""$library""$sum")
 
-source activate artic-ncov2019-medaka
+source activate artic-ncov2019
 
 guppy_barcoder --require_barcodes_both_ends -i "$fastq" -s ANALYSIS --arrangements_files "barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" -t 8 -r
 
@@ -41,7 +41,7 @@ for i in `cat "$csv"`
 
 		~/Desktop/SCRIPTS/stats.sh "$sample" "$library" "$pathref"
 
-        done 
+        done
 
 cat *.consensus.fasta > "$library".consensus.fasta
 
