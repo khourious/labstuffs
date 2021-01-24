@@ -1,3 +1,5 @@
+#!/bin/bash
+
 csv="$1"	
 fastq="$2"
 fast5="$3"
@@ -9,7 +11,6 @@ cd ~/Desktop/LIBRARIES/"$library"
 sum=$(find -name "sequencing_summary*" | sed 's/\.//')
 
 summary=$(echo "~/Desktop/LIBRARIES/""$library""$sum")
-
 
 source activate artic-ncov2019-medaka
 
