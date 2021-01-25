@@ -18,4 +18,6 @@ echo 'export PATH=$HOME/softwares/miniconda3/bin:/usr/local/share/rsi/idl/bin:$P
 
 echo 'export PATH=$HOME/softwares/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.zshrc
 
-conda update -y -n base conda
+conda install -c conda-forge mamba
+
+mamba update -y -n base conda

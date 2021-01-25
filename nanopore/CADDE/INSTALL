@@ -10,6 +10,6 @@ bash $HOME/bin/GUPPY
 
 bash $HOME/bin/CONDA
 
-conda env create -f artic-ncov2019.yml
+mamba env create -f artic-ncov2019.yml
 
-conda env create -f pycoqc.yml
+mamba env create -f pycoqc.yml
