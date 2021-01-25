@@ -69,6 +69,7 @@ The consensus and stats results are in the ``CONSENSUS`` directory of the librar
 - Estimate the min and max read filtering lengths automatically.
 
 - Combine pool A and B if they are on 2 different barcodes, by adding an extra line at the end of the csv file:
+
 ```sh
 	sample01A,BC01,nCoV-2019/V3
 	sample01B,BC02,nCoV-2019/V3
