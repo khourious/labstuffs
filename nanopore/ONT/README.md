@@ -12,7 +12,7 @@ sudo apt-get install -y npm
 sudo npm install -g github-files-fetcher
 fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/ONT"
 cd ONT
-chmod 700 -R INSTALL SCRIPTS
+chmod 777 -R INSTALL SCRIPTS
 bash INSTALL
 ```
 
@@ -62,7 +62,7 @@ The consensus and stats results are in the ``CONSENSUS`` directory of the librar
 
 - Perform real-time analysis using RAMPART.
 
-- Perform high accuracy basecall using guppy_basecaller.
+- Perform high accuracy basecalling using guppy_basecaller.
 
 - Do demultiplexing using guppy_barcoder.
 

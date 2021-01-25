@@ -12,7 +12,7 @@ sudo apt-get install -y npm
 sudo npm install -g github-files-fetcher
 fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/CADDE"
 cd CADDE
-chmod 700 -R INSTALL SCRIPTS
+chmod 777 -R INSTALL SCRIPTS
 bash INSTALL
 ```
 
@@ -44,9 +44,9 @@ The consensus and stats results are in the ``CONSENSUS`` directory of the librar
 
 #### This pipeline can:
 
-- Basecall using guppy_basecaller.
+- Perform high accuracy basecalling using guppy_basecaller.
 
-- Demultiplex using guppy_barcoder.
+- Do demultiplexing using guppy_barcoder.
 
 - Estimate the min and max read filtering lengths automatically.
 
