@@ -2,11 +2,11 @@
 
 csv="$1"
 
-fasq_pass="$2"
+fastq_pass="$2"
 
 library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
 
-mkdir $HOME/ONT/LIBRARIES/"$library" -v
+[ ! -d $HOME/ONT/LIBRARIES/"$library" ] && mkdir $HOME/ONT/LIBRARIES/"$library" -pv
 
 cd $HOME/ONT/LIBRARIES/"$library"
 
@@ -18,8 +18,8 @@ for i in `cat "$csv"`
 
 		ref=`echo "$pathref" | sed -e 's/\/.*//g'`
 
-        done
+	done
 
 source activate rampart
 
-rampart --protocol $HOME/ONT/RAMPART/"$ref" --basecalledPath "$fasq_pass" --annotatedPath RAMPART --clearAnnotated
+rampart --protocol $HOME/ONT/RAMPART/"$ref" --basecalledPath "$fastq_pass" --annotatedPath RAMPART --clearAnnotated
