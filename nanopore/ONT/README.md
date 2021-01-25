@@ -60,11 +60,11 @@ The consensus and stats results are in the ``CONSENSUS`` directory of the librar
 
 #### This pipeline can:
 
-- Real-time analysis using RAMPART.
+- Perform real-time analysis using RAMPART.
 
-- High accuracy basecall using guppy_basecaller.
+- Perform high accuracy basecall using guppy_basecaller.
 
-- Demultiplex using guppy_barcoder.
+- Do demultiplexing using guppy_barcoder.
 
 - Estimate the min and max read filtering lengths automatically.
 
