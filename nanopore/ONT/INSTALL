@@ -10,14 +10,8 @@ bash $HOME/bin/GUPPY
 
 bash $HOME/bin/CONDA
 
-mamba create -y -n rampart -c conda-forge -c bioconda -c defaults -c artic-network artic-porechop binlorry biopython minimap2 "python>=3.6" rampart "snakemake<5.11"
+mamba env create -f rampart.yml
 
-mamba create -y -n pycoQC python=3.6
+mamba env create -f artic.yml
 
-source activate pycoQC
-
-pip install pycoQC
-
-conda deactivate
-
-mamba create -y -n artic -c conda-forge -c bioconda -c defaults artic exonerate
+mamba env create -f pycoqc.yml
