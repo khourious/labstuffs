@@ -1,0 +1,14 @@
+name: phy
+channels:
+  - bioconda
+dependencies:
+  - clustalo
+  - fasttree
+  - gbmunge
+  - iqtree
+  - mafft
+  - modeltest-ng
+  - phyml
+  - raxml
+  - seqkit
+  - treetime

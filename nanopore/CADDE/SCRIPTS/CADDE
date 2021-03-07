@@ -10,7 +10,7 @@ mkdir $HOME/CADDE/LIBRARIES/"$library" -v
 
 cd $HOME/CADDE/LIBRARIES/"$library"
 
-guppy_basecaller -x auto --gpu_runners_per_device 64 --num_callers 46 -r -i "$fast5" -s mkdir $HOME/CADDE/LIBRARIES/"$library"/HAC_BASECALL -c dna_r9.4.1_450bps_hac.cfg --qscore_filtering --verbose_logs
+guppy_basecaller -x auto --gpu_runners_per_device 64 --num_callers 46 -r -i "$fast5" -s $HOME/CADDE/LIBRARIES/"$library"/HAC_BASECALL -c dna_r9.4.1_450bps_hac.cfg --qscore_filtering --verbose_logs
 
 mkdir ANALYSIS -v
 
