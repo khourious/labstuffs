@@ -1,0 +1,10 @@
+#!/bin/bash
+cd $HOME
+git clone git://github.com/cov-lineages/pangolin.git
+cd pangolin
+conda env create -f environment.yml
+source activate pangolin
+python setup.py install
+pangolin -v
+pangolin -pv
+pangolin -lv
