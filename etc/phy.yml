@@ -1,0 +1,17 @@
+#conda env create -f phy.yml
+name: phy
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - clustalo
+  - fasttree
+  - gbmunge
+  - iqtree
+  - mafft
+  - modeltest-ng
+  - phyml
+  - raxml
+  - seqkit
+  - treetime
