@@ -1,0 +1,12 @@
+#!/bin/bash
+cd $HOME/pangolin
+source activate pangolin
+git pull
+python setup.py install
+conda env update -f environment.yml
+pip install git+https://github.com/cov-lineages/pangoLEARN.git --upgrade
+pip install git+https://github.com/cov-lineages/lineages.git --upgrade
+source activate pangolin
+pangolin -v
+pangolin -pv
+pangolin -lv
