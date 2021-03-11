@@ -1,7 +1,8 @@
 #!/bin/bash
 
+cd $HOME
 wget https://github.com/DerrickWood/kraken2/archive/v2.1.1.tar.gz
-tar -vzxf ont-guppy.tar.gz v2.1.1.tar.gz
+tar -vzxf v2.1.1.tar.gz
 rm -rf v2.1.1.tar.gz
 cd kraken2-2.1.1
 ./install_kraken2.sh $HOME/kraken2-2.1.1
@@ -9,6 +10,13 @@ cd kraken2-2.1.1
 cp $HOME/kraken2-2.1.1/kraken2{,-build,-inspect} $HOME/bin
 
 # download kraken index https://benlangmead.github.io/aws-indexes/k2
-wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_20210127.tar.gz
 
-export KRAKEN2_DEFAULT_DB="/path/file/to/k2_pluspfp_20210127"
+wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz
+tar -vzxf minikraken2_v2_8GB_201904.tgz
+echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.bashrc
+echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.zshrc
+
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_20210127.tar.gz
+# tar -vzxf k2_pluspfp_20210127.tar.gz
+# echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.bashrc
+# echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.zshrc
