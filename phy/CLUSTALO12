@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+
+source activate phy
+
+nohup clustalo --threads=${THREADS} --seqtype={Protein} --verbose -i ${INPUT} -o ${OUTPUT}_aln.fasta
+
+mv nohup.out ${OUTPUT}_aln_log.txt
