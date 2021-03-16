@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${FILE}" | cut -d. -f1)
+
+source activate phy
+
+nohup mafft --thread ${THREADS} --auto --inputorder --out ${OUTPUT}_aln.fasta ${INPUT}
+
+mv nohup.out ${OUTPUT}_aln_log.txt

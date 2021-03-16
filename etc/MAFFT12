@@ -1,9 +1,0 @@
-#!/bin/bash
-
-FASTA=$(basename "$1" | cut -d. -f1)
-
-source activate phy
-
-nohup mafft --thread 12 --auto --inputorder --out ${FASTA}_aln.fasta ${FASTA}.fasta
-
-mv nohup.out ${FASTA}_aln_log.txt
