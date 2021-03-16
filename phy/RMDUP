@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+
+source activate phy
+
+nohup seqkit rmdup -s -j ${THREADS} ${INPUT} > ${OUTPUT}.WoDuplSeqs.fasta
+
+rm -rf nohup.out
