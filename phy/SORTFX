@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+
+source activate phy
+
+nohup seqkit sort -j ${THREADS} ${INPUT} > ${OUTPUT}.sorted.fasta
+
+rm -rf nohup.out
