@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+
+source activate phy
+
+nohup seqkit fx2tab -j ${THREADS} ${INPUT} > ${OUTPUT}.txt
+
+rm -rf nohup.out
