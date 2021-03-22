@@ -7,25 +7,25 @@
 # conda create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 # mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 
-CONFIG="dna_r9.4.1_450bps_hac.cfg" #dna_r9.4.1_450bps_hac.cfg
-ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
-MINSCORE="8"
-TRIMADAPTER="18"
+CONFIG="" #dna_r9.4.1_450bps_hac.cfg
+ARRANGEMENTS="" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
+MINSCORE="" #8
+TRIMADAPTER="" #18
 
-THREADS="12"
-NUMCALLERS="60" #NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
-GPUPERDEVICE="32" #NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
+THREADS="" #12
+NUMCALLERS="" #NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
+GPUPERDEVICE="" #NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
 
-RAWDIR="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/DENV_FTA2"
-HACBASECALLDIR="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/HAC_BASECALL"
-DEMUXDIR="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/DEMUX"
-CONCATENATED="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/DEMUX_concatenated"
-READLEVELDIR="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/READ_level_analysis"
-CONTIGLEVELDIR="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/CONTIG_level_analysis"
-RUNNAME="DENV_FTA_2"
+RAWDIR=""
+HACBASECALLDIR=""
+DEMUXDIR=""
+CONCATENATED=""
+READLEVELDIR=""
+CONTIGLEVELDIR=""
+RUNNAME=""
 
-REFSEQ="/media/lpmor22/2019-12-19/DENV_Seq_Data/DENV_FTA_2/GCF_000001405.39_GRCh38.p13_genomic.fna.gz"
-# ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13
+REFSEQ=""
+# Homo sapiens: ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13
 
 guppy_basecaller -r -i ${RAWDIR} -s ${HACBASECALLDIR} -c ${CONFIG} --arrangements_files ${ARRANGEMENTS} --qscore_filtering --min_qscore ${MINSCORE} -x auto --gpu_runners_per_device ${GPUPERDEVICE} --num_callers ${NUMCALLERS} --verbose_logs
 
