@@ -13,10 +13,12 @@ cp $HOME/kraken2-2.1.1/kraken2{,-build,-inspect} $HOME/bin
 
 wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz
 tar -vzxf minikraken2_v2_8GB_201904.tgz
+rm -rf minikraken2_v2_8GB_201904.tgz
 echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.bashrc
 echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.zshrc
 
 # wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_20210127.tar.gz
 # tar -vzxf k2_pluspfp_20210127.tar.gz
+# rm -rf k2_pluspfp_20210127.tar.gz
 # echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.bashrc
 # echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.zshrc
