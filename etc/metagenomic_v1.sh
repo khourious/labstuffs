@@ -1,32 +1,32 @@
 #!/bin/bash
 
-THREADS="12" #12
-NUMCALLER="46" #NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
-GPUPERDEVICE="64" #NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
+THREADS="" #12
+NUMCALLER="" #NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
+GPUPERDEVICE="" #NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
 
-RAWDIR="/media/rklab/Data/DENV/DENV_FTA_1/"
-HACDEMUXDIR="/media/rklab/Data/DENV/WO_require_barcodes_both_ends/DENV_FTA_1_HAC_Demux/"
+RAWDIR=""
+HACDEMUXDIR=""
 
-BARCODEKIT="EXP-NBD104" #EXP-NBD104
-FLOWCELL="FLO-MIN106" #FLO-MIN106
-SEQKIT="SQK-LSK109" #SQK-LSK109
+BARCODEKIT="" #EXP-NBD104
+FLOWCELL="" #FLO-MIN106
+SEQKIT="" #SQK-LSK109
 
-LIBNAME="DENV_FTA_1"
+LIBNAME=""
 
-SAMPLEID1="barcode01"
-SAMPLEID2="barcode02"
-SAMPLEID3="barcode03"
-SAMPLEID4="barcode04"
-SAMPLEID5="barcode05"
-SAMPLEID6="barcode06"
-SAMPLEID7="barcode07"
-SAMPLEID8="barcode08"
-SAMPLEID9="barcode09"
-SAMPLEID10="barcode10"
-SAMPLEID11="barcode11"
-SAMPLEID12="barcode12"
+SAMPLEID1=""
+SAMPLEID2=""
+SAMPLEID3=""
+SAMPLEID4=""
+SAMPLEID5=""
+SAMPLEID6=""
+SAMPLEID7=""
+SAMPLEID8=""
+SAMPLEID9=""
+SAMPLEID10=""
+SAMPLEID11=""
+SAMPLEID12=""
 
-REFSEQ="GCF_000001405.39_GRCh38.p13_genomic.fna.gz"
+REFSEQ=""
 
 guppy_basecaller -r -i ${RAWDIR} -s ${HACDEMUXDIR} --flowcell ${FLOWCELL} --kit ${SEQKIT} --barcode_kits ${BARCODEKIT} --require_barcodes_both_ends --trim_barcodes --qscore_filtering --num_barcode_threads ${THREADS} -x auto --gpu_runners_per_device ${NUMCALLER} --num_callers ${NUMCALLER} --verbose_logs
 source activate pycoqc
