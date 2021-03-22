@@ -2,7 +2,7 @@
 
 THREADS="12"
 
-INPUT=$(basename "$1")
+INPUT=$1
 
 OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
 
