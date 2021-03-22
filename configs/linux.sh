@@ -2,7 +2,7 @@
 #i7-9750H:12_threads|GeForce_2080:2944_cudaCores
 
 # add swap memory
-sudo swapon --show && sudo fallocate -l 30G /swap.img && sudo chmod 600 /swap.img && sudo mkswap /swap.img && sudo swapon /swap.img && sudo swapon --show && echo '/swap.img none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo swapon --show && sudo fallocate -l 32G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && sudo swapon --show && echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 # install prioritary packages
 sudo apt-get install -y autoconf automake build-essential curl exfat-fuse exfat-utils g++-10 gcc-10 git htop libcanberra-gtk-module libcanberra-gtk3-module libdeflate-dev libfreetype6-dev libgl1-mesa-dev libglew-dev libglm-dev libsdl2-dev libsdl2-image-dev libtool lsb-release mesa-utils ocl-icd-opencl-dev ocl-icd-libopencl1 openjdk-14-jdk openjdk-14-jre pkg-config python3 python3-distutils python3-pip r-base-core sshpass wget
