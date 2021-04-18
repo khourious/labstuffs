@@ -1,0 +1,103 @@
+{
+	"title": "SARS-CoV-2",
+	"referencesPath": "$HOME/ONT/RAMPART/references.fasta",
+	"samples":
+	 [
+		{
+		 "name": "BC01",
+		 "barcodes": [ "NB01" ]
+		},
+		{
+		 "name": "BC02",
+		 "barcodes": [ "NB02" ]
+		},
+		{
+		 "name": "BC03",
+		 "barcodes": [ "NB03" ]
+		},
+		{
+		 "name": "BC04",
+		 "barcodes": [ "NB04" ]
+		},
+		{
+		 "name": "BC05",
+		 "barcodes": [ "NB05" ]
+		},
+		{
+		 "name": "BC06",
+		 "barcodes": [ "NB06" ]
+		},
+		{
+		 "name": "BC07",
+		 "barcodes": [ "NB07" ]
+		},
+		{
+		 "name": "BC08",
+		 "barcodes": [ "NB08" ]
+		},
+		{
+		 "name": "BC09",
+		 "barcodes": [ "NB09" ]
+		},
+		{
+		 "name": "BC10",
+		 "barcodes": [ "NB10" ]
+		},
+		{
+		 "name": "BC11",
+		 "barcodes": [ "NB11" ]
+		},
+		{
+		 "name": "BC12",
+		 "barcodes": [ "NB12" ]
+		},
+		{
+		 "name": "BC13",
+		 "barcodes": [ "NB13" ]
+		},
+		{
+		 "name": "BC14",
+		 "barcodes": [ "NB14" ]
+		},
+		{
+		 "name": "BC15",
+		 "barcodes": [ "NB15" ]
+		},
+		{
+		 "name": "BC16",
+		 "barcodes": [ "NB16" ]
+		},
+		{
+		 "name": "BC17",
+		 "barcodes": [ "NB17" ]
+		},
+		{
+		 "name": "BC18",
+		 "barcodes": [ "NB18" ]
+		},
+		{
+		 "name": "BC19",
+		 "barcodes": [ "NB19" ]
+		},
+		{
+		 "name": "BC20",
+		 "barcodes": [ "NB20" ]
+		},
+		{
+		 "name": "BC21",
+		 "barcodes": [ "NB21" ]
+		},
+		{
+		 "name": "BC22",
+		 "barcodes": [ "NB22" ]
+		},
+		{
+		 "name": "BC23",
+		 "barcodes": [ "NB23" ]
+		},
+		{
+		 "name": "BC24",
+		 "barcodes": [ "NB24" ]
+		}
+	 ]
+}
