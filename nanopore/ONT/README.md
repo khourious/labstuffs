@@ -10,8 +10,8 @@ Based on [CADDE](https://www.caddecentre.org/) project scripts and [ARTIC](https
 ```sh
 sudo apt-get install -y npm
 sudo npm install -g github-files-fetcher
-fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/SEQ"
-cd SEQ
+fetcher --url="https://github.com/lpmor22/scripts/tree/master/nanopore/ONT"
+cd ONT
 chmod 777 -R INSTALL SCRIPTS
 bash INSTALL
 ```
@@ -37,7 +37,7 @@ The csv file contains this format: sample,barcode,virus_reference/version -- NO 
 Then run the script using:
 
 ```sh
-RAMPART $HOME/SEQ/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/SEQ/RAW/LIBRARY01_nCOV-19_20210123/../fastq_pass
+RAMPART $HOME/ONT/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/ONT/RAW/LIBRARY01_nCOV-19_20210123/../fastq_pass
 ```
 
 ---
@@ -51,7 +51,7 @@ RAMPART $HOME/SEQ/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/SEQ/RAW/LIBRARY
 Then run the script using:
 
 ```sh
-ONT $HOME/SEQ/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/SEQ/RAW/LIBRARY01_nCOV-19_20210123 
+ONT $HOME/ONT/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/ONT/RAW/LIBRARY01_nCOV-19_20210123 
 ```
 
 The consensus and stats results are in the ``CONSENSUS`` directory of the library.
