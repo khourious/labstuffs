@@ -1,0 +1,17 @@
+#!/bin/bash
+
+[ ! -d $HOME/bin ] && mkdir -p $HOME/bin -v
+
+mkdir LIBRARIES RAW -v
+
+cp SCRIPTS/CONDA SCRIPTS/GUPPY SCRIPTS/ONT SCRIPTS/RAMPART $HOME/bin
+
+bash $HOME/bin/GUPPY
+
+bash $HOME/bin/CONDA
+
+mamba env create -f rampart.yml
+
+mamba env create -f artic.yml
+
+mamba env create -f pycoqc.yml
