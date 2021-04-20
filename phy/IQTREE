@@ -1,0 +1,13 @@
+#!/bin/bash
+
+THREADS="12"
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+
+source activate phy
+
+nohup iqtree -T ${THREADS} -nt AUTO -bb 1000 -bnni -m TEST -s ${INPUT}
+
+mv nohup.out ${OUTPUT}_log.txt
