@@ -8,11 +8,8 @@ This repo contains scripts and files to run the bioinformatic analysis of whole 
 
 Download and install the pipeline from the github repo:
 ```sh
-sudo apt-get install -y npm
-sudo npm install -g github-files-fetcher
-fetcher --url="https://github.com/lpmor22/scripts/tree/master/WGS"
-cd WGS
-chmod 777 -R INSTALL SCRIPTS
+git clone --recursive https://github.com/lpmor22/WGS.git; cd WGS
+chmod 700 -R INSTALL SCRIPTS
 bash INSTALL
 ```
 ---
