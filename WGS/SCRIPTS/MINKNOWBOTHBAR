@@ -1,6 +1,0 @@
-#!/bin/bash
-
-sudo /opt/ont/minknow/bin/config_editor --conf application --filename /opt/ont/minknow/conf/app_conf \
-    --set guppy.extra_arguments="--require_barcodes_both_ends"
-
-sudo service minknow restart

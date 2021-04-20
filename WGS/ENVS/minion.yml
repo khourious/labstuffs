@@ -1,8 +1,0 @@
-name: minion
-channels:
-  - conda-forge
-  - bioconda
-  - defaults
-dependencies:
-  - artic
-  - exonerate
