@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# based on the CADDE/USP script
+
 primerscheme="$1"
 
 raw="$2"
