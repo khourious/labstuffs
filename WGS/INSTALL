@@ -4,14 +4,16 @@
 
 mkdir LIBRARIES RAW -v
 
-cp SCRIPTS/CONDA SCRIPTS/GUPPY SCRIPTS/ONT SCRIPTS/RAMPART $HOME/bin
+ln -s $HOME/WGS/SCRIPTS/* $HOME/bin
 
 bash $HOME/bin/GUPPY
 
 bash $HOME/bin/CONDA
 
-mamba env create -f rampart.yml
+mamba env create -f ENVS/illumina.yml
 
-mamba env create -f artic.yml
+mamba env create -f ENVS/minion-qc.yml
 
-mamba env create -f pycoqc.yml
+mamba env create -f ENVS/minion.yml
+
+mamba env create -f ENVS/rampart.yml
