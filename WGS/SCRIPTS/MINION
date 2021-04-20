@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# modified CADDE/USP script
+ 
 csv="$1"
 
 fast5="$2"
