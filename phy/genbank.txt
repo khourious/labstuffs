@@ -1,0 +1,5 @@
+https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi
+
+Entrez records > Database name > Nucleotide
+
+Send to: > Complete Record > Choose Destination: File > Format: GenBank
