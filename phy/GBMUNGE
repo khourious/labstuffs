@@ -1,0 +1,11 @@
+#!/bin/bash
+
+INPUT=$(basename "$1")
+
+OUTPUT=$(basename "${FILE}" | cut -d. -f1)
+
+source activate phy
+
+nohup gbmunge -s -i ${INPUT} -f ${OUTPUT}.fasta -o ${OUTPUT}.txt
+
+rm -rf nohup.out
