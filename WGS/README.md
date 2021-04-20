@@ -23,17 +23,18 @@ bash INSTALL
 
 #### Create the sample sheet
 
-1. Create a csv file in ``CSV_FILES`` directory -- the csv file name corresponds to the library name.
+1. Create a csv file in ``CSV_FILES`` directory -- the csv file name *corresponds to the library name*.
 The csv file contains this format: sample,barcode,virus_reference/version -- NO HEADER!!
-
+You can combine pool A and B if they are on 2 different barcodes, by adding an extra line at the end of the csv file:
 ```sh
-LIBRARY01_nCOV-19_20210123.csv
+	sample01A,BC01,nCoV-2019/ARTIC_V3
+	sample01B,BC02,nCoV-2019/ARTIC_V3
+	sample01,BC01-BC02,nCoV-2019/ARTIC_V3
 ```
 
 #### RAMPART script for MinION real-time analysis -- it requires 2 parameters:
 
 - The PATH to the csv file.
-
 - The PATH to the directory containing the fastq pass files obtained from MinKNOW fast basecalling during the sequencing.
 
 Then run the script using:
@@ -44,31 +45,26 @@ RAMPART $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY
 
 #### MINION script for genome assembly -- it requires 2 parameters:
 
-- The PATH to the csv file
-
-- The PATH to the directory containing the raw files (fast5 files)
+- The PATH to the csv file.
+- The PATH to the directory containing the raw sequencing data (fast5 files).
 
 Then run the script using:
 
 ```sh
-ONT $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY01_nCOV-19_20210123 
+MINION $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY01_nCOV-19_20210123 
 ```
 
-The consensus and stats results are in the ``CONSENSUS`` directory of the library.
+---
 
-### This pipeline can:
+### Illumina pipeline
 
-- Perform real-time analysis using RAMPART.
-- Perform high accuracy basecalling using guppy_basecaller.
-- Do demultiplexing using guppy_barcoder.
-- Estimate the min and max read filtering lengths automatically.
+#### ILLUMINA script for genome assembly -- it requires 2 parameters:
 
-- Combine pool A and B if they are on 2 different barcodes, by adding an extra line at the end of the csv file:
+- The prime scheme information.
+- The PATH to the directory containing the raw sequencing data downloaded from Illumina's BaseSpace Sequence Hub (fastq.gz files).
+
+Then run the script using:
+
 ```sh
-	sample01A,BC01,nCoV-2019/ARTIC_V3
-	sample01B,BC02,nCoV-2019/ARTIC_V3
-	sample01,BC01-BC02,nCoV-2019/ARTIC_V3
+ILLUMINA nCoV-2019/FIOCRUZ_2kb_v1 $HOME/WGS/RAW/LIBRARY01_nCOV-19_20210123 
 ```
-
-- Generate consensus sequences using medaka.
-- Do assembly statistics.
