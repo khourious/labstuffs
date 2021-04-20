@@ -30,6 +30,7 @@ The csv file contains this format: sample,barcode,virus_reference/version -- NO 
 LIBRARY01_nCOV-19_20210123.csv
 ```
 
+
 #### RAMPART script for MinION real-time analysis -- it requires 2 parameters:
 
 - The PATH to the csv file.
