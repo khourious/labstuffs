@@ -4,7 +4,7 @@ This repo contains scripts and files to run the bioinformatic analysis of whole 
 
 ---
 
-## Setting up the pipeline
+### Setting up the pipeline
 
 Download and install the pipeline from the github repo:
 
@@ -19,9 +19,9 @@ bash INSTALL
 
 ---
 
-## MinION pipeline
+### MinION pipeline
 
-### Create the sample sheet
+#### Create the sample sheet
 
 1. Create a csv file in ``CSV_FILES`` directory -- the csv file name corresponds to the library name.
 The csv file contains this format: sample,barcode,virus_reference/version -- NO HEADER!!
