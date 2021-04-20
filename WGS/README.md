@@ -1,6 +1,5 @@
-# WGS script
-Based on the [CADDE](https://www.caddecentre.org/) scripts and [ARTIC](https://artic.network/) bioinformatics workflow
-
+# Bioinformatic pipeline for whole genome sequencing using MinION and Illumina
+This repo contains scripts and files to run the bioinformatic analysis of whole genome sequencing using MinION and Illlumina platforms, and was built based on the [CADDE](https://www.caddecentre.org/) scripts and [ARTIC](https://artic.network/) bioinformatics workflow
 ---
 
 ## Setting up the pipeline
