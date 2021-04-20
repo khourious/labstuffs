@@ -1,8 +1,10 @@
-name: artic
+name: minion-qc
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - artic
-  - exonerate
+  - python=3.6
+  - pip
+  - pip:
+      - pycoQC

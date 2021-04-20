@@ -1,0 +1,16 @@
+name: illumina
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bcftools
+  - bwa
+  - exonerate
+  - fastqc
+  - ivar
+  - maff
+  - matplotlib
+  - numpy
+  - pandas
+  - samtools
