@@ -6,9 +6,11 @@ fastq_pass="$2"
 
 library=`echo "$csv" | sed -e 's/\.csv//g' -e 's/.*\///g'`
 
-[ ! -d $HOME/ONT/LIBRARIES/"$library" ] && mkdir $HOME/ONT/LIBRARIES/"$library" -pv
+[ ! -d $HOME/WGS/LIBRARIES/"$library" ] && mkdir $HOME/WGS/LIBRARIES/"$library" -pv
 
-cd $HOME/ONT/LIBRARIES/"$library"
+mkdir $HOME/WGS/LIBRARIES/"$library"/RAMPART
+
+cd $HOME/WGS/LIBRARIES/"$library"/RAMPART
 
 for i in `cat "$csv"`
 
@@ -22,4 +24,4 @@ for i in `cat "$csv"`
 
 source activate rampart
 
-rampart --protocol $HOME/ONT/RAMPART/"$ref" --basecalledPath "$fastq_pass" --annotatedPath RAMPART --clearAnnotated
+rampart --protocol $HOME/WGS/RAMPART/"$ref" --basecalledPath "$fastq_pass" --annotatedPath RAMPART --clearAnnotated
