@@ -3,7 +3,6 @@
 This repo contains scripts and files to run the bioinformatic analysis of whole genome sequencing using MinION and Illlumina platforms, and was built based on the [CADDE](https://www.caddecentre.org/) scripts and [ARTIC](https://artic.network/) bioinformatics workflow
 
 ---
----
 
 ### Setting up the pipeline
 
@@ -18,7 +17,6 @@ chmod 777 -R INSTALL SCRIPTS
 bash INSTALL
 ```
 
----
 ---
 
 ### MinION pipeline
@@ -58,9 +56,7 @@ ONT $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY01_n
 
 The consensus and stats results are in the ``CONSENSUS`` directory of the library.
 
-----
-
-#### This pipeline can:
+### This pipeline can:
 
 - Perform real-time analysis using RAMPART.
 - Perform high accuracy basecalling using guppy_basecaller.
