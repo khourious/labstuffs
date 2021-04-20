@@ -2,7 +2,7 @@
 
 This repo contains scripts and files to run the bioinformatic analysis of whole genome sequencing using MinION and Illlumina platforms, and was built based on the [CADDE](https://www.caddecentre.org/) scripts and [ARTIC](https://artic.network/) bioinformatics workflow
 
-===
+---
 
 ### Setting up the pipeline
 
@@ -23,7 +23,8 @@ bash INSTALL
 
 #### Create the sample sheet
 
-1. Create a csv file in ``CSV_FILES`` directory -- the csv file name **corresponds to the library name**.__
+1. Create a csv file in ``CSV_FILES`` directory -- the csv file name **corresponds to the library name**.
+                    
 The csv file contains this format: sample,barcode,virus_reference/version -- NO HEADER!!__
 You can combine pool A and B if they are on 2 different barcodes, by adding an extra line at the end of the csv file:
 ```sh
