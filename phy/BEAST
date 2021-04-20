@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Installing dependency packages
+## Open a terminal (Ctrl + Alt + T)
+## Update the package list and install the dependency packages for the BEAST and BEAGLE
+sudo apt-get update
+sudo apt-get install -y autoconf automake build-essential g++-8 gcc-8 git libcanberra-gtk-module libcanberra-gtk3-module libfreetype6-dev libgl1-mesa-dev libglew-dev libglm-dev libsdl2-dev libsdl2-image-dev libtool mesa-utils ocl-icd-opencl-dev ocl-icd-libopencl1 openjdk-8-jdk openjdk-8-jre pkg-config
+sudo apt-get update
+
+# Installing Intel OpenCL implementations
+## Download the Intel OpenCL implementations installer
+## Unpack the compressed .tar.gz file, switch to installer directory and install the Intel OpenCL implementations, accepting defaults.
+## After installation, remove the Intel OpenCL implementations installer directory and installer.
+wget https://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/17206/intel_sdk_for_opencl_applications_2020.3.494.tar.gz
+tar -zxvf intel_sdk_for_opencl_applications_2020.3.494.tar.gz
+cd intel_sdk_for_opencl_applications_2020.3.494
+bash install.sh
+cd ..1
+rm -rf intel_sdk_for_opencl_applications_2020.3.494*
+
+# Installing NVIDIA CUDA drivers
+## Get the PPA repository and install the NVIDIA CUDA driver
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
+sudo mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1804-10-2-local-10.2.89-440.33.01_1.0-1_amd64.deb
+sudo apt-key add /var/cuda-repo-10-2-local-10.2.89-440.33.01/7fa2af80.pub
+sudo apt-get update
+sudo apt-get -y install cuda
+
+# Installing BEAGLE
+## Build the BEAGLE from the source repository
+git clone --depth=1 https://github.com/beagle-dev/beagle-lib.git
+cd beagle-lib
+./autogen.sh
+./configure --prefix=$HOME/beagle --with-opencl=/opt/intel/system_studio_2020/opencl/SDK --with-cuda=/usr/local/cuda
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
+make install
+sudo apt-get install libhmsbeagle-java libhmsbeagle-dev mrbaye
+make check
+cd ..
+
+# Installing BEAST
+## Download the BEAST installer and unpack the compressed .tgz file
+## After install, remove the compressed .tgz file
+cd $HOME/softwares
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre1/BEASTv1.10.5pre.tgz
+tar -zxvf BEASTv1.10.5pre.tgz
+rm BEASTv1.10.5pre.tgz
