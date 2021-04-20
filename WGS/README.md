@@ -30,7 +30,7 @@ The csv file contains this format: sample,barcode,virus_reference/version -- NO 
 LIBRARY01_nCOV-19_20210123.csv
 ```
 
-### RAMPART script for MinION real-time analysis -- it requires 2 parameters:
+#### RAMPART script for MinION real-time analysis -- it requires 2 parameters:
 
 - The PATH to the csv file.
 
@@ -42,7 +42,7 @@ Then run the script using:
 RAMPART $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY01_nCOV-19_20210123/../fastq_pass
 ```
 
-### MINION script for genome assembly -- it requires 2 parameters:
+#### MINION script for genome assembly -- it requires 2 parameters:
 
 - The PATH to the csv file
 
@@ -55,6 +55,8 @@ ONT $HOME/WGS/CSV_FILES/LIBRARY01_nCOV-19_20210123.csv $HOME/WGS/RAW/LIBRARY01_n
 ```
 
 The consensus and stats results are in the ``CONSENSUS`` directory of the library.
+
+--
 
 #### This pipeline can:
 
