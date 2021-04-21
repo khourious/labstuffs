@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set=$1
-
-sed -i -e 's/\r$//' "$set"
