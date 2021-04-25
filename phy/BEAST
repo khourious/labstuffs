@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 24 APR 2021
+
 # Installing dependency packages
 ## Open a terminal (Ctrl + Alt + T)
 ## Update the package list and install the dependency packages for the BEAST and BEAGLE

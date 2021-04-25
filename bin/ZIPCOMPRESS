@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 24 APR 2020
+
 set=$(basename "$1")
 
 nohup zip -r9 "$set".zip "$set"

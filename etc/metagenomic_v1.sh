@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 07 MAR 2021
+
 THREADS="" #12
 NUMCALLER="" #NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
 GPUPERDEVICE="" #NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64

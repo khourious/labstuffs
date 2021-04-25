@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 07 APR 2021
+
 # conda create -y -n pycoqc -c conda-forge -c bioconda -c defaults python=3.6 pycoQC
 # mamba create -y -n pycoqc -c conda-forge -c bioconda -c defaults python=3.6 pycoQC
 # conda create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools

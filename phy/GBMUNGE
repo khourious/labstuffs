@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 24 APR 2021
+
 INPUT=$(basename "$1")
 
 OUTPUT=$(basename "${FILE}" | cut -d. -f1)

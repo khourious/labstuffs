@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 02 JAN 2021
+
 THREADS="12"
 RAWDIR="/media/khourilab/Data/Lb_BA144/library15-2019-11-15"
 HACDEMUXDIR="/media/khourilab/Data/Lb_BA144/Lb_BA144_HAC_Demux"

@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 18 JAN 2021
+
 cd $HOME/pangolin
 source activate pangolin
 git pull

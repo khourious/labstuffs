@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Universidade Federal da Bahia, Brazil
+# URL: https://github.com/lpmor22
+# date: 024 JAN 2021
+
 THREADS="12" #12
 
 RAWDIR="/mnt/x/Lb_BA144/library15-2019-11-15"
