@@ -1,10 +1,13 @@
-#conda env create -f phy.yml
+# mamba env create -f phy.yml
+# conda env create -f phy.yml
 name: phy
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
+  - beagle-lib
+  - beast
   - clustalo
   - fasttree
   - gbmunge
