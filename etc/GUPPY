@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# author: Laise de Moraes <laisepaixao@live.com>
+# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
+# URL: https://lpmor22.github.io
+# date: 7 MAR 2021
+
+guppy_version=5.0.7
+
+[ -d "$HOME/ont-guppy" ] && rm -rf $HOME/ont-guppy
+
+cd
+
+curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$guppy_version"_linux64.tar.gz -o ont-guppy.tar.gz
+
+tar -vzxf ont-guppy.tar.gz
+
+rm -rf ont-guppy.tar.gz
+
+echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.bashrc
+
+echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.zshrc
+
+export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH
