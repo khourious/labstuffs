@@ -3,27 +3,30 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Universidade Federal da Bahia, Brazil
 # URL: https://github.com/lpmor22
-# date: 7 MAR 2021
+# date: 23 MAI 2021
 
-cd $HOME
-wget https://github.com/DerrickWood/kraken2/archive/v2.1.1.tar.gz
-tar -vzxf v2.1.1.tar.gz
-rm -rf v2.1.1.tar.gz
-cd kraken2-2.1.1
-./install_kraken2.sh $HOME/kraken2-2.1.1
+# kraken_version="2.1.2"
+
+# cd $HOME
+wget https://github.com/DerrickWood/kraken2/archive/v$kraken_version.tar.gz
+
+tar -vzxf v$kraken_version.tar.gz
+
+rm -rf v$kraken_version.tar.gz
+
+cd kraken2-$kraken_version
+
+./install_kraken2.sh $HOME/kraken2-$kraken_version
+
 [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
-cp $HOME/kraken2-2.1.1/kraken2{,-build,-inspect} $HOME/bin
+
+cp $HOME/kraken2-$kraken_version/kraken2{,-build,-inspect} $HOME/bin
 
 # download kraken index https://benlangmead.github.io/aws-indexes/k2
-
 wget https://genome-idx.s3.amazonaws.com/kraken/minikraken2_v2_8GB_201904.tgz
-tar -vzxf minikraken2_v2_8GB_201904.tgz
-rm -rf minikraken2_v2_8GB_201904.tgz
-echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.bashrc
-echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.zshrc
 
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_20210127.tar.gz
-# tar -vzxf k2_pluspfp_20210127.tar.gz
-# rm -rf k2_pluspfp_20210127.tar.gz
-# echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.bashrc
-# echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-2.1.1/k2_pluspfp_20210127"' >> $HOME/.zshrc
+tar -vzxf minikraken2_v2_8GB_201904.tgz
+
+echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-$kraken_version/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.bashrc
+
+echo 'export KRAKEN2_DEFAULT_DB="$HOME/kraken2-$kraken_version/minikraken2_v2_8GB_201904_UPDATE"' >> $HOME/.zshrc
