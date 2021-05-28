@@ -48,14 +48,14 @@ Tips > Tip date sampling: Sampling uniformly from precision
 Traits > Add trait > Create a new trait > Name: location > OK
 Traits > Guess trait values > Defined by its order: second > with delimiter: _
 Sites > noncoding > Substitution Model: HKY > Base frequencies: Estimated > Site Heterogeneicity Model: Gamma Sites > Number of Gamma Categories: 4 > Partition into codon positions: Off
-Sites > coding > Substitution Model: HKY > Base frequencies: Estimated > Site Heterogeneicity Model: Gamma > Number of Gamma Categories: 4 > Partition into codon positions: 3 partitions
+Sites > coding > Substitution Model: HKY > Base frequencies: Estimated > Site Heterogeneicity Model: Gamma > Number of Gamma Categories: 4 > Partition into codon positions: 3 partitions (positions 1, 2, 3)
 Sites > location > Discrete Trait Substitution Model: Asymmetric > Infer social network with BSSVS
 Clocks > default > Clock Type: Uncorrelated relaxed clock
 Trees > default > Tree Prior: Coalescent: GMRF Bayesian Skyride
 States > location > State Change Count Reconstruction: Reconstruct state change counts
+
 MCMC > Lenght of chain: 500000000 > Echo state to screen every: 100000 > Log parameters every: 100000
 Generate BEAST file > Continue > *.skyride.r1
-
 
 ### Edit XML
 
@@ -83,6 +83,8 @@ add at the end of the file:
 			</completeHistoryLogger>
 		</log>
 
+
+### AMBIGUITY
 Search for:
 <!-- Number Of States =
 Add the sintaxe: 
