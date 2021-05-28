@@ -3,13 +3,14 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 26 MAY 2021
+# date: 28 MAY 2021
 
 if [[ -z "$(which mamba)" ]]; then
 	cd
 	wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3 && rm Miniconda3-latest-Linux-x86_64.sh
 	echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.bashrc
+	echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.zshrc
 	export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
 	conda install -y -c conda-forge mamba
 	mamba update -y -n base conda
@@ -17,6 +18,18 @@ if [[ -z "$(which mamba)" ]]; then
 	then
     mamba update -y -n base conda
 	mamba --version
+	mamba create -y -n flye -c conda-forge -c bioconda -c defaults flye
+	mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
+	mamba create -y -n metagenomic -c conda-forge -c bioconda -c defaults 
+	mamba create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
+	mamba create -y -n phy -c conda-forge -c bioconda -c defaults beagle-lib beast gbmunge iqtree mafft seqkit	
+	mamba create -y -n plot -c conda-forge -c bioconda -c defaults pysam numpy pandas seaborn
+	mamba create -y -n pycoqc -c conda-forge -c bioconda -c defaults python=3.6 pycoQC
+	mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
+    mamba create -y -n nextclade -c conda-forge -c bioconda -c defaults nodejs nextclade_js
+	mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
+	mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults ragtag
+	mamba create -y -n rampart -c conda-forge -c bioconda -c defaults artic-network artic-porechop binlorry biopython minimap2 python>=3.6 rampart snakemake<5.11  
   else
     mamba update -y -n base conda
 	mamba --version
