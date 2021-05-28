@@ -15,13 +15,6 @@ SAMPLEID=""
 REFSEQ=""
 PLOIDY="" #2
 
-# conda create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
-mamba create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
-# conda create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-# conda create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
-mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
-
 source activate minimap2
 minimap2 -t $THREADS -ax map-ont $REFSEQ $SAMPLE | samtools sort -@ $THREADS -o $SAMPLEID.sorted.bam -
 samtools view -@ $THREADS -h -F 4 -b $SAMPLEID.sorted.bam > $SAMPLEID.sorted.mapped.bam
