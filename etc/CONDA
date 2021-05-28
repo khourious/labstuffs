@@ -26,7 +26,7 @@ if [[ -z "$(which mamba)" ]]; then
 	mamba create -y -n plot -c conda-forge -c bioconda -c defaults pysam numpy pandas seaborn
 	mamba create -y -n pycoqc -c conda-forge -c bioconda -c defaults python=3.6 pycoQC
 	mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-    mamba create -y -n nextclade -c conda-forge -c bioconda -c defaults nodejs nextclade_js
+	mamba create -y -n nextclade -c conda-forge -c bioconda -c defaults nodejs nextclade_js
 	mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 	mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults ragtag
 	mamba create -y -n rampart -c conda-forge -c bioconda -c defaults artic-network artic-porechop binlorry biopython minimap2 python>=3.6 rampart snakemake<5.11  
