@@ -14,13 +14,6 @@ SAMPLEID="Lb_BA144"
 REFSEQ="/media/khourilab/Data/Lb_BA144/TriTrypDB/TriTrypDB-50_LbraziliensisMHOMBR75M2904_2019_Genome.fasta"
 PLOIDY="2"
 
-# mamba create -y -n flye -c conda-forge -c bioconda -c defaults flye
-# mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
-# mamba create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
-# mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-# mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
-# mamba create -y -n ragtag -c bioconda ragtag
-
 mkdir flye
 source activate flye
 flye -t $THREADS --nano-raw $SAMPLE -g 33m -o $OUTPUTDIR/flye
