@@ -3,36 +3,13 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 27 MAY 2021
-
-if [[ -z "$(which mamba)" ]]; then
-	cd
-	wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-	bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3 && rm Miniconda3-latest-Linux-x86_64.sh
-	echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.bashrc
-	export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-	conda install -y -c conda-forge mamba
-	mamba update -y -n base conda
-	if [[ -z "$(which mamba)" ]]
-	then
-    mamba update -y -n base conda
-	mamba --version
-	mamba create -y -n phipseq -c conda-forge -c bioconda -c defaults fastqc multiqc kallisto
-	pip install click biopython numpy scipy git+https://github.com/lasersonlab/phip-stat.git	
-  else
-    mamba update -y -n base conda
-	mamba --version
-  fi
-else
-  mamba update -y -n base conda
-  mamba --version
-fi
+# date: 29 MAY 2021
 
 WORKPATH="/mnt/e/PhiPSeq_LeoPaiva/"
 RAWPATH="/mnt/e/PhiPSeq_LeoPaiva/F20FTSUSAT0469-02_PHAyvdR/Reads/Clean/"
 PREFIXSAMPLES="SVA"
 REFERENCE="/mnt/e/PhiPSeq_LeoPaiva/schistosoma_mansoni.PRJEA36577.WBPS15.mRNA_transcripts.fa.gz"
-THREADS="12"
+THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}')"
 
 cd "$WORKPATH"
 
