@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # author: Laise de Moraes <laisepaixao@live.com>
-# institution: Universidade Federal da Bahia, Brazil
-# URL: https://github.com/lpmor22
+# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
+# URL: https://lpmor22.github.io
 # date: 24 APR 2019
 
 for dirs in $(ls --color=never -l | grep "^d" | awk '{print $9}'); do du -hs $dirs;done
