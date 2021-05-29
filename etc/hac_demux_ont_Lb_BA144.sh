@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # author: Laise de Moraes <laisepaixao@live.com>
-# institution: Universidade Federal da Bahia, Brazil
-# URL: https://github.com/lpmor22
-# date: 024 JAN 2021
+# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
+# URL: https://lpmor22.github.io
+# date: 29 MAY 2021
 
 CONFIG="dna_r9.4.1_450bps_hac.cfg" #dna_r9.4.1_450bps_hac.cfg
 ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
 
-THREADS="12"
+THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}')"
 GPUPERDEVICE="64" # NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
 NUMCALLERS="46" # NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=46
 
