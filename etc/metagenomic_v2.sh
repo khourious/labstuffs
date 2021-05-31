@@ -3,14 +3,14 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 29 MAY 2021
+# date: 30 MAY 2021
 
 CONFIG="dna_r9.4.1_450bps_sup.cfg" #dna_r9.4.1_450bps_sup.cfg
 ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
 MINSCORE="10" #8
 TRIMADAPTER="18" #18
 
-THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}')"
+THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 NUMCALLERS="60" #NVIDIAGeForceRTX1650=64; NVIDIAGeForceRTX2060=60; NVIDIAGeForceRTX2080=64
 GPUPERDEVICE="32" #NVIDIAGeForceRTX1650=16; NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=46
 
