@@ -3,9 +3,9 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 29 MAY 2021
+# date: 30 MAY 2021
 
-THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}')"
+THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 
 RAWDIR="/mnt/x/Lb_BA144/library15-2019-11-15"
 HACDEMUXDIR="/mnt/x/Lb_BA144/Lb_BA144_HAC_Demux"
