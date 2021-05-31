@@ -29,6 +29,7 @@ if [[ -z "$(which conda)" ]]; then
 		mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 		mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults ragtag
 		mamba create -y -n rampart -c conda-forge -c bioconda -c defaults artic-network artic-porechop binlorry biopython minimap2 python>=3.6 rampart snakemake<5.11
+		mamba create -y -n RNA-Seq -c conda-forge -c bioconda -c defaults fastqc multiqc trimmomatic star subread
     fi
 else
     if [[ -z "$(which mamba)" ]]; then
@@ -48,5 +49,6 @@ else
 		mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 		mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults ragtag
 		mamba create -y -n rampart -c conda-forge -c bioconda -c defaults artic-network artic-porechop binlorry biopython minimap2 python>=3.6 rampart snakemake<5.11
+		mamba create -y -n RNA-Seq -c conda-forge -c bioconda -c defaults fastqc multiqc trimmomatic star subread
     fi
 fi
