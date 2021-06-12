@@ -1,20 +1,33 @@
 #!/bin/bash
-
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 30 MAY 2021
+# date: 10 JUN 2021
 
-THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+background() {
 
-INPUT=$1
+    start=$(date +%s.%N)
 
-REFERENCE=$2
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
-OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+    INPUT=$1
 
-source activate phy
+    REFERENCE=$2
 
-nohup mafft --thread ${THREADS} --inputorder --6merpair --addfragments ${INPUT} ${REFERENCE} > ${OUTPUT}_aln.fasta 2> nohup.out
+    OUTPUT=$(basename ${INPUT%.*})
 
-mv nohup.out ${OUTPUT}_aln_log.txt
+    source activate phy
+
+    mafft --thread $THREADS --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments $INPUT $REFERENCE > $OUTPUT.aln.fasta
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was $runtime seconds."
+
+}
+
+LOG=$(basename ${1%.*})
+
+background $1 $2 &>$LOG.log.txt &
