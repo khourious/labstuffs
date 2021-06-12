@@ -3,10 +3,22 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 24 APR 2019
+# date: 10 JUN 2021
 
-set=$(basename "$1")
+background() {
 
-nohup tar -czvf "$set".tar.gz "$set"
+    start=$(date +%s.%N)
 
-rm -rf nohup.out
+    TAR=$(basename $1)
+
+    tar -czvf $TAR.tar.gz $TAR
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was $runtime seconds."
+
+}
+
+background $1 >/dev/null 2>&1 &
