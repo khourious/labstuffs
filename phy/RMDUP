@@ -3,16 +3,28 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 30 MAY 2021
+# date: 10 JUN 2021
 
-THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+background() {
 
-INPUT=$1
+    start=$(date +%s.%N)
 
-OUTPUT=$(basename "${INPUT}" | cut -d. -f1)
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
-source activate phy
+    INPUT=$1
 
-nohup seqkit rmdup -s -j ${THREADS} ${INPUT} > ${OUTPUT}.WoDuplSeqs.fasta
+    OUTPUT=$(basename ${INPUT%.*})
 
-rm -rf nohup.out
+    source activate phy
+
+    seqkit rmdup -s -j $THREADS $INPUT > $OUTPUT.WoDuplSeqs.fasta
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was $runtime seconds."
+
+}
+
+background $1 >/dev/null 2>&1 &
