@@ -3,10 +3,10 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 30 MAY 2021
+# date: 12 JUN 2021
 
 if [[ -z "$(which guppy_basecaller)" ]]; then
-    guppy_version=5.0.7
+    guppy_version=5.0.11
     cd
     curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$guppy_version"_linux64.tar.gz -o ont-guppy.tar.gz
     tar -vzxf ont-guppy.tar.gz
