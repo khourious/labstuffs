@@ -3,14 +3,28 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 24 APR 2021
+# date: 10 JUN 2021
 
-INPUT=$(basename "$1")
+background() {
 
-OUTPUT=$(basename "${FILE}" | cut -d. -f1)
+    start=$(date +%s.%N)
 
-source activate phy
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
-nohup gbmunge -s -i ${INPUT} -f ${OUTPUT}.fasta -o ${OUTPUT}.txt
+    INPUT=$1
 
-rm -rf nohup.out
+    OUTPUT=$(basename ${INPUT%.*})
+
+    source activate phy
+
+    gbmunge -s -i $INPUT -f $OUTPUT.fasta -o $OUTPUT.txt
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was $runtime seconds."
+
+}
+
+background $1 >/dev/null 2>&1 &
