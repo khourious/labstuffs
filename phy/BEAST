@@ -3,53 +3,43 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 29 MAY 2021
+# date: 12 JUN 2021
 
 # Installing dependency packages
 ## Open a terminal (Ctrl + Alt + T)
 ## Update the package list and install the dependency packages for the BEAST and BEAGLE
 sudo apt-get update
-sudo apt-get install -y openjdk-8-jdk openjdk-8-jre
-
-autoconf automake build-essential g++-10 gcc-10 git libcanberra-gtk-module libcanberra-gtk3-module libfreetype6-dev libgl1-mesa-dev libglew-dev libglm-dev libsdl2-dev libsdl2-image-dev libtool mesa-utils ocl-icd-opencl-dev ocl-icd-libopencl1  pkg-config
+sudo apt-get install -y automake g++-10 gcc-10 libtool openjdk-8-jdk openjdk-8-jre
 sudo apt-get update
 
 # Installing NVIDIA CUDA drivers
 ## Get the PPA repository and install the NVIDIA CUDA driver: https://developer.nvidia.com/cuda-downloads
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
 sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-wget https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers/cuda-repo-ubuntu2004-11-3-local_11.3.1-465.19.01-1_amd64.deb
+wget https://developer.download.nvidia.com/compute/cuda/11.3.1/local_installers/cuda-repo-ubuntu2004-11-3-local_11.3.1-465.19.01-1_amd64.deb1
 sudo dpkg -i cuda-repo-ubuntu2004-11-3-local_11.3.1-465.19.01-1_amd64.deb
+rm cuda-repo-ubuntu2004-11-3-local_11.3.1-465.19.01-1_amd64.deb
 sudo apt-key add /var/cuda-repo-ubuntu2004-11-3-local/7fa2af80.pub
 sudo apt-get update
 sudo apt-get -y install cuda
-
-
-
-
-
-
-
-
-
-
+sudo apt-get -y install nvidia-cuda-toolkit
+reboot
 
 # Installing BEAGLE
 ## Build the BEAGLE from the source repository
 git clone --depth=1 https://github.com/beagle-dev/beagle-lib.git; cd beagle-lib
 ./autogen.sh
-./configure --prefix=$HOME/beagle --with-opencl=/opt/intel/system_studio_2020/opencl/SDK --with-cuda=/usr/local/cuda
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 8
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 8
+./configure --prefix=$HOME/beagle --with-cuda=/usr/local/cuda
 make install
-sudo apt-get install libhmsbeagle-java libhmsbeagle-dev mrbaye
+sudo apt-get install libhmsbeagle-java libhmsbeagle-dev mrbayes
 make check
-cd ..
+MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+echo 'export LD_LIBRARY_PATH=$HOME/beagle/lib:$LD_LIBRARY_PATH' >> $HOME/.${MYSHELL}rc
+cd && rm beagle-lib
 
 # Installing BEAST
 ## Download the BEAST installer and unpack the compressed .tgz file
 ## After install, remove the compressed .tgz file
-cd $HOME/softwares
-wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre1/BEASTv1.10.5pre.tgz
-tar -zxvf BEASTv1.10.5pre.tgz
-rm BEASTv1.10.5pre.tgz
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+tar -zxvf BEASTv1.10.4.tgz
+rm BEASTv1.10.4.tgz
