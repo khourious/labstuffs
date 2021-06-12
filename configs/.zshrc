@@ -1,8 +1,9 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export ZSH="/home/lpmor22/.oh-my-zsh"
 
-ZSH_THEME="dstufft"
-# ZSH_THEME="daveverwer"
+ZSH_THEME="frisk"
+#ZSH_THEME="dstufft"
+#ZSH_THEME="daveverwer"
 
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
