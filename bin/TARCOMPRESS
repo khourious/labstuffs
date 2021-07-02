@@ -3,9 +3,8 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 10 JUN 2021
 
-background() {
+bg() {
 
     start=$(date +%s.%N)
 
@@ -21,4 +20,4 @@ background() {
 
 }
 
-background $1 >/dev/null 2>&1 &
+bg $1 >/dev/null 2>&1 &
