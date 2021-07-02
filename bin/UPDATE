@@ -3,7 +3,6 @@
 # author: Laise de Moraes <laisepaixao@live.com>
 # institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
 # URL: https://lpmor22.github.io
-# date: 24 APR 2019
 
 sudo apt-get update -y
 
@@ -13,6 +12,8 @@ sudo apt-get autoremove
 
 sudo apt-get clean
 
-sudo apt-get purge -y $(dpkg -l | awk '/^rc/ { print $2 }')
+sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}')
 
 sudo apt-get check
+
+conda clean --all -y
