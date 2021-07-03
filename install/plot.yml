@@ -1,0 +1,14 @@
+# conda env create -f plot.yml
+# mamba env create -f plot.yml
+
+name: plot
+channels:
+conda-forge
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - pysam
+  - numpy
+  - pandas
+  - seaborn
