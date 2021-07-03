@@ -1,0 +1,11 @@
+#!/bin/bash
+
+bg() {
+
+    TAR=$(basename $1)
+
+    tar -czvf $TAR.tar.gz $TAR
+
+}
+
+bg $1 >/dev/null 2>&1 &
