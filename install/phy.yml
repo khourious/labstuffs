@@ -1,0 +1,14 @@
+# conda env create -f phy.yml
+# mamba env create -f phy.yml
+
+name: phy
+channels:
+conda-forge
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - gbmunge
+  - iqtree
+  - mafft
+  - seqkit
