@@ -1,0 +1,12 @@
+# conda env create -f minimap2.yml
+# mamba env create -f minimap2.yml
+
+name: minimap2
+channels:
+conda-forge
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - minimap2
+  - samtools
