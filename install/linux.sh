@@ -1,0 +1,45 @@
+# Windows Subsystem Linux -- WSL
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+Restart-Computer
+wsl.exe --update
+wsl.exe --install -d Ubuntu-20.04
+wsl.exe --export Ubuntu-20.04 Ubuntu2004_20210701.tar
+wsl.exe --unregister Ubuntu-20.04
+wsl.exe --import Ubuntu-20.04 C:\Ubuntu-20.04 C:\Dropbox\laisepmoraes\bioinfo\Ubuntu2004_20210701.tar --version 2
+cat <<EOF > /etc/wsl.conf
+[user]
+default=lpmor22
+EOF
+wsl.exe --shutdown
+//wsl$/Ubuntu-20.04/home/lpmor22
+
+# CUDA on WSL2 -- setting up CUDA toolkit
+https://developer.nvidia.com/cuda/wsl/download
+https://hackmd.io/@Miles/rkYKDHPsO
+laisepaixao@gmail.com
+R7398f78y0!
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+sudo apt-get update
+sudo apt-get install -y cuda-toolkit-11-0
+sudo apt-get install -y nvidia-cuda-toolkit
+sudo apt-get install --fix-missing
+sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-machine-learning.list'
+wsl.exe --shutdown
+Restart-Computer
+
+# add swap memory
+sudo swapon --show && sudo fallocate -l 32G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile && sudo swapon --show && echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+# install prioritary packages
+sudo apt-get install -y autoconf build-essential dos2unix exfat-fuse sshpass
+
+# zsh
+sudo apt-get install -y zsh
+sudo chsh --shell /bin/zsh lpmor22
+sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+wsl.exe --shutdown # WSL
+reboot # linux
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
