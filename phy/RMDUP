@@ -1,13 +1,6 @@
 #!/bin/bash
 
-# author: Laise de Moraes <laisepaixao@live.com>
-# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
-# URL: https://lpmor22.github.io
-# date: 10 JUN 2021
-
-background() {
-
-    start=$(date +%s.%N)
+bg() {
 
     THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
@@ -17,14 +10,8 @@ background() {
 
     source activate phy
 
-    seqkit rmdup -s -j $THREADS $INPUT > $OUTPUT.WoDuplSeqs.fasta
-
-    end=$(date +%s.%N)
-
-    runtime=$(python -c "print(${end} - ${start})")
-
-    echo "" && echo "Done. The runtime was $runtime seconds."
+    seqkit rmdup -j $THREADS -s $INPUT -D $OUTPUT.dupList.txt -d $OUTPUT.dup.fasta > $OUTPUT.rmDup.fasta
 
 }
 
-background $1 >/dev/null 2>&1 &
+bg $1 >/dev/null 2>&1 &
