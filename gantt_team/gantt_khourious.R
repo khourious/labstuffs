@@ -5,7 +5,7 @@ library(tidyverse)
 rm(list = ls())
 getwd()
 
-gantt <- read.csv("gantt_khouriosos.csv", h=T)
+gantt <- read.csv("gantt_khourious.csv", h=T)
 
 acts <- c("Ricardo Khouri", "Valdomiro Moitinho", "Maria da Purificacao", "Laise de Moraes", "Lia Barbara Arruda", "Cibele Orge", "Luciane Amorim", "Lucas Campos", "Camila Brito", "Felipe Torres", "Lucas Gentil", "Lais Cambui", "Marcos Braz", "Isabele Carvalho", "Thaline Mabel Santos", "Victoria Ribeiro", "Kleverton Ribeiro", "Debora Magnavita", "Jessica Duarte", "Raphael Borges", "Marina Cucco", "Ellen Pimentel", "Luisa Pedrosa", "Lilian Gomes", "Raphaela Andrade", "Jose Adriano Silva", "Agatha Morais", "Ana Carolina Lima", "Beatriz Vasconcelos", "Giulia Botelho", "Igor Silveira", "Joyce Silva", "Icaro Strobel", "Clara Porto", "Dhara Isabella Silva", "Laura Barreto", "Jessica Lais Santos", "Caio Galiano")
 
@@ -29,5 +29,5 @@ ggplot(g.gantt, aes(date, a2, colour = a3)) +
         legend.background = element_rect(size=0.5, linetype="solid", colour="grey")) +
   labs(x=NULL, y=NULL)
 
-ggsave("gantt_khouriosos.pdf")
-ggsave("gantt_khouriosos.png")
+ggsave("gantt_khourious.pdf")
+ggsave("gantt_khourious.png")
