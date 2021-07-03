@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# author: Laise de Moraes <laisepaixao@live.com>
-# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
-# URL: https://lpmor22.github.io
-
-for dirs in $(ls --color=never -l | grep "^d" | awk '{print $9}'); do du -hs $dirs;done
