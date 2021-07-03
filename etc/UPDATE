@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# author: Laise de Moraes <laisepaixao@live.com>
-# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
-# URL: https://lpmor22.github.io
-
 sudo apt-get update -y
 
 sudo apt-get full-upgrade -y
