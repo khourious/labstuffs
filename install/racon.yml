@@ -1,0 +1,12 @@
+# conda env create -f racon.yml
+# mamba env create -f racon.yml
+
+name: racon
+channels:
+conda-forge
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - nanopolish
+  - racon
