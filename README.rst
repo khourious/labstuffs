@@ -39,7 +39,10 @@ To list all available updates, install the updates, remove old packages that are
 gantt_team
 ==========
 
-gantt_khourious.R
+.. code:: bash
+
+    gantt_khourious.R
+
 gantt_khourious.csv
 gantt_khourious.pdf
 gantt_khourious.png
@@ -48,17 +51,49 @@ gantt_khourious.png
 install
 =======
 
-.wslconfig
-.zshrc
-CONDA
-GUPPY
-ResetForgottenPasswordWindows10.bat
-linux.sh
-minimap2.yml
-phy.yml
-plot.yml
-racon.yml
-rnaseq_arbovirus.yml
+.. code:: bash
+
+    .wslconfig
+
+.. code:: bash
+
+    .zshrc
+
+.. code:: bash
+
+    CONDA
+
+.. code:: bash
+
+    GUPPY
+
+.. code:: bash
+
+    ResetForgottenPasswordWindows10.bat
+
+.. code:: bash
+
+    linux.sh
+
+.. code:: bash
+
+    minimap2.yml
+
+.. code:: bash
+
+    phy.yml
+
+.. code:: bash
+
+    plot.yml
+
+.. code:: bash
+
+    racon.yml
+
+.. code:: bash
+
+    rnaseq_arbovirus.yml
 
 ===
 ont
@@ -68,17 +103,42 @@ ont
 phy
 ===
 
-FX2TAB
-IQTREE
-MAFFTLARGE
-MASKCOVID19
-RMAMB
-RMDUP
-TAB2FX
-countN.pl
+.. code:: bash
+
+    FX2TAB
+
+.. code:: bash
+
+    IQTREE
+
+.. code:: bash
+
+    MAFFTLARGE
+
+.. code:: bash
+
+    MASKCOVID19
+
+.. code:: bash
+
+    RMAMB
+
+.. code:: bash
+
+    RMDUP
+
+.. code:: bash
+
+    TAB2FX
+
+.. code:: bash
+
+    countN.pl
 
 ======
 rnaseq
 ======
 
-rnaseq_arbovirus.sh
+.. code:: bash
+
+    rnaseq_arbovirus.sh
