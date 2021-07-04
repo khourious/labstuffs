@@ -79,8 +79,8 @@ bg() {
         trimmomatic PE -threads "$THREADS" -phred33 "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
     done
 
-    curl http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz --output "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa.gz
-    curl http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz --output "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
+    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa.gz
+    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
 
     gunzip "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa.gz
     gunzip "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
