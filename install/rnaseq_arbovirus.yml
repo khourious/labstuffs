@@ -1,0 +1,15 @@
+# conda env create -f rnaseq_arbovirus.yml
+# mamba env create -f rnaseq_arbovirus.yml
+
+name: rnaseq_arbovirus
+channels:
+conda-forge
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - fastqc
+  - multiqc
+  - trimmomatic
+  - star
+  - subread
