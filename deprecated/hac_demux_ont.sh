@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# author: Laise de Moraes <laisepaixao@live.com>
-# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
-# URL: https://lpmor22.github.io
-# date: 30 MAY 2021
-
 CONFIG="dna_r9.4.1_450bps_hac.cfg" #dna_r9.4.1_450bps_hac.cfg
 ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
 
