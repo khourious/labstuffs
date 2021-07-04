@@ -10,9 +10,11 @@ etc
 **To display the amount of disk usage by folders**
 
 .. code:: bash
+
     DISKUSAGE
 
 **To compress directories/files in *.tar.gz**
 
 .. code:: bash
+
     TARCOMPRESS <path/to/directory/or/file>
