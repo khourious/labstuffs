@@ -88,7 +88,7 @@ bg() {
     STAR --runThreadN "$THREADS" --runMode genomeGenerate --genomeDir "$RAWDIR"/ANALYSIS/INDEX --genomeFastaFiles "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa
 
     for i in $(find "$RAWDIR"/ANALYSIS/TRIMMED -type f -name "*.fastq.gz" | while read o; do basename $o; done | cut -d_ -f1,2 | sort -u); do
-        STAR --runThreadN "$THREADS" --runMode alignReads --genomeDir "$RAWDIR"/ANALYSIS/INDEX --sjdbGTFfile "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf --readFilesIn "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R2_PAIRED.fastq.gz --readFilesCommand zcat --outFileNamePrefix "$RAWDIR"/ANALYSIS/ALIGN/"$i"_ --outSAMtype BAM SortedByCoordinate --outReadsUnmapped Fastx
+        STAR --runThreadN "$THREADS" --runMode alignReads --genomeDir "$RAWDIR"/ANALYSIS/INDEX --sjdbGTFfile "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf --readFilesIn "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R2_PAIRED.fastq.gz --readFilesCommand zcat --outFileNamePrefix "$RAWDIR"/ANALYSIS/ALIGN/"$i"_ --outSAMtype BAM Unsorted --outReadsUnmapped Fastx
     done
 
     end=$(date +%s.%N)
