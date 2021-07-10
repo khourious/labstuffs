@@ -3,7 +3,6 @@
 
 name: minimap2
 channels:
-conda-forge
   - conda-forge
   - bioconda
   - defaults
