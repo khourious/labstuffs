@@ -81,6 +81,17 @@ MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
     # kraken2 --help
 # fi
 
+# if [[ -z "$(which fastcov.py)" ]]; then
+    # cd
+    # git clone https://github.com/RaverJay/fastcov
+    # cd fastcov
+    # echo 'export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    # export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH
+# else
+    # source activate plot
+    # fastcov.py --help
+# fi
+
 bg() {
 
     start=$(date +%s.%N)
@@ -102,6 +113,12 @@ bg() {
     ASSEMBLYDIR="$RAWDIR"/ASSEMBLY
 
     HUMANREFSEQ="$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
+    CHIKVREFSEQ=""
+    DENV1REFSEQ=""
+    DENV2REFSEQ=""
+    DENV3REFSEQ=""
+    DENV4REFSEQ=""
+    ZIKVREFSEQ=""
 
     [ ! -d "$REFSEQS" ] && mkdir -vp "$REFSEQS"
     [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
@@ -139,7 +156,64 @@ bg() {
 
     for i in $(find "$READLEVELDIR" -type f -name "*.fasta" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
         kraken2 --db "$KRAKENDB" --threads "$THREADS" --report "$READLEVELDIR"/"$i"_report.txt --report-minimizer-data --output "$READLEVELDIR"/"$i"_output.txt "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta
+        # CHIKV
+        minimap2 -t "$THREADS" -ax map-ont "$CHIKVREFSEQ" "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".chikv.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".chikv.sorted.bam > "$ASSEMBLYDIR"/"$i".chikv.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".chikv.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$CHIKVREFSEQ" "$ASSEMBLYDIR"/"$i".chikv.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".chikv -n N -i "$i"
+        # DENV-1
+        minimap2 -t "$THREADS" -ax map-ont "$DENV1REFSEQ" "$READLEVELDIR"/"$i".corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".denv1.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".denv1.sorted.bam > "$ASSEMBLYDIR"/"$i".denv1.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".denv1.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$DENV1REFSEQ" "$ASSEMBLYDIR"/"$i".denv1.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".denv1 -n N -i "$i"
+        # DENV-2
+        minimap2 -t "$THREADS" -ax map-ont "$DENV2REFSEQ" "$READLEVELDIR"/"$i".corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".denv2.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".denv2.sorted.bam > "$ASSEMBLYDIR"/"$i".denv2.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".denv2.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$DENV2REFSEQ" "$ASSEMBLYDIR"/"$i".denv2.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".denv2 -n N -i "$i"
+        # DENV-3
+        minimap2 -t "$THREADS" -ax map-ont "$DENV3REFSEQ" "$READLEVELDIR"/"$i".corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".denv3.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".denv3.sorted.bam > "$ASSEMBLYDIR"/"$i".denv3.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".denv3.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$DENV3REFSEQ" "$ASSEMBLYDIR"/"$i".denv3.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".denv3 -n N -i "$i"
+        # DENV-4
+        minimap2 -t "$THREADS" -ax map-ont "$DENV4REFSEQ" "$READLEVELDIR"/"$i".corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".denv4.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".denv4.sorted.bam > "$ASSEMBLYDIR"/"$i".denv4.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".denv4.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$DENV4REFSEQ" "$ASSEMBLYDIR"/"$i".denv4.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".denv4 -n N -i "$i"
+        # ZIKV
+        minimap2 -t "$THREADS" -ax map-ont "$ZIKVREFSEQ" "$READLEVELDIR"/"$i".corrected.fasta | samtools sort -@ "$THREADS" -o "$ASSEMBLYDIR"/"$i".zikv.sorted.bam -
+        samtools view -@ "$THREADS" -h -F 4 -b "$ASSEMBLYDIR"/"$i".zikv.sorted.bam > "$ASSEMBLYDIR"/"$i".zikv.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$ASSEMBLYDIR"/"$i".zikv.sorted.mapped.bam
+        samtools mpileup -A -B -Q 0 --reference "$ZIKVREFSEQ" "$ASSEMBLYDIR"/"$i".zikv.sorted.mapped.bam | ivar consensus -p "$ASSEMBLYDIR"/"$i".zikv -n N -i "$i"
     done
+
+source activate plot
+
+    for i in $(find "$READLEVELDIR" -type f -name "*.fasta" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
+
+
+fastcov.py -l "$ANALYSISDIR"/"$i".results/"$i".sorted.bam -o "$ANALYSISDIR"/"$i".results/"$i".coverage.pdf; done
+
+
+
+for i in $(find "$ASSEMBLYDIR" -type f -name "*.sorted.mapped.bam" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
+	fastcov "$ASSEMBLYDIR"/barcode*.chikv.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_chikv.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.chikv.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_chikv_log.pdf
+	fastcov "$ASSEMBLYDIR"/barcode*.denv1.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv1.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.denv1.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv1_log.pdf
+	fastcov "$ASSEMBLYDIR"/barcode*.denv2.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv2.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.denv2.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv2_log.pdf
+	fastcov "$ASSEMBLYDIR"/barcode*.denv3.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv3.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.denv3.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv3_log.pdf
+	fastcov "$ASSEMBLYDIR"/barcode*.denv4.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv4.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.denv4.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_denv4_log.pdf
+	fastcov "$ASSEMBLYDIR"/barcode*.zikv.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_zikv.pdf
+	fastcov -l "$ASSEMBLYDIR"/barcode*.zikv.sorted.mapped.bam -o "$ASSEMBLYDIR"/assembly_zikv_log.pdf
+done
+
+gs -dSAFER -r3000 -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOUTPUTFILE="$(pwd | awk -F/ '{print $NF}')_coverage_depth.pdf" "$ANALYSISDIR"/*.results/*.pdf
+
 
     end=$(date +%s.%N)
 
@@ -150,71 +224,3 @@ bg() {
 }
 
 bg &>>metagenomic_ont_v4_log.txt &
-
-# CHIKVREFSEQ=""
-# DENV1REFSEQ=""
-# DENV2REFSEQ=""
-# DENV3REFSEQ=""
-# DENV4REFSEQ=""
-# ZIKVREFSEQ=""
-
-#source activate minimap2
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${CHIKVREFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.chikv.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.chikv.sorted.bam > ${ASSEMBLYDIR}/${i}.chikv.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.chikv.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${CHIKVREFSEQ} ${ASSEMBLYDIR}/${i}.chikv.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.chikv -n N -i ${i}
-#done
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${DENV1REFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.denv1.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.denv1.sorted.bam > ${ASSEMBLYDIR}/${i}.denv1.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.denv1.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${DENV1REFSEQ} ${ASSEMBLYDIR}/${i}.denv1.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.denv1 -n N -i ${i}
-#done
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${DENV2REFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.denv2.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.denv2.sorted.bam > ${ASSEMBLYDIR}/${i}.denv2.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.denv2.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${DENV2REFSEQ} ${ASSEMBLYDIR}/${i}.denv2.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.denv2 -n N -i ${i}
-#done
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${DENV3REFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.denv3.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.denv3.sorted.bam > ${ASSEMBLYDIR}/${i}.denv3.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.denv3.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${DENV3REFSEQ} ${ASSEMBLYDIR}/${i}.denv3.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.denv3 -n N -i ${i}
-#done
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${DENV4REFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.denv4.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.denv4.sorted.bam > ${ASSEMBLYDIR}/${i}.denv4.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.denv4.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${DENV4REFSEQ} ${ASSEMBLYDIR}/${i}.denv4.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.denv4 -n N -i ${i}
-#done
-
-#for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	minimap2 -t ${THREADS} -ax map-ont ${ZIKVREFSEQ} ${READLEVELDIR}/${i}.corrected.fasta | samtools sort -@ ${THREADS} -o ${ASSEMBLYDIR}/${i}.zikv.sorted.bam -
-#	samtools view -@ ${THREADS} -h -F 4 -b ${ASSEMBLYDIR}/${i}.zikv.sorted.bam > ${ASSEMBLYDIR}/${i}.zikv.sorted.mapped.bam
-#	samtools index -@ ${THREADS} ${ASSEMBLYDIR}/${i}.zikv.sorted.mapped.bam
-#	samtools mpileup -A -B -Q 0 --reference ${ZIKVREFSEQ} ${ASSEMBLYDIR}/${i}.zikv.sorted.mapped.bam | ivar consensus -p ${ASSEMBLYDIR}/${i}.zikv -n N -i ${i}
-#done
-
-#source activate plot
-
-#for i in $(find ${ASSEMBLYDIR} -type f -name "*.sorted.mapped.bam" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-#	fastcov ${ASSEMBLYDIR}/barcode*.chikv.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_chikv.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.chikv.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_chikv_log.pdf
-#	fastcov ${ASSEMBLYDIR}/barcode*.denv1.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv1.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.denv1.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv1_log.pdf
-#	fastcov ${ASSEMBLYDIR}/barcode*.denv2.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv2.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.denv2.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv2_log.pdf
-#	fastcov ${ASSEMBLYDIR}/barcode*.denv3.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv3.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.denv3.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv3_log.pdf
-#	fastcov ${ASSEMBLYDIR}/barcode*.denv4.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv4.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.denv4.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_denv4_log.pdf
-#	fastcov ${ASSEMBLYDIR}/barcode*.zikv.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_zikv.pdf
-#	fastcov -l ${ASSEMBLYDIR}/barcode*.zikv.sorted.mapped.bam -o ${ASSEMBLYDIR}/assembly_zikv_log.pdf
-#done
