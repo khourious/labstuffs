@@ -1,12 +1,6 @@
 #!/bin/bash
 
-# author: Laise de Moraes <laisepaixao@live.com>
-# institution: Oswaldo Cruz Foundation, Gonçalo Moniz Institute, Bahia, Brazil
-# URL: https://lpmor22.github.io
-# date: 12 JUN 2021
-
 # Installing dependency packages
-## Open a terminal (Ctrl + Alt + T)
 ## Update the package list and install the dependency packages for the BEAST and BEAGLE
 sudo apt-get update
 sudo apt-get install -y automake g++-10 gcc-10 libtool openjdk-8-jdk openjdk-8-jre
