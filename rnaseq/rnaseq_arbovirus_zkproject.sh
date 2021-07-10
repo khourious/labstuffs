@@ -4,27 +4,32 @@ bg() {
 
     start=$(date +%s.%N)
 
-    source activate RNA-Seq
+    source activate rnaseq
 
-    RAWDIR="/home/laise/arboBA-RNAseq/ArbovirusFiocruzBA-83677594"
+    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+
+    RAWDIR=/mnt/x/rnaseq_arbovirus/ArbovirusFiocruzBA-83677594
     RAWRUNDIR1="$RAWDIR"/FASTQ_Generation_2018-08-17_15_33_27Z-116577544
     RAWRUNDIR2="$RAWDIR"/FASTQ_Generation_2018-10-17_13_51_20Z-130391988
     RAWRUNDIR3="$RAWDIR"/FASTQ_Generation_2018-12-11_13_17_10Z-141945716
     RAWRUNDIR4="$RAWDIR"/FASTQ_Generation_2018-12-13_14_45_41Z-143225097
     RAWRUNDIR5="$RAWDIR"/FASTQ_Generation_2018-12-15_10_26_29Z-143716575
-    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+    ANALYSIS="$RAWDIR"/ANALYSIS
 
-    mkdir "$RAWDIR"/ANALYSIS "$RAWDIR"/ANALYSIS/ALIGN "$RAWDIR"/ANALYSIS/INDEX "$RAWDIR"/ANALYSIS/QC_RUN{1..5} "$RAWDIR"/ANALYSIS/QC_RUNS_MERGED "$RAWDIR"/ANALYSIS/REFERENCE "$RAWDIR"/ANALYSIS/RUN{1..5} "$RAWDIR"/ANALYSIS/RUNS_MERGED "$RAWDIR"/ANALYSIS/TRIMMED
+    mkdir "$ANALYSIS" "$ANALYSIS"/ALIGN "$ANALYSIS"/INDEX \
+    "$ANALYSIS"/QC_RUN{1..5} "$ANALYSIS"/QC_RUNS_MERGED \
+    "$ANALYSIS"/REFERENCE "$ANALYSIS"/RUN{1..5} \
+    "$ANALYSIS"/RUNS_MERGED "$ANALYSIS"/TRIMMED
 
-    find "$RAWRUNDIR1" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN1 {} +
-    find "$RAWRUNDIR2" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN2 {} +
-    find "$RAWRUNDIR3" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN3 {} +
-    find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN4 {} +
-    find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN5 {} +
+    find "$RAWRUNDIR1" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN1 {} +
+    find "$RAWRUNDIR2" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN2 {} +
+    find "$RAWRUNDIR3" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN3 {} +
+    find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN4 {} +
+    find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN5 {} +
 
-    for i in $(find "$RAWDIR"/ANALYSIS -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | while read o; do basename $o; done); do
-        fastqc -t "$THREADS" "$RAWDIR"/ANALYSIS/"$i"/*.fastq.gz -o "$RAWDIR"/ANALYSIS/QC_"$i"
-        multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$RAWDIR"/ANALYSIS/"$i"_lanes_multiqc_report "$RAWDIR"/ANALYSIS/QC_"$i"/*
+    for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | while read o; do basename $o; done); do
+        fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
+        multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*
     done
 
     for i in $(find "$RAWDIR"/ANALYSIS/RUN1 -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
@@ -99,4 +104,4 @@ bg() {
 
 }
 
-bg &>rnaseq_arbovirus_log_"$(date +'%Y-%m-%d')".txt &
+bg &>>rnaseq_arbovirus_zkproject_log.txt &
