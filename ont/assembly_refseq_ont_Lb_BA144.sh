@@ -8,17 +8,17 @@ if [[ -z "$(which conda)" ]]; then
     MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
     echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
     export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    conda install -y -c conda-forge mamba
+    mamba update -y -n base conda
 else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -n base conda
         mamba create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
-        mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
         mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
     else
         mamba update -y -n base conda
         mamba create -y -n minimap2 -c conda-forge -c bioconda -c defaults minimap2 samtools
-        mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
         mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
     fi
 fi
@@ -32,7 +32,7 @@ SAMPLE="/mnt/x/Lb_BA144/Lb_BA144.fastq"
 SAMPLEID="Lb_BA144"
 
 REFSEQ="/mnt/x/Lb_BA144/TriTrypDB/TriTrypDB-50_LbraziliensisMHOMBR75M2904_2019_Genome.fasta"
-PLOIDY="2" #2
+PLOIDY="2"
 
 source activate minimap2
 
