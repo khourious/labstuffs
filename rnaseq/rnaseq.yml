@@ -1,0 +1,14 @@
+# conda env create -f rnaseq.yml
+# mamba env create -f rnaseq.yml
+
+name: rnaseq
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - fastqc
+  - multiqc
+  - trimmomatic
+  - star
+  - subread
