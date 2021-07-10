@@ -10,22 +10,27 @@ if [[ -z "$(which conda)" ]]; then
     export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
     conda install -y -c conda-forge mamba
     mamba update -y -n base conda
+    mamba create -y -n flye -c conda-forge -c anaconda -c bioconda -c defaults
+    mamba create -y -n medaka -c conda-forge -c anaconda -c bioconda -c defaults medaka bcftools minimap2 samtools
+    mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
+    mamba create -y -n racon -c conda-forge -c anaconda -c bioconda -c defaults nanopolish racon
+    mamba create -y -n ragtag -c conda-forge -c anaconda -c bioconda -c defaults
 else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -n base conda
-        mamba create -y -n flye -c conda-forge -c bioconda -c defaults
-        mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
-        mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-        mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
-        mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults
+        mamba create -y -n flye -c conda-forge -c anaconda -c bioconda -c defaults
+        mamba create -y -n medaka -c conda-forge -c anaconda -c bioconda -c defaults medaka bcftools minimap2 samtools
+        mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
+        mamba create -y -n racon -c conda-forge -c anaconda -c bioconda -c defaults nanopolish racon
+        mamba create -y -n ragtag -c conda-forge -c anaconda -c bioconda -c defaults
     else
         mamba update -y -n base conda
-        mamba create -y -n flye -c conda-forge -c bioconda -c defaults
-        mamba create -y -n medaka -c conda-forge -c bioconda -c defaults medaka bcftools minimap2 samtools
-        mamba create -y -n nanopolish -c conda-forge -c bioconda -c defaults nanopolish samtools
-        mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
-        mamba create -y -n ragtag -c conda-forge -c bioconda -c defaults
+        mamba create -y -n flye -c conda-forge -c anaconda -c bioconda -c defaults
+        mamba create -y -n medaka -c conda-forge -c anaconda -c bioconda -c defaults medaka bcftools minimap2 samtools
+        mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
+        mamba create -y -n racon -c conda-forge -c anaconda -c bioconda -c defaults nanopolish racon
+        mamba create -y -n ragtag -c conda-forge -c anaconda -c bioconda -c defaults
     fi
 fi
 
