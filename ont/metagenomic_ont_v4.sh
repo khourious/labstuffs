@@ -1,10 +1,30 @@
 #!/bin/bash
 
 # Set the path of RAW fast5 files
-RAWDIR=""
+RAWDIR=/mnt/c/Dropbox/kalabric/NGS_LIBRARY01_20210408
 
 # Set the path of kraken2 database
-KRAKEN2DB=""
+KRAKEN2DB=/mnt/x/kraken2db/k2_standard_8gb_20201202
+
+# kraken2 db: viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20210517.tar.gz
+# tar -vzxf k2_viral_20210517.tar.gz
+
+# kraken2 db: archaea, human, plasmid, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_minusb_20210517.tar.gz
+# tar -vzxf k2_minusb_20210517.tar.gz
+
+# kraken2 db: archaea, bacteria, human, plasmid, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_8gb_20210517.tar.gz
+# tar -vzxf k2_standard_8gb_20210517.tar.gz
+
+# kraken2 db: archaea, bacteria, fungi, human, plasmid, protozoa, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_8gb_20210517.tar.gz
+# tar -vzxf k2_pluspf_8gb_20210517.tar.gz
+
+# kraken2 db: archaea, bacteria, fungi, human, plant, plasmid, protozoa, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_8gb_20210517.tar.gz
+# tar -vzxf k2_pluspfp_8gb_20210517.tar.gz
 
 MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
 
@@ -31,25 +51,37 @@ if [[ -z "$(which conda)" ]]; then
     export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
     conda install -y -c conda-forge mamba
     mamba update -y -n base conda
-    mamba create -y -n minimap2 -c conda-forge -c anaconda -c bioconda -c defaults minimap2 samtools
+    mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+    mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
     mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-    mamba create -y -n pycoqc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-    mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
 else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -n base conda
-        mamba create -y -n minimap2 -c conda-forge -c anaconda -c bioconda -c defaults minimap2 samtools
+        mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+        mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
         mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-        mamba create -y -n pycoqc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
     else
         mamba update -y -n base conda
-        mamba create -y -n minimap2 -c conda-forge -c anaconda -c bioconda -c defaults minimap2 samtools
+        mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+        mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
         mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-        mamba create -y -n pycoqc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        mamba create -y -n racon -c conda-forge -c bioconda -c defaults nanopolish racon
     fi
+fi
+
+install kraken2
+if [[ -z "$(which kraken2)" ]]; then
+    version=2.1.2
+    cd
+    wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
+    tar -vzxf v$version.tar.gz
+    rm -rf v$version.tar.gz
+    cd kraken2-$version
+    ./install_kraken2.sh $HOME/kraken2-$version
+    [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
+    cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
+else
+    kraken2 --help
 fi
 
 bg() {
@@ -59,7 +91,7 @@ bg() {
     THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
     CONFIG=dna_r9.4.1_450bps_sup.cfg #dna_r9.4.1_450bps_hac.cfg
-    ARRANGEMENTS=barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
+    ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg"
 
     TRIMADAPTER=18
 
@@ -72,18 +104,45 @@ bg() {
     CONTIGLEVELDIR="$RAWDIR"/LEVEL_CONTIGS
     ASSEMBLYDIR="$RAWDIR"/ASSEMBLY
 
+    HUMANREFSEQ="$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
+
     [ ! -d "$REFSEQS" ] && mkdir -vp "$REFSEQS"
     [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
     [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
     [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
 
-    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q \
-    -O "$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
+    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q \
+    # -O "$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
 
-    HUMANREFSEQ="$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
+    # guppy_basecaller -r -x auto --verbose_logs -c "$CONFIG" -i "$RAWDIR" -s "$BASECALLDIR" -q 1 --min_qscore 10 \
+    # --chunk_size 1000 --num_callers "$THREADS" --gpu_runners_per_device 1 --disable_pings
 
-    guppy_basecaller -r -x auto --verbose_logs -c "$CONFIG" -i "$RAWDIR" -s "$BASECALLDIR" \
-    -q 1 --min_qscore 10 --chunk_size 1000 --num_callers "$THREADS" --gpu_runners_per_device 1
+    # guppy_barcoder -r --require_barcodes_both_ends --trim_barcodes -t "$THREADS" \
+    # -i "$BASECALLDIR" -s "$DEMUXDIR" --arrangements_files "$ARRANGEMENTS" \
+    # --num_extra_bases_trim "$TRIMADAPTER" -x auto
+
+    # source activate ont_qc
+
+    # pycoQC -q -f "$BASECALLDIR"/sequencing_summary.txt -b "$DEMUXDIR"/barcoding_summary.txt -o "$RAWDIR"/"$RUNNAME"_qc.html --report_title "$RUNNAME"
+
+    # for i in $(find "$DEMUXDIR" -mindepth 1 -type d -name "barcode*" -exec basename {} \; | sort); do
+        # [ -d "$DEMUXDIR"/"$i" ] && cat "$DEMUXDIR"/"$i"/*.fastq > "$DEMUXCATDIR"/"$i".fastq
+    # done
+
+    source activate ont_metagenomic
+
+    # for i in $(find "$DEMUXCATDIR" -type f -name "*.fastq" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
+        # minimap2 -ax map-ont -t "$THREADS" "$HUMANREFSEQ" "$DEMUXCATDIR"/"$i".fastq | samtools sort -@ "$THREADS" -o "$READLEVELDIR"/"$i".sorted.bam -
+        # samtools index -@ "$THREADS" "$READLEVELDIR"/"$i".sorted.bam
+        # samtools view -@ "$THREADS" -bS -f 4 "$READLEVELDIR"/"$i".sorted.bam > "$READLEVELDIR"/"$i".sorted.filtered.sam
+        # samtools fastq -@ "$THREADS" -f 4 "$READLEVELDIR"/"$i".sorted.filtered.sam > "$READLEVELDIR"/"$i".sorted.filtered.fastq
+        # minimap2 -ax ava-ont -t "$THREADS" "$READLEVELDIR"/"$i".sorted.filtered.fastq "$READLEVELDIR"/"$i".sorted.filtered.fastq > "$READLEVELDIR"/"$i".sorted.filtered.overlap.sam
+        # racon -t "$THREADS" -f -u "$READLEVELDIR"/"$i".sorted.filtered.fastq "$READLEVELDIR"/"$i".sorted.filtered.overlap.sam "$READLEVELDIR"/"$i".sorted.filtered.fastq > "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta
+    # done
+
+    for i in $(find "$READLEVELDIR" -type f -name "*.fasta" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
+        kraken2 --db "$KRAKENDB" --threads "$THREADS" --report "$READLEVELDIR"/"$i"_report.txt --report-minimizer-data --output "$READLEVELDIR"/"$i"_output.txt "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta
+    done
 
     end=$(date +%s.%N)
 
@@ -94,33 +153,6 @@ bg() {
 }
 
 bg &>>metagenomic_ont_v4_log.txt &
-
-
-    # guppy_barcoder -r -i ${BASECALLDIR} -s ${DEMUXDIR} --arrangements_files ${ARRANGEMENTS} --require_barcodes_both_ends --trim_barcodes --num_extra_bases_trim ${TRIMADAPTER} -t ${THREADS} -x auto
-
-    # source activate pycoqc
-
-    # pycoQC -q -f ${BASECALLDIR}/sequencing_summary.txt -b ${DEMUXDIR}/barcoding_summary.txt -o ${RAWDIR}/${RUNNAME}_qc.html --report_title ${RUNNAME}
-
-
-# for i in $(find ${DEMUXDIR} -mindepth 1 -type d -name "barcode*" -exec basename {} \; | sort); do
-    # [ -d "${DEMUXDIR}/${i}" ] && cat ${DEMUXDIR}/${i}/*.fastq > ${DEMUXCATDIR}/${i}.fastq
-# done
-
-# for i in $(find ${DEMUXCATDIR} -type f -name "*.fastq" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-    # source activate minimap2
-    # minimap2 -ax map-ont -t ${THREADS} ${HUMANREFSEQ} ${DEMUXCATDIR}/${i}.fastq | samtools sort -@ 12 -o ${READLEVELDIR}/${i}.sorted.bam -
-    # samtools index -@ ${THREADS} ${READLEVELDIR}/${i}.sorted.bam
-    # samtools view -bS -f 4 ${READLEVELDIR}/${i}.sorted.bam > ${READLEVELDIR}/${i}.unmapped.sam -@ 12
-    # samtools fastq -f 4 ${READLEVELDIR}/${i}.unmapped.sam > ${READLEVELDIR}/${i}.unmapped.fastq -@ 12
-    # minimap2 -ax ava-ont -t ${THREADS} ${READLEVELDIR}/${i}.unmapped.fastq ${READLEVELDIR}/${i}.unmapped.fastq > ${READLEVELDIR}/${i}.overlap.sam
-    # source activate racon
-    # racon -t ${THREADS} -f -u ${READLEVELDIR}/${i}.unmapped.fastq ${READLEVELDIR}/${i}.overlap.sam ${READLEVELDIR}/${i}.unmapped.fastq > ${READLEVELDIR}/${i}.corrected.fasta
-# done
-
-# for i in $(find ${READLEVELDIR} -type f -name "*.fasta" | while read o; do basename $o | cut -d. -f1; done | sort | uniq); do
-	# kraken2 --db ${KRAKENDB} --threads ${THREADS} --report ${READLEVELDIR}/${i}_report.txt --report-minimizer-data --output ${READLEVELDIR}/${i}_output.txt ${READLEVELDIR}/${i}.corrected.fasta
-# done
 
 # CHIKVREFSEQ=""
 # DENV1REFSEQ=""

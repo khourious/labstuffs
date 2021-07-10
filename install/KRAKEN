@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [[ -z "$(which kraken2)" ]]; then
+    version=2.1.2
+    cd
+    wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
+    tar -vzxf v$version.tar.gz
+    rm -rf v$version.tar.gz
+    cd kraken2-$version
+    ./install_kraken2.sh $HOME/kraken2-$version
+    [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
+    cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
+else
+    kraken2 --help
+fi
+
+# viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20210517.tar.gz
+# tar -vzxf k2_viral_20210517.tar.gz
+
+# archaea, human, plasmid, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_minusb_20210517.tar.gz
+# tar -vzxf k2_minusb_20210517.tar.gz
+
+# archaea, bacteria, human, plasmid, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_8gb_20210517.tar.gz
+# tar -vzxf k2_standard_8gb_20210517.tar.gz
+
+# archaea, bacteria, fungi, human, plasmid, protozoa, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_8gb_20210517.tar.gz
+# tar -vzxf k2_pluspf_8gb_20210517.tar.gz
+
+# archaea, bacteria, fungi, human, plant, plasmid, protozoa, UniVec_Core, viral
+# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_8gb_20210517.tar.gz
+# tar -vzxf k2_pluspfp_8gb_20210517.tar.gz
