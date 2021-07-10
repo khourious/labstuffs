@@ -16,11 +16,11 @@ bg() {
 
     mkdir "$RAWDIR"/ANALYSIS "$RAWDIR"/ANALYSIS/ALIGN "$RAWDIR"/ANALYSIS/INDEX "$RAWDIR"/ANALYSIS/QC_RUN{1..5} "$RAWDIR"/ANALYSIS/QC_RUNS_MERGED "$RAWDIR"/ANALYSIS/REFERENCE "$RAWDIR"/ANALYSIS/RUN{1..5} "$RAWDIR"/ANALYSIS/RUNS_MERGED "$RAWDIR"/ANALYSIS/TRIMMED
 
-    find "$RAWRUNDIR1" -type f -name '*.fastq.gz' -exec cp -at "$RAWDIR"/ANALYSIS/RUN1 {} +
-    find "$RAWRUNDIR2" -type f -name '*.fastq.gz' -exec cp -at "$RAWDIR"/ANALYSIS/RUN2 {} +
-    find "$RAWRUNDIR3" -type f -name '*.fastq.gz' -exec cp -at "$RAWDIR"/ANALYSIS/RUN3 {} +
-    find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -at "$RAWDIR"/ANALYSIS/RUN4 {} +
-    find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -at "$RAWDIR"/ANALYSIS/RUN5 {} +
+    find "$RAWRUNDIR1" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN1 {} +
+    find "$RAWRUNDIR2" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN2 {} +
+    find "$RAWRUNDIR3" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN3 {} +
+    find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN4 {} +
+    find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -vat "$RAWDIR"/ANALYSIS/RUN5 {} +
 
     for i in $(find "$RAWDIR"/ANALYSIS -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | while read o; do basename $o; done); do
         fastqc -t "$THREADS" "$RAWDIR"/ANALYSIS/"$i"/*.fastq.gz -o "$RAWDIR"/ANALYSIS/QC_"$i"
