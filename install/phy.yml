@@ -3,7 +3,6 @@
 
 name: phy
 channels:
-conda-forge
   - conda-forge
   - bioconda
   - defaults
@@ -12,3 +11,4 @@ dependencies:
   - iqtree
   - mafft
   - seqkit
+  - treetime
