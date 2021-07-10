@@ -28,61 +28,58 @@ KRAKEN2DB=/mnt/x/kraken2db/k2_standard_8gb_20201202
 
 MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
 
-# install GUPPY
-if [[ -z "$(which guppy_basecaller)" ]]; then
-    version=5.0.11
-    cd
-    curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$version"_linux64.tar.gz -o ont-guppy.tar.gz
-    tar -vzxf ont-guppy.tar.gz
-    rm -rf ont-guppy.tar.gz
-    echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH
-else
-    guppy_basecaller --version
-fi
+# if [[ -z "$(which guppy_basecaller)" ]]; then
+    # version=5.0.11
+    # cd
+    # curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$version"_linux64.tar.gz -o ont-guppy.tar.gz
+    # tar -vzxf ont-guppy.tar.gz
+    # rm -rf ont-guppy.tar.gz
+    # echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    # export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH
+# else
+    # guppy_basecaller --version
+# fi
 
-# install CONDA and create metagenomic environments
-if [[ -z "$(which conda)" ]]; then
-    cd
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-    rm Miniconda3-latest-Linux-x86_64.sh
-    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-    conda install -y -c conda-forge mamba
-    mamba update -y -n base conda
-    mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
-    mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-    mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-else
-    if [[ -z "$(which mamba)" ]]; then
-        conda install -y -c conda-forge mamba
-        mamba update -y -n base conda
-        mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
-        mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-    else
-        mamba update -y -n base conda
-        mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
-        mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-    fi
-fi
+# if [[ -z "$(which conda)" ]]; then
+    # cd
+    # wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    # bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+    # rm Miniconda3-latest-Linux-x86_64.sh
+    # echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    # export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    # conda install -y -c conda-forge mamba
+    # mamba update -y -n base conda
+    # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+    # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+    # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+# else
+    # if [[ -z "$(which mamba)" ]]; then
+        # conda install -y -c conda-forge mamba
+        # mamba update -y -n base conda
+        # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+        # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+        # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+    # else
+        # mamba update -y -n base conda
+        # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults minimap2 nanopolish racon samtools
+        # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+        # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+    # fi
+# fi
 
-install kraken2
-if [[ -z "$(which kraken2)" ]]; then
-    version=2.1.2
-    cd
-    wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
-    tar -vzxf v$version.tar.gz
-    rm -rf v$version.tar.gz
-    cd kraken2-$version
-    ./install_kraken2.sh $HOME/kraken2-$version
-    [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
-    cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
-else
-    kraken2 --help
-fi
+# if [[ -z "$(which kraken2)" ]]; then
+    # version=2.1.2
+    # cd
+    # wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
+    # tar -vzxf v$version.tar.gz
+    # rm -rf v$version.tar.gz
+    # cd kraken2-$version
+    # ./install_kraken2.sh $HOME/kraken2-$version
+    # [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
+    # cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
+# else
+    # kraken2 --help
+# fi
 
 bg() {
 
