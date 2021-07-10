@@ -3,7 +3,6 @@
 
 name: plot
 channels:
-conda-forge
   - conda-forge
   - bioconda
   - defaults
