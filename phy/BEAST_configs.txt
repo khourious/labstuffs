@@ -153,5 +153,4 @@ procurar: <parameter id="skygrid.cutOff" value=0"
 determinar o cut-off de acordo com o último change point
 .skygrid.r1
 
-
 .exponentialGrowth.r1
