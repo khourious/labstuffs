@@ -6,6 +6,22 @@ RAWDIR=/mnt/c/Dropbox/kalabric/NGS_LIBRARY01_20210408
 # Set the path of kraken2 database
 KRAKEN2DB=/mnt/x/kraken2db/minikraken2_v2_8GB_201904_UPDATE
 
+# Set the path of reference sequences
+REFSEQS=/mnt/x/kalabric/REFSEQS
+
+[ ! -d "$REFSEQS" ] && mkdir -p "$REFSEQS"
+
+wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$REFSEQS"/GRCh38.p13.genome.fa.gz
+
+source activate ont_metagenomic
+
+esearch -db nucleotide -query "NC_004162.2" | efetch -format fasta > "$REFSEQS"/CHIKV_NC_004162.2.fa
+esearch -db nucleotide -query "NC_001477.1" | efetch -format fasta > "$REFSEQS"/DENV1_NC_001477.1.fa
+esearch -db nucleotide -query "NC_001474.2" | efetch -format fasta > "$REFSEQS"/DENV2_NC_001474.2.fa
+esearch -db nucleotide -query "NC_001475.2" | efetch -format fasta > "$REFSEQS"/DENV3_NC_001475.2.fa
+esearch -db nucleotide -query "NC_002640.1" | efetch -format fasta > "$REFSEQS"/DENV4_NC_002640.1.fa
+esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > "$REFSEQS"/ZIKV_NC_035889.1.fa
+
 # kraken2 db: viral
 # wget https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20210517.tar.gz
 # tar -vzxf k2_viral_20210517.tar.gz
@@ -96,15 +112,13 @@ bg() {
 
     start=$(date +%s.%N)
 
+    [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
+    [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
+    [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
+
     THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
-    CONFIG=dna_r9.4.1_450bps_sup.cfg #dna_r9.4.1_450bps_hac.cfg
-    ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg"
-
-    TRIMADAPTER=18
-
     RUNNAME=$(basename "$RAWDIR")
-    REFSEQS="$RAWDIR"/REFSEQS
     BASECALLDIR="$RAWDIR"/BASECALL
     DEMUXDIR="$RAWDIR"/DEMUX
     DEMUXCATDIR="$RAWDIR"/DEMUX_CAT
@@ -120,10 +134,9 @@ bg() {
     DENV4REFSEQ="$RAWDIR"/REFSEQS/DENV4_NC_001475.2.fa
     ZIKVREFSEQ="$RAWDIR"/REFSEQS/ZIKV_NC_035889.1.fa
 
-    [ ! -d "$REFSEQS" ] && mkdir -vp "$REFSEQS"
-    [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
-    [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
-    [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
+    CONFIG=dna_r9.4.1_450bps_sup.cfg #dna_r9.4.1_450bps_hac.cfg
+    ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg"
+    TRIMADAPTER=18
 
     guppy_basecaller -r -x auto --verbose_logs -c "$CONFIG" -i "$RAWDIR" -s "$BASECALLDIR" -q 1 --min_qscore 10 \
     --chunk_size 1000 --num_callers "$THREADS" --gpu_runners_per_device 1 --disable_pings
@@ -142,9 +155,6 @@ bg() {
 
     source activate ont_metagenomic
 
-    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q \
-    -O "$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
-
     for i in $(find "$DEMUXCATDIR" -type f -name "*.fastq" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
         minimap2 -ax map-ont -t "$THREADS" "$HUMANREFSEQ" "$DEMUXCATDIR"/"$i".fastq | samtools sort -@ "$THREADS" -o "$READLEVELDIR"/"$i".sorted.bam -
         samtools index -@ "$THREADS" "$READLEVELDIR"/"$i".sorted.bam
@@ -153,13 +163,6 @@ bg() {
         minimap2 -ax ava-ont -t "$THREADS" "$READLEVELDIR"/"$i".sorted.filtered.fastq "$READLEVELDIR"/"$i".sorted.filtered.fastq > "$READLEVELDIR"/"$i".sorted.filtered.overlap.sam
         racon -t "$THREADS" -f -u "$READLEVELDIR"/"$i".sorted.filtered.fastq "$READLEVELDIR"/"$i".sorted.filtered.overlap.sam "$READLEVELDIR"/"$i".sorted.filtered.fastq > "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta
     done
-
-    esearch -db nucleotide -query "NC_004162.2" | efetch -format fasta > "$RAWDIR"/REFSEQS/CHIKV_NC_004162.2.fa
-    esearch -db nucleotide -query "NC_001477.1" | efetch -format fasta > "$RAWDIR"/REFSEQS/DENV1_NC_001477.1.fa
-    esearch -db nucleotide -query "NC_001474.2" | efetch -format fasta > "$RAWDIR"/REFSEQS/DENV2_NC_001474.2.fa
-    esearch -db nucleotide -query "NC_001475.2" | efetch -format fasta > "$RAWDIR"/REFSEQS/DENV3_NC_001475.2.fa
-    esearch -db nucleotide -query "NC_002640.1" | efetch -format fasta > "$RAWDIR"/REFSEQS/DENV4_NC_002640.1.fa
-    esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > "$RAWDIR"/REFSEQS/ZIKV_NC_035889.1.fa
 
     for i in $(find "$READLEVELDIR" -type f -name "*.fasta" -exec basename {} \; | awk -F. '{print $1}' | sort -u); do
         kraken2 --db "$KRAKEN2DB" --threads "$THREADS" --report "$READLEVELDIR"/"$i"_report.txt --report-minimizer-data --output "$READLEVELDIR"/"$i"_output.txt "$READLEVELDIR"/"$i".sorted.filtered.corrected.fasta
