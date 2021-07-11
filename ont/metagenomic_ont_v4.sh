@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the path of RAW fast5 files
-RAWDIR=/mnt/c/Dropbox/kalabric/NGS_LIBRARY01_20210408
+RAWDIR=/mnt/x/kalabric/NGS_LIBRARY02_20210521
 
 # Set the path of kraken2 database
 KRAKEN2DB=/mnt/x/kraken2db/minikraken2_v2_8GB_201904_UPDATE
