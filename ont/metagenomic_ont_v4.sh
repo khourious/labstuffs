@@ -11,16 +11,16 @@ REFSEQS=/mnt/x/kalabric/REFSEQS
 
 [ ! -d "$REFSEQS" ] && mkdir -p "$REFSEQS"
 
-wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$REFSEQS"/GRCh38.p13.genome.fa.gz
+# wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$REFSEQS"/GRCh38.p13.genome.fa.gz
 
-source activate ont_metagenomic
+# source activate ont_metagenomic
 
-esearch -db nucleotide -query "NC_004162.2" | efetch -format fasta > "$REFSEQS"/CHIKV_NC_004162.2.fa
-esearch -db nucleotide -query "NC_001477.1" | efetch -format fasta > "$REFSEQS"/DENV1_NC_001477.1.fa
-esearch -db nucleotide -query "NC_001474.2" | efetch -format fasta > "$REFSEQS"/DENV2_NC_001474.2.fa
-esearch -db nucleotide -query "NC_001475.2" | efetch -format fasta > "$REFSEQS"/DENV3_NC_001475.2.fa
-esearch -db nucleotide -query "NC_002640.1" | efetch -format fasta > "$REFSEQS"/DENV4_NC_002640.1.fa
-esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > "$REFSEQS"/ZIKV_NC_035889.1.fa
+# esearch -db nucleotide -query "NC_004162.2" | efetch -format fasta > "$REFSEQS"/CHIKV_NC_004162.2.fa
+# esearch -db nucleotide -query "NC_001477.1" | efetch -format fasta > "$REFSEQS"/DENV1_NC_001477.1.fa
+# esearch -db nucleotide -query "NC_001474.2" | efetch -format fasta > "$REFSEQS"/DENV2_NC_001474.2.fa
+# esearch -db nucleotide -query "NC_001475.2" | efetch -format fasta > "$REFSEQS"/DENV3_NC_001475.2.fa
+# esearch -db nucleotide -query "NC_002640.1" | efetch -format fasta > "$REFSEQS"/DENV4_NC_002640.1.fa
+# esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > "$REFSEQS"/ZIKV_NC_035889.1.fa
 
 # kraken2 db: viral
 # wget https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20210517.tar.gz
@@ -112,10 +112,6 @@ bg() {
 
     start=$(date +%s.%N)
 
-    [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
-    [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
-    [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
-
     THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
     RUNNAME=$(basename "$RAWDIR")
@@ -125,6 +121,10 @@ bg() {
     READLEVELDIR="$RAWDIR"/LEVEL_READS
     CONTIGLEVELDIR="$RAWDIR"/LEVEL_CONTIGS
     ASSEMBLYDIR="$RAWDIR"/ASSEMBLY
+
+    [ ! -d "$DEMUXCATDIR" ] && mkdir -vp "$DEMUXCATDIR"
+    [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
+    [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
 
     HUMANREFSEQ="$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
     CHIKVREFSEQ="$RAWDIR"/REFSEQS/CHIKV_NC_004162.2.fa
