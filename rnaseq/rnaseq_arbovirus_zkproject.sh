@@ -1,26 +1,35 @@
 #!/bin/bash
 
-# if [[ -z "$(which conda)" ]]; then
-    # cd
-    # wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    # bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-    # rm Miniconda3-latest-Linux-x86_64.sh
-    # MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
-    # echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    # export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-    # conda install -y -c conda-forge mamba
-    # mamba update -y -n base conda
-    # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-# else
-    # if [[ -z "$(which mamba)" ]]; then
-        # conda install -y -c conda-forge mamba
-        # mamba update -y -n base conda
-        # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-    # else
-        # mamba update -y -n base conda
-        # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-    # fi
-# fi
+if [[ -z "$(which conda)" ]]; then
+    cd
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+    rm Miniconda3-latest-Linux-x86_64.sh
+    MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    conda install -y -c conda-forge mamba
+    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+    mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+else
+    if [[ -z "$(which mamba)" ]]; then
+        conda install -y -c conda-forge mamba
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+            mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        else
+            mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        fi
+    else
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+            mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        else
+            mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        fi
+    fi
+fi
+
 
 bg() {
 
@@ -71,12 +80,19 @@ bg() {
 
     for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
         fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*RUN* -o "$ANALYSIS"/QC_"$i"
-        multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_MERGED_LANES_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
+        multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
     done
 
     mv "$ANALYSIS"/RUN{1..5}/* "$ANALYSIS"/RUNS_MERGED
 
     rm -rf "$ANALYSIS"/RUN{1..5}
+
+
+
+
+
+
+
 
     # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
         # cat "$ANALYSIS"/RUNS_MERGED/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
