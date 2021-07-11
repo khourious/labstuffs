@@ -126,6 +126,8 @@ bg() {
     [ ! -d "$READLEVELDIR" ] && mkdir -vp "$READLEVELDIR"
     [ ! -d "$ASSEMBLYDIR" ] && mkdir -vp "$ASSEMBLYDIR"
 
+    echo ""
+
     HUMANREFSEQ="$RAWDIR"/REFSEQS/GRCh38.p13.genome.fa.gz
     CHIKVREFSEQ="$RAWDIR"/REFSEQS/CHIKV_NC_004162.2.fa
     DENV1REFSEQ="$RAWDIR"/REFSEQS/DENV1_NC_001477.1.fa
