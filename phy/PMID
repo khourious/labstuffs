@@ -5,8 +5,8 @@
 #########
 
 if [ $# -ne 3 ]; then
-	echo "Usage $0 <genbank file> <accNrs list> <base name outfile>"
-	exit 1
+    echo "Usage $0 <genbank file> <accNrs list> <base name outfile>"
+    exit 1
 fi
 
 echo "Be patient ... "
@@ -16,6 +16,7 @@ accNrlist=$2
 outFile1=accNr_PMID.txt
 outFile2="$3"_PMID.txt
 outFile3="$3"_PMID_list.txt
+
 #avoid unknowingly appending:
 if [ -f "$outFile1" ]; then rm "$outFile1"; fi
 if [ -f "$outFile2" ]; then rm "$outFile2"; fi
@@ -23,8 +24,8 @@ if [ -f "$outFile3" ]; then rm "$outFile3"; fi
 
 #step 1: collect all information
 grep -e 'ACCESSION' -e 'PUBMED' $GENBANK | tr -d '\n' \
-		| sed -e 's/ACCESSION\s*/\n/g' \
-		| sed -e 's/PUBMED\s*//g' > $outFile1
+        | sed -e 's/ACCESSION\s*/\n/g' \
+        | sed -e 's/PUBMED\s*//g' > $outFile1
 #now get everything on 1 line per accession number:
 perl -pi -e 's/n\s+([A-Z])/\n$1/g' $outFile1
 grep '.*' "$outFile1" | sort | uniq > tempX.txt
@@ -32,8 +33,8 @@ mv tempX.txt "$outFile1"
 
 #step 2: collect the required accession numbers
 for ACCNR in `grep '.*' $accNrlist`; do
-#	#echo $ACCNR
-	grep "$ACCNR" $outFile1 >> $outFile2
+    #echo $ACCNR
+    grep "$ACCNR" $outFile1 >> $outFile2
 done
 
 #step 3: replace multiple spaces by one tab
