@@ -1,26 +1,26 @@
 #!/bin/bash
 
-if [[ -z "$(which conda)" ]]; then
-    cd
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-    rm Miniconda3-latest-Linux-x86_64.sh
-    MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
-    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-    conda install -y -c conda-forge mamba
-    mamba update -y -n base conda
-    mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-else
-    if [[ -z "$(which mamba)" ]]; then
-        conda install -y -c conda-forge mamba
-        mamba update -y -n base conda
-        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-    else
-        mamba update -y -n base conda
-        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-    fi
-fi
+# if [[ -z "$(which conda)" ]]; then
+    # cd
+    # wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    # bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+    # rm Miniconda3-latest-Linux-x86_64.sh
+    # MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+    # echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    # export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    # conda install -y -c conda-forge mamba
+    # mamba update -y -n base conda
+    # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+# else
+    # if [[ -z "$(which mamba)" ]]; then
+        # conda install -y -c conda-forge mamba
+        # mamba update -y -n base conda
+        # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+    # else
+        # mamba update -y -n base conda
+        # mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+    # fi
+# fi
 
 bg() {
 
@@ -49,53 +49,44 @@ bg() {
     # find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN4 {} +
     # find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN5 {} +
 
-    for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | while read o; do basename $o; done); do
-        fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
-        multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*
+    # for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
+        # fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
+        # multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*
+    # done
+
+    # for i in $(find "$ANALYSIS"/RUN{1..5} -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        # cat "$ANALYSIS"/RUN1/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN1/"$i"_RUN1_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN1/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN1/"$i"_RUN1_R2.fastq.gz
+        # cat "$ANALYSIS"/RUN2/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN2/"$i"_RUN2_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN2/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN2/"$i"_RUN2_R2.fastq.gz
+        # cat "$ANALYSIS"/RUN3/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN3/"$i"_RUN3_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN3/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN3/"$i"_RUN3_R2.fastq.gz
+        # cat "$ANALYSIS"/RUN4/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN4/"$i"_RUN4_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN4/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN4/"$i"_RUN4_R2.fastq.gz
+        # cat "$ANALYSIS"/RUN5/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN5/"$i"_RUN5_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN5/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN5/"$i"_RUN5_R2.fastq.gz
+    # done
+
+    rm -rf "$ANALYSIS"/RUN{1..5}/*_001.fastq.gz
+
+    for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
+        fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*RUN* -o "$ANALYSIS"/QC_"$i"
+        multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_MERGED_LANES_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
     done
 
-    # for i in $(find "$ANALYSIS"/RUN{1..5} -type f -name "*.fastq.gz" | awk -F/ '{print $2}' | awk -F_ '{print $1"_"$2}' | sort -u); do
-        # cat "$ANALYSIS"/RUN1/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN1/"$i"_RUN1_R1.fastq.gz
-        # cat "$ANALYSIS"/RUN1/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN1/"$i"_RUN2_R1.fastq.gz
+    mv "$ANALYSIS"/RUN{1..5}/* "$ANALYSIS"/RUNS_MERGED
+
+    rm -rf "$ANALYSIS"/RUN{1..5}
+
+    # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        # cat "$ANALYSIS"/RUNS_MERGED/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
+        # cat "$ANALYSIS"/RUNS_MERGED/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
     # done
 
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUN2 -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
-        # cat "$RAWDIR"/ANALYSIS/RUN2/"$i"_L00*_R1_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN2/"$i"_RUN2_R1.fastq.gz
-        # cat "$RAWDIR"/ANALYSIS/RUN2/"$i"_L00*_R2_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN2/"$i"_RUN2_R2.fastq.gz
-    # done
+    # rm -rf "$ANALYSIS"/RUNS_MERGED/*RUN*
 
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUN3 -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
-        # cat "$RAWDIR"/ANALYSIS/RUN3/"$i"_L00*_R1_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN3/"$i"_RUN3_R1.fastq.gz
-        # cat "$RAWDIR"/ANALYSIS/RUN3/"$i"_L00*_R2_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN3/"$i"_RUN3_R2.fastq.gz
-    # done
 
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUN4 -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
-        # cat "$RAWDIR"/ANALYSIS/RUN4/"$i"_L00*_R1_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN4/"$i"_RUN4_R1.fastq.gz
-        # cat "$RAWDIR"/ANALYSIS/RUN4/"$i"_L00*_R2_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN4/"$i"_RUN4_R2.fastq.gz
-    # done
 
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUN5 -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
-        # cat "$RAWDIR"/ANALYSIS/RUN5/"$i"_L00*_R1_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN5/"$i"_RUN5_R1.fastq.gz
-        # cat "$RAWDIR"/ANALYSIS/RUN5/"$i"_L00*_R2_001.fastq.gz > "$RAWDIR"/ANALYSIS/RUN5/"$i"_RUN5_R2.fastq.gz
-    # done
-
-    # rm -rf "$RAWDIR"/ANALYSIS/RUN{1..5}/*_001.fastq.gz
-
-    # for i in $(find "$RAWDIR"/ANALYSIS -maxdepth 1 -mindepth 1 -type d -name "RUN*" | while read o; do basename $o; done); do
-        # fastqc -t "$THREADS" "$RAWDIR"/ANALYSIS/"$i"/*RUN* -o "$RAWDIR"/ANALYSIS/QC_"$i"
-        # multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$RAWDIR"/ANALYSIS/"$i"_lanes_MERGED_multiqc_report "$RAWDIR"/ANALYSIS/QC_"$i"/*RUN*
-    # done
-
-    # mv "$RAWDIR"/ANALYSIS/RUN{1..5}/* "$RAWDIR"/ANALYSIS/RUNS_MERGED
-
-    # rm -rf "$RAWDIR"/ANALYSIS/RUN{1..5}
-
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUNS_MERGED -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1,2; done | sort | uniq); do
-        # cat "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_RUN*_R1.fastq.gz > "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
-        # cat "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_RUN*_R2.fastq.gz > "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
-    # done
-
-    # rm -rf "$RAWDIR"/ANALYSIS/RUNS_MERGED/*RUN*
 
     # for i in $(find "$RAWDIR"/ANALYSIS -maxdepth 1 -mindepth 1 -type d -name "RUNS_MERGED" | while read o; do basename $o; done); do
         # fastqc -t "$THREADS" "$RAWDIR"/ANALYSIS/"$i"/*.fastq.gz -o "$RAWDIR"/ANALYSIS/QC_"$i"
