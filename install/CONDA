@@ -9,12 +9,12 @@ if [[ -z "$(which conda)" ]]; then
     echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
     export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
     conda install -y -c conda-forge mamba
-    mamba update -y -n base conda
+    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
-        mamba update -y -n base conda
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
     else
-        mamba update -y -n base conda
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
     fi
 fi
