@@ -22,91 +22,84 @@ REFSEQS=/mnt/x/kalabric/REFSEQS
 # esearch -db nucleotide -query "NC_002640.1" | efetch -format fasta > "$REFSEQS"/DENV4_NC_002640.1.fa
 # esearch -db nucleotide -query "NC_035889.1" | efetch -format fasta > "$REFSEQS"/ZIKV_NC_035889.1.fa
 
-# kraken2 db: viral
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_viral_20210517.tar.gz
-# tar -vzxf k2_viral_20210517.tar.gz
-
-# kraken2 db: archaea, human, plasmid, UniVec_Core, viral
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_minusb_20210517.tar.gz
-# tar -vzxf k2_minusb_20210517.tar.gz
-
-# kraken2 db: archaea, bacteria, human, plasmid, UniVec_Core, viral
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_8gb_20210517.tar.gz
-# tar -vzxf k2_standard_8gb_20210517.tar.gz
-
-# kraken2 db: archaea, bacteria, fungi, human, plasmid, protozoa, UniVec_Core, viral
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspf_8gb_20210517.tar.gz
-# tar -vzxf k2_pluspf_8gb_20210517.tar.gz
-
-# kraken2 db: archaea, bacteria, fungi, human, plant, plasmid, protozoa, UniVec_Core, viral
-# wget https://genome-idx.s3.amazonaws.com/kraken/k2_pluspfp_8gb_20210517.tar.gz
-# tar -vzxf k2_pluspfp_8gb_20210517.tar.gz
-
 MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
 
-# if [[ -z "$(which guppy_basecaller)" ]]; then
-    # version=5.0.11
-    # cd
-    # curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$version"_linux64.tar.gz -o ont-guppy.tar.gz
-    # tar -vzxf ont-guppy.tar.gz
-    # rm -rf ont-guppy.tar.gz
-    # echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    # export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH
-# else
-    # guppy_basecaller --version
-# fi
+if [[ -z "$(which guppy_basecaller)" ]]; then
+    version=5.0.11
+    cd
+    curl https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_"$version"_linux64.tar.gz -o ont-guppy.tar.gz
+    tar -vzxf ont-guppy.tar.gz
+    rm -rf ont-guppy.tar.gz
+    echo 'export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    export PATH=$HOME/ont-guppy/bin:/usr/local/share/rsi/idl/bin:$PATH
+else
+    guppy_basecaller --version
+fi
 
-# if [[ -z "$(which conda)" ]]; then
-    # cd
-    # wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    # bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-    # rm Miniconda3-latest-Linux-x86_64.sh
-    # echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    # export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-    # conda install -y -c conda-forge mamba
-    # mamba update -y -n base conda
-    # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
-    # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-    # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-# else
-    # if [[ -z "$(which mamba)" ]]; then
-        # conda install -y -c conda-forge mamba
-        # mamba update -y -n base conda
-        # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
-        # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-    # else
-        # mamba update -y -n base conda
-        # mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
-        # mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
-        # mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
-    # fi
-# fi
+if [[ -z "$(which conda)" ]]; then
+    cd
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+    rm Miniconda3-latest-Linux-x86_64.sh
+    MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    conda install -y -c conda-forge mamba
+    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+    mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
+    mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+    mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+else
+    if [[ -z "$(which mamba)" ]]; then
+        conda install -y -c conda-forge mamba
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+            mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
+            mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+            mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+        else
+            mamba update -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults --all
+            mamba update -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults --all
+            mamba update -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults --all
+        fi
+    else
+        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+            mamba create -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults entrez-direct ivar minimap2 nanopolish racon samtools
+            mamba create -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults python=3.6 pycoqc
+            mamba create -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults pysam numpy pandas seaborn
+        else
+            mamba update -y -n ont_metagenomic -c conda-forge -c anaconda -c bioconda -c defaults --all
+            mamba update -y -n ont_qc -c aleg -c conda-forge -c anaconda -c bioconda -c defaults --all
+            mamba update -y -n plot -c conda-forge -c anaconda -c bioconda -c defaults --all
+        fi
+    fi
+fi
 
-# if [[ -z "$(which kraken2)" ]]; then
-    # version=2.1.2
-    # cd
-    # wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
-    # tar -vzxf v$version.tar.gz
-    # rm -rf v$version.tar.gz
-    # cd kraken2-$version
-    # ./install_kraken2.sh $HOME/kraken2-$version
-    # [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
-    # cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
-# else
-    # kraken2 --help
-# fi
+if [[ -z "$(which kraken2)" ]]; then
+    version=2.1.2
+    cd
+    wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
+    tar -vzxf v$version.tar.gz
+    rm -rf v$version.tar.gz
+    cd kraken2-$version
+    ./install_kraken2.sh $HOME/kraken2-$version
+    [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
+    cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
+else
+    kraken2 --help
+fi
 
-# if [[ -z "$(which fastcov.py)" ]]; then
-    # cd
-    # git clone https://github.com/RaverJay/fastcov
-    # cd fastcov
-    # echo 'export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    # export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH
-# else
-    # source activate plot
-    # fastcov.py --help
-# fi
+if [[ -z "$(which fastcov.py)" ]]; then
+    cd
+    git clone https://github.com/RaverJay/fastcov
+    cd fastcov
+    echo 'export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+    export PATH=$HOME/fastcov:/usr/local/share/rsi/idl/bin:$PATH
+else
+    source activate plot
+    fastcov.py --help
+fi
 
 bg() {
 
