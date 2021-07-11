@@ -16,7 +16,7 @@ else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+        if [[ -z "$(conda env list | grep "minimap2|nanopolish")" ]]; then
             mamba create -y -n minimap2 -c conda-forge -c anaconda -c bioconda -c defaults minimap2 samtools
             mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
         else
@@ -25,7 +25,7 @@ else
         fi
     else
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+        if [[ -z "$(conda env list | grep "minimap2|nanopolish")" ]]; then
             mamba create -y -n minimap2 -c conda-forge -c anaconda -c bioconda -c defaults minimap2 samtools
             mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
         else

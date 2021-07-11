@@ -19,7 +19,7 @@ else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+        if [[ -z "$(conda env list | grep "flye|medaka|nanopolish|racon|ragtag")" ]]; then
             mamba create -y -n flye -c conda-forge -c anaconda -c bioconda -c defaults
             mamba create -y -n medaka -c conda-forge -c anaconda -c bioconda -c defaults medaka bcftools minimap2 samtools
             mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
@@ -34,7 +34,7 @@ else
         fi
     else
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+        if [[ -z "$(conda env list | grep "flye|medaka|nanopolish|racon|ragtag")" ]]; then
             mamba create -y -n flye -c conda-forge -c anaconda -c bioconda -c defaults
             mamba create -y -n medaka -c conda-forge -c anaconda -c bioconda -c defaults medaka bcftools minimap2 samtools
             mamba create -y -n nanopolish -c conda-forge -c anaconda -c bioconda -c defaults nanopolish samtools
