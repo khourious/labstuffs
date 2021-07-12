@@ -83,17 +83,15 @@ bg() {
         # multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
     # done
 
-    for i in $(find "$ANALYSIS"/RUN1 -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
-        cat "$ANALYSIS"/RUN*/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
-        cat "$ANALYSIS"/RUN*/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
-    done
-
-    # rm -rf "$ANALYSIS"/RUN{1..5}
-
-    # for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUNS_MERGED" | awk -F/ '{print $NF}'); do
-        # fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
-        # multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" merged runs" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_runs_multiqc_report "$ANALYSIS"/QC_"$i"/*MERGED*
+    # for i in $(find "$ANALYSIS"/RUN1 -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        # cat "$ANALYSIS"/RUN*/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
+        # cat "$ANALYSIS"/RUN*/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
     # done
+
+    rm -rf "$ANALYSIS"/RUN{1..5}
+
+    fastqc -t "$THREADS" "$ANALYSIS"/RUNS_MERGED/*.fastq.gz -o "$ANALYSIS"/QC_RUNS_MERGED
+    multiqc -s -i "ArbovirusFiocruzBA-83677594 RUNS_MERGED" -ip --no-data-dir -n "$ANALYSIS"/RUNS_MERGED_multiqc_report "$ANALYSIS"/QC_RUNS_MERGED/*MERGED*
 
     # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
         # trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
