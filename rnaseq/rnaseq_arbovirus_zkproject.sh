@@ -76,53 +76,39 @@ bg() {
         # cat "$ANALYSIS"/RUN5/"$i"_L00*_R2_001.fastq.gz > "$ANALYSIS"/RUN5/"$i"_RUN5_R2.fastq.gz
     # done
 
-    rm -rf "$ANALYSIS"/RUN{1..5}/*_001.fastq.gz
+    # rm -rf "$ANALYSIS"/RUN{1..5}/*_001.fastq.gz
 
-    for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
-        fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*RUN* -o "$ANALYSIS"/QC_"$i"
-        multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
+    # for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
+        # fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*RUN* -o "$ANALYSIS"/QC_"$i"
+        # multiqc -s -i "$i" -b "ArbovirusFiocruzBA-83677594 "$i" merged lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*RUN*
+    # done
+
+    for i in $(find "$ANALYSIS"/RUN1 -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        cat "$ANALYSIS"/RUN*/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
+        cat "$ANALYSIS"/RUN*/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
     done
 
-    mv "$ANALYSIS"/RUN{1..5}/* "$ANALYSIS"/RUNS_MERGED
+    # rm -rf "$ANALYSIS"/RUN{1..5}
 
-    rm -rf "$ANALYSIS"/RUN{1..5}
-
-
-
-
-
-
-
+    # for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUNS_MERGED" | awk -F/ '{print $NF}'); do
+        # fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
+        # multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" merged runs" -ip --no-data-dir -n "$ANALYSIS"/"$i"_merged_runs_multiqc_report "$ANALYSIS"/QC_"$i"/*MERGED*
+    # done
 
     # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
-        # cat "$ANALYSIS"/RUNS_MERGED/"$i"_RUN*_R1.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz
-        # cat "$ANALYSIS"/RUNS_MERGED/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
+        # trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
     # done
 
-    # rm -rf "$ANALYSIS"/RUNS_MERGED/*RUN*
+    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
+    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
 
+    # gunzip "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
+    # gunzip "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
 
+    # STAR --runThreadN "$THREADS" --runMode genomeGenerate --genomeDir "$ANALYSIS"/INDEX --genomeFastaFiles "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa
 
-
-    # for i in $(find "$RAWDIR"/ANALYSIS -maxdepth 1 -mindepth 1 -type d -name "RUNS_MERGED" | while read o; do basename $o; done); do
-        # fastqc -t "$THREADS" "$RAWDIR"/ANALYSIS/"$i"/*.fastq.gz -o "$RAWDIR"/ANALYSIS/QC_"$i"
-        # multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i"" -ip --no-data-dir -n "$RAWDIR"/ANALYSIS/"$i"_multiqc_report "$RAWDIR"/ANALYSIS/QC_"$i"/*MERGED*
-    # done
-
-    # for i in $(find "$RAWDIR"/ANALYSIS/RUNS_MERGED -type f -name "*.fastq.gz" | while read o; do basename $o; done | cut -d_ -f1,2 | sort -u); do
-        # trimmomatic PE -threads "$THREADS" -phred33 "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$RAWDIR"/ANALYSIS/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
-    # done
-
-    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa.gz
-    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
-
-    # gunzip "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa.gz
-    # gunzip "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
-
-    # STAR --runThreadN "$THREADS" --runMode genomeGenerate --genomeDir "$RAWDIR"/ANALYSIS/INDEX --genomeFastaFiles "$RAWDIR"/ANALYSIS/REFERENCE/GRCh38.p13.genome.fa
-
-    # for i in $(find "$RAWDIR"/ANALYSIS/TRIMMED -type f -name "*.fastq.gz" | while read o; do basename $o; done | cut -d_ -f1,2 | sort -u); do
-        # STAR --runThreadN "$THREADS" --runMode alignReads --genomeDir "$RAWDIR"/ANALYSIS/INDEX --sjdbGTFfile "$RAWDIR"/ANALYSIS/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf --readFilesIn "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$RAWDIR"/ANALYSIS/TRIMMED/"$i"_R2_PAIRED.fastq.gz --readFilesCommand zcat --outFileNamePrefix "$RAWDIR"/ANALYSIS/ALIGN/"$i"_ --outSAMtype BAM Unsorted --outReadsUnmapped Fastx
+    # for i in $(find "$ANALYSIS"/TRIMMED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        # STAR --runThreadN "$THREADS" --runMode alignReads --genomeDir "$ANALYSIS"/INDEX --sjdbGTFfile "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf --readFilesIn "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz --readFilesCommand zcat --outFileNamePrefix "$ANALYSIS"/ALIGN/"$i"_ --outSAMtype BAM Unsorted --outReadsUnmapped Fastx
     # done
 
     end=$(date +%s.%N)
