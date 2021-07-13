@@ -1,35 +1,43 @@
 #!/bin/bash
 
-if [[ -z "$(which conda)" ]]; then
-    cd
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-    rm Miniconda3-latest-Linux-x86_64.sh
-    MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
-    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-    conda install -y -c conda-forge mamba
-    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-    mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-else
-    if [[ -z "$(which mamba)" ]]; then
+while getopts "c" opt; do
+        case $opt in
+                c ) CONDA=yes;;
+        esac
+done
+shift $((OPTIND -1))
+
+if [[ -n "$CONDA" ]]; then
+    if [[ -z "$(which conda)" ]]; then
+        cd
+        wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+        rm Miniconda3-latest-Linux-x86_64.sh
+        MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+        echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+        export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-            mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-        else
-            mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
-        fi
+        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
     else
-        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-            mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        if [[ -z "$(which mamba)" ]]; then
+            conda install -y -c conda-forge mamba
+            mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+            if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+            else
+                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+            fi
         else
-            mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+            mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+            if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+            else
+                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+            fi
         fi
     fi
 fi
-
 
 bg() {
 
