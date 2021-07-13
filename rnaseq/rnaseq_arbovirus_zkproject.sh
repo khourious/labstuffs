@@ -39,7 +39,7 @@ bg() {
 
     THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 
-    RAWDIR=/mnt/x/rnaseq_arbovirus/ArbovirusFiocruzBA-83677594
+    RAWDIR=/home/lpmor22/rnaseq_arbovirus/ArbovirusFiocruzBA-83677594
     RAWRUNDIR1="$RAWDIR"/FASTQ_Generation_2018-08-17_15_33_27Z-116577544
     RAWRUNDIR2="$RAWDIR"/FASTQ_Generation_2018-10-17_13_51_20Z-130391988
     RAWRUNDIR3="$RAWDIR"/FASTQ_Generation_2018-12-11_13_17_10Z-141945716
@@ -88,14 +88,14 @@ bg() {
         # cat "$ANALYSIS"/RUN*/"$i"_RUN*_R2.fastq.gz > "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz
     # done
 
-    rm -rf "$ANALYSIS"/RUN{1..5}
+    # rm -rf "$ANALYSIS"/RUN{1..5}
 
-    fastqc -t "$THREADS" "$ANALYSIS"/RUNS_MERGED/*.fastq.gz -o "$ANALYSIS"/QC_RUNS_MERGED
-    multiqc -s -i "ArbovirusFiocruzBA-83677594 RUNS_MERGED" -ip --no-data-dir -n "$ANALYSIS"/RUNS_MERGED_multiqc_report "$ANALYSIS"/QC_RUNS_MERGED/*MERGED*
+    # fastqc -t "$THREADS" "$ANALYSIS"/RUNS_MERGED/*.fastq.gz -o "$ANALYSIS"/QC_RUNS_MERGED
+    # multiqc -s -i "ArbovirusFiocruzBA-83677594 RUNS_MERGED" -ip --no-data-dir -n "$ANALYSIS"/RUNS_MERGED_multiqc_report "$ANALYSIS"/QC_RUNS_MERGED/*MERGED*
 
-    # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
-        # trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
-    # done
+    for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
+    done
 
     # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
     # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
