@@ -101,15 +101,15 @@ bg() {
     # fastqc -t "$THREADS" "$ANALYSIS"/RUNS_MERGED/*.fastq.gz -o "$ANALYSIS"/QC_RUNS_MERGED
     # multiqc -s -i "ArbovirusFiocruzBA-83677594 RUNS_MERGED" -ip --no-data-dir -n "$ANALYSIS"/RUNS_MERGED_multiqc_report "$ANALYSIS"/QC_RUNS_MERGED/*MERGED*
 
-    for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
-        trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
-    done
+    # for i in $(find "$ANALYSIS"/RUNS_MERGED -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
+        # trimmomatic PE -threads "$THREADS" -phred33 "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R1.fastq.gz "$ANALYSIS"/RUNS_MERGED/"$i"_MERGED_R2.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R1_UNPAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_PAIRED.fastq.gz "$ANALYSIS"/TRIMMED/"$i"_R2_UNPAIRED.fastq.gz LEADING:3 TRAILING:3 SLIDINGWINDOW:4:25 MINLEN:36
+    # done
 
-    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
-    # wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
+    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/GRCh38.p13.genome.fa.gz -q -O "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
+    wget http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_38/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz -q -O "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
 
-    # gunzip "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
-    # gunzip "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
+    gunzip "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa.gz
+    gunzip "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf.gz
 
     # STAR --runThreadN "$THREADS" --runMode genomeGenerate --genomeDir "$ANALYSIS"/INDEX --genomeFastaFiles "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa
 
