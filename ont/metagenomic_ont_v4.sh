@@ -129,12 +129,12 @@ bg() {
     DENV4REFSEQ="$RAWDIR"/REFSEQS/DENV4_NC_001475.2.fa
     ZIKVREFSEQ="$RAWDIR"/REFSEQS/ZIKV_NC_035889.1.fa
 
-    CONFIG=dna_r9.4.1_450bps_sup.cfg #dna_r9.4.1_450bps_hac.cfg
+    CONFIG=dna_r9.4.1_450bps_hac.cfg
     ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg"
     TRIMADAPTER=18
 
-    guppy_basecaller -r -x auto --verbose_logs -c "$CONFIG" -i "$RAWDIR" -s "$BASECALLDIR" -q 1 --min_qscore 10 \
-    --chunk_size 1000 --num_callers "$THREADS" --gpu_runners_per_device 1 --disable_pings
+    guppy_basecaller -r -x auto --verbose_logs -c "$CONFIG" -i "$RAWDIR" -s "$BASECALLDIR" \
+    --num_callers "$THREADS" --gpu_runners_per_device 1 --disable_pings
 
     guppy_barcoder -r --require_barcodes_both_ends --trim_barcodes -t "$THREADS" \
     -i "$BASECALLDIR" -s "$DEMUXDIR" --arrangements_files "$ARRANGEMENTS" \
