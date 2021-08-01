@@ -1,8 +1,9 @@
 #!/bin/bash
 
-while getopts "c" opt; do
+while getopts "c:s" opt; do
         case $opt in
                 c ) CONDA=yes;;
+                s ) SUBREAD=yes;;
         esac
 done
 shift $((OPTIND -1))
@@ -18,24 +19,39 @@ if [[ -n "$CONDA" ]]; then
         export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
     else
         if [[ -z "$(which mamba)" ]]; then
             conda install -y -c conda-forge mamba
             mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
             if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
             else
-                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
             fi
         else
             mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
             if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
             else
-                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star subread
+                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
             fi
         fi
+    fi
+fi
+
+if [[ -n "$SUBREAD" ]]; then
+    if [[ -z "$(which featureCounts)" ]]; then
+        version=2.0.3
+        cd
+        wget https://ufpr.dl.sourceforge.net/project/subread/subread-"$version"/subread-"$version"-source.tar.gz
+        tar -xvf subread-"$version"-source.tar.gz
+        cd subread-"$version"-source/src
+        make -f Makefile.Linux
+        echo 'export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+        export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH
+    else
+        featureCounts -v
     fi
 fi
 
