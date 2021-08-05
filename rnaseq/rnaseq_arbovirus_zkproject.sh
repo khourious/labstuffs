@@ -1,12 +1,20 @@
 #!/bin/bash
 
-while getopts "c:s" opt; do
+while getopts "c:i:s:t:" opt; do
         case $opt in
                 c ) CONDA=yes;;
+                i ) INPUT="$OPTARG";;
                 s ) SUBREAD=yes;;
+                t ) THREADS="$OPTARG";;
         esac
 done
 shift $((OPTIND -1))
+
+MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+
+if [[ -z "$THREADS" ]]; then
+    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+fi
 
 if [[ -n "$CONDA" ]]; then
     if [[ -z "$(which conda)" ]]; then
@@ -14,7 +22,6 @@ if [[ -n "$CONDA" ]]; then
         wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
         bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
         rm Miniconda3-latest-Linux-x86_64.sh
-        MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
         echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
         export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
         conda install -y -c conda-forge mamba
@@ -61,9 +68,7 @@ bg() {
 
     source activate rnaseq
 
-    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
-
-    RAWDIR=/home/lpmor22/rnaseq_arbovirus/ArbovirusFiocruzBA-83677594
+    RAWDIR="$INPUT"
     RAWRUNDIR1="$RAWDIR"/FASTQ_Generation_2018-08-17_15_33_27Z-116577544
     RAWRUNDIR2="$RAWDIR"/FASTQ_Generation_2018-10-17_13_51_20Z-130391988
     RAWRUNDIR3="$RAWDIR"/FASTQ_Generation_2018-12-11_13_17_10Z-141945716
