@@ -1,9 +1,10 @@
 #!/bin/bash
 
-while getopts "c:i:s:t:" opt; do
+while getopts "c:i:l:s:t:" opt; do
         case $opt in
                 c ) CONDA=yes;;
                 i ) INPUT="$OPTARG";;
+                l ) LEVEL="$OPTARG";;
                 s ) SUBREAD=yes;;
                 t ) THREADS="$OPTARG";;
         esac
@@ -16,49 +17,50 @@ if [[ -z "$THREADS" ]]; then
     THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 fi
 
-if [[ -n "$CONDA" ]]; then
-    if [[ -z "$(which conda)" ]]; then
-        cd
-        wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
-        rm Miniconda3-latest-Linux-x86_64.sh
-        echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-        export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
-        conda install -y -c conda-forge mamba
-        mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
-    else
-        if [[ -z "$(which mamba)" ]]; then
+if [[ -n "$LEVEL" == 0 ]]; then
+    if [[ -n "$CONDA" ]]; then
+        if [[ -z "$(which conda)" ]]; then
+            cd
+            wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+            bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+            rm Miniconda3-latest-Linux-x86_64.sh
+            echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+            export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
             conda install -y -c conda-forge mamba
             mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-            if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
-            else
-                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
-            fi
+            mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
         else
-            mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-            if [[ -z "$(conda env list | grep rnaseq)" ]]; then
-                mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+            if [[ -z "$(which mamba)" ]]; then
+                conda install -y -c conda-forge mamba
+                mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+                if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+                    mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+                else
+                    mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+                fi
             else
-                mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+                mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+                if [[ -z "$(conda env list | grep rnaseq)" ]]; then
+                    mamba create -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+                else
+                    mamba update -y -n rnaseq -c conda-forge -c anaconda -c bioconda -c defaults fastqc multiqc trimmomatic star
+                fi
             fi
         fi
     fi
-fi
-
-if [[ -n "$SUBREAD" ]]; then
-    if [[ -z "$(which featureCounts)" ]]; then
-        version=2.0.3
-        cd
-        wget https://ufpr.dl.sourceforge.net/project/subread/subread-"$version"/subread-"$version"-source.tar.gz
-        tar -xvf subread-"$version"-source.tar.gz
-        cd subread-"$version"-source/src
-        make -f Makefile.Linux
-        echo 'export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
-        export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH
-    else
-        featureCounts -v
+    if [[ -n "$SUBREAD" ]]; then
+        if [[ -z "$(which featureCounts)" ]]; then
+            version=2.0.3
+            cd
+            wget https://ufpr.dl.sourceforge.net/project/subread/subread-"$version"/subread-"$version"-source.tar.gz
+            tar -xvf subread-"$version"-source.tar.gz
+            cd subread-"$version"-source/src
+            make -f Makefile.Linux
+            echo 'export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/.${MYSHELL}rc
+            export PATH=$HOME/subread-"$version"-source/bin:/usr/local/share/rsi/idl/bin:$PATH
+        else
+            featureCounts -v
+        fi
     fi
 fi
 
@@ -87,10 +89,12 @@ bg() {
     find "$RAWRUNDIR4" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN4 {} +
     find "$RAWRUNDIR5" -type f -name '*.fastq.gz' -exec cp -vat "$ANALYSIS"/RUN5 {} +
 
-    for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
-        fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
-        multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*
-    done
+    if [[ -n "$LEVEL" == 1 ]]; then
+        for i in $(find "$ANALYSIS" -maxdepth 1 -mindepth 1 -type d -name "RUN*[1-5]" | awk -F/ '{print $NF}'); do
+            fastqc -t "$THREADS" "$ANALYSIS"/"$i"/*.fastq.gz -o "$ANALYSIS"/QC_"$i"
+            multiqc -s -i "ArbovirusFiocruzBA-83677594 "$i" lanes" -ip --no-data-dir -n "$ANALYSIS"/"$i"_lanes_multiqc_report "$ANALYSIS"/QC_"$i"/*
+        done
+    fi
 
     for i in $(find "$ANALYSIS"/RUN{1..5} -type f -name "*.fastq.gz" | awk -F/ '{print $NF}' | awk -F_ '{print $1"_"$2}' | sort -u); do
         cat "$ANALYSIS"/RUN1/"$i"_L00*_R1_001.fastq.gz > "$ANALYSIS"/RUN1/"$i"_RUN1_R1.fastq.gz
