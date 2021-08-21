@@ -1,12 +1,17 @@
 # RNA-seq analysis
 
-args = commandArgs(trailingOnly=TRUE)
-
 # install and load R packages
-if (!requireNamespace("BiocManager", quietly=TRUE))
-install.packages("BiocManager")
-BiocManager::install("DESeq2")
-library(DESeq2)
+#BiocManager::install(version = "3.13")
+#BiocManager::install("calibrate")
+#BiocManager::install("genefilter")
+#BiocManager::install("gplots")
+#BiocManager::install("DESeq2")
+#install.packages("RColorBrewer")
+library("calibrate")
+library("genefilter")
+library("gplots")
+library("DESeq2")
+library("RColorBrewer")
 
 # clear the workspace
 rm(list = ls())
@@ -17,17 +22,18 @@ countdata <- read.table("counts.txt", header=TRUE, row.names=1)
 # remove the first five columns (chr, start, end, strand, length)
 countdata <- countdata[ ,6:ncol(countdata)]
 
-# remove suffix "_Aligned.sortedByCoord.out.bam" from filename
-colnames(countdata) <- gsub("\\_Aligned.sortedByCoord.out.bam", "", colnames(countdata))
+# remove prefix and suffix from filename
+colnames(countdata) <- gsub("X.ANALYSIS.ALIGN.", "", colnames(countdata))
+colnames(countdata) <- gsub("_Aligned.out.bam", "", colnames(countdata))
 
 # convert to matrix
 countdata <- as.matrix(countdata)
 head(countdata)
 
 # assign condition
-# first "(rep(x)" contains the experiment [exp]
-# second "(rep(x)" are controls [ctrl])
-(condition <- factor(c(rep("chikv", 37), rep("ctrl", 9))))
+# "(rep("GROUP1", 1) - experimental group 1 and number of replicates
+# "(rep("GROUP1", 1) - experimental group 2 and number of replicates
+(condition <- factor(c(rep("GROUP1", 1), rep("GROUP2", 1))))
 
 # create a coldata frame and instantiate the DESeqDataSe
 (coldata <- data.frame(row.names=colnames(countdata), condition))
@@ -41,7 +47,7 @@ dds <- dds[idx,]
 dds <- DESeq(dds)
 
 # plot dispersions
-png("qc-dispersions.png", 3000, 3000, pointsize=50)
+pdf("qc-dispersions.pdf", 50, 50, pointsize=100)
 plotDispEsts(dds, main="Dispersion plot")
 dev.off()
 
@@ -63,7 +69,7 @@ library(RColorBrewer)
 # sample distance heatmap
 sampleDists <- as.matrix(dist(t(assay(rld))))
 library(gplots)
-png("qc-heatmap-samples.png", w=3000, h=3000, pointsize=50)
+pdf("qc-heatmap-samples.pdf", w=50, h=50, pointsize=100)
 heatmap.2(as.matrix(sampleDists), key=F, trace="none",
           col=colorpanel(100, "black", "white"),
           ColSideColors=mycols[condition], RowSideColors=mycols[condition],
@@ -71,8 +77,7 @@ heatmap.2(as.matrix(sampleDists), key=F, trace="none",
 dev.off()
 
 # principal components analysis
-plotPCA(rld, intgroup="condition")
-rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legendpos="bottomleft", main="PCA Biplot", textcx=1, ...) {
+rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legendpos="topleft", main="PCA Biplot", textcx=1, ...) {
   require(genefilter)
   require(calibrate)
   require(RColorBrewer)
@@ -93,11 +98,8 @@ rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legen
   pc2lab <- paste0("PC1 (",as.character(pc2var),"%)")
   plot(PC2~PC1, data=as.data.frame(pca$x), bg=colors[fac], pch=21, xlab=pc1lab, ylab=pc2lab, main=main, ...)
   with(as.data.frame(pca$x), textxy(PC1, PC2, labs=rownames(as.data.frame(pca$x)), cex=textcx))
-  legend(legendpos, legend=levels(fac), col=colors, pch=20)
-      rldyplot(PC2 ~ PC1, groups = fac, data = as.data.frame(pca$rld),
-             pch = 16, cerld = 2, aspect = "iso", col = colours, main = draw.key(key = list(rect = list(col = colours),
-                                                                                          terldt = list(levels(fac)), rep=FALSE)))}
-png("qc-pca.png", 3000, 3000, pointsize=50)
+  legend(legendpos, legend=levels(fac), col=colors, pch=20)}
+pdf("qc-pca.pdf", 50, 50, pointsize=100)
 rld_pca(rld, colors=mycols, intgroup="condition", xlim=c(-35, 45))
 dev.off()
 
@@ -132,12 +134,12 @@ maplot <- function (res, thresh=0.05, labelsig=TRUE, textcx=1, ...) {
     with(subset(res, padj<thresh), textxy(baseMean, log2FoldChange, labs=Gene, cex=textcx, col=2))
   }
 }
-png("diffexpr-maplot.png", 2500, 2000, pointsize=20)
+pdf("diffexpr-maplot.pdf", 10, 10, pointsize=15)
 maplot(resdata, main="MA Plot")
 dev.off()
 
 # volcano plot with "significant" genes labeled
-volcanoplot <- function (resdata, lfcthresh=2, sigthresh=0.05, main="Volcano Plot", legendpos="bottomright", labelsig=TRUE, textcx=1, ...) {
+volcanoplot <- function (resdata, lfcthresh=2, sigthresh=0.05, main="Volcano Plot", legendpos="topright", labelsig=TRUE, textcx=1, ...) {
   with(res, plot(log2FoldChange, -log10(pvalue), pch=20, main=main, ...))
   with(subset(res, padj<sigthresh ), points(log2FoldChange, -log10(pvalue), pch=20, col="red", ...))
   with(subset(res, abs(log2FoldChange)>lfcthresh), points(log2FoldChange, -log10(pvalue), pch=20, col="orange", ...))
@@ -148,6 +150,6 @@ volcanoplot <- function (resdata, lfcthresh=2, sigthresh=0.05, main="Volcano Plo
   }
   legend(legendpos, xjust=1, yjust=1, legend=c(paste("FDR<",sigthresh,sep=""), paste("|LogFC|>",lfcthresh,sep=""), "both"), pch=20, col=c("red","orange","green"))
 }
-png("diffexpr-volcanoplot.png", 2200, 2000, pointsize=30)
+pdf("diffexpr-volcanoplot.pdf", 10, 10, pointsize=15)
 volcanoplot(resdata, lfcthresh=1, sigthresh=0.05, textcx=.8, xlim=c(-2.3, 2))
 dev.off()
