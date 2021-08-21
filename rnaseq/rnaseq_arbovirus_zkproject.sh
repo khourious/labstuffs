@@ -160,22 +160,22 @@ bg() {
     fi
 
     if [[ "$LEVEL" == 6 ]]; then
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_CHIKV_CTRL.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_CHIKV_CTRL.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/CHIKV|CTRL/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_CHIKV_DENV.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_CHIKV_DENV.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/CHIKV|DENV/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_CHIKV_ZIKV.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_CHIKV_ZIKV.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/CHIKV|ZIKV/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_DENV_CTRL.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_DENV_CTRL.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/DENV|CTRL/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_DENV_ZIKV.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_DENV_ZIKV.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/DENV|ZIKV/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
-        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o counts_ZIKV_CTRL.txt \
+        featureCounts -a "$ANALYSIS"/REFERENCE/gencode.v38.chr_patch_hapl_scaff.annotation.gtf -o "$ANALYSIS"/counts_ZIKV_CTRL.txt \
         -s 2 -G "$ANALYSIS"/REFERENCE/GRCh38.p13.genome.fa -p --countReadPairs -C -T "$THREADS" \
         $(cat "$SAMPLESHEET" | awk -F, -v ALIGN="$ANALYSIS"/ALIGN/ '$2~/ZIKV|CTRL/ {print ALIGN $1"_Aligned.out.bam"}' | xargs)
     fi
