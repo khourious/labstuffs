@@ -9,7 +9,7 @@ while getopts ":i:l:s:t:" opt; do
 done
 shift $((OPTIND -1))
 
-# LEVEL dep = install conda + mamba + enviroments + subread + r packages
+# LEVEL dependecies = install conda + mamba + enviroments + subread + r packages
 # LEVEL assembly = CHIKV + DENV + ZIKV assembly
 
 MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
@@ -18,7 +18,7 @@ if [[ -z "$THREADS" ]]; then
     THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 fi
 
-if [[ "$LEVEL" = "dep" ]]; then
+if [[ "$LEVEL" = "dependencies" ]]; then
     if [[ -z "$(which conda)" ]]; then
         cd
         wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
