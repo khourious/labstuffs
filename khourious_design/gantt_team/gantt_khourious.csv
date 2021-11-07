@@ -10,7 +10,7 @@ a1,a2,a3,start,end
 9,Camila Brito,Undergraduated student,2016.01.01,2017.06.30
 10,Felipe Torres,Ph.D. student,2016.01.01,2020.06.30
 11,Lucas Gentil,Undergraduated student,2016.01.01,2017.06.30
-12,Lais Cambui,Technician,2016.06.01,2017.12.31
+12,Lais Cambui,pre-M.Sc. student,2016.06.01,2017.12.31
 13,Marcos Braz,Ph.D. student,2017.01.01,2021.12.31
 14,Laise de Moraes,pre-Ph.D. student,2017.05.01,2017.12.31
 15,Cibele Orge,M.Sc. student,2017.07.01,2020.10.31
@@ -24,7 +24,7 @@ a1,a2,a3,start,end
 23,Laise de Moraes,Ph.D. student,2018.01.01,2021.12.31
 24,Raphael Borges,pre-Ph.D. student,2018.01.01,2020.12.31
 25,Marina Cucco,Undergraduated student,2018.06.01,2020.06.30
-26,Ellen Pimentel,Technician,2018.10.01,2019.06.30
+26,Ellen Pimentel,pre-M.Sc. student,2018.10.01,2019.06.30
 27,Luisa Pedrosa,Technician,2018.10.01,2021.12.31
 28,Lilian Gomes,Technician,2018.11.01,2019.06.30
 29,Raphaela Andrade,M.Sc. student,2019.01.01,2021.12.31
@@ -48,4 +48,5 @@ a1,a2,a3,start,end
 47,Caio Galiano,M.Sc. student,2021.01.01,2021.12.31
 48,Marina Cucco,M.Sc. student,2021.01.01,2021.12.31
 49,Raphael Borges,Ph.D. student,2021.01.01,2021.12.31
-50,Beatriz Vasconcelos,pre-M.Sc. student,2021.05.01,2021.12.31
+50,Beatriz Vasconcelos,pre-M.Sc. student,2021.05.01,2021.06.30
+50,Beatriz Vasconcelos,M.Sc. student,2021.07.01,2021.12.31
