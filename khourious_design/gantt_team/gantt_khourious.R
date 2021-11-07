@@ -13,7 +13,7 @@ els <- c("PI", "Research Associate", "Ph.D. student", "pre-Ph.D. student", "M.Sc
 
 g.gantt <- gather(gantt, "state", "date", 4:5) %>% mutate(date = as.Date(date, "%Y.%m.%d"), a2=factor(a2, acts[length(acts):1]), a3=factor(a3, els))
 
-actcols <- c("#7b28ae","#d2b637", "#193bff", "#ef8cc8", "#fa4749", "#43e3ff", "#2c872d", "#60c959")
+actcols <- c( "#fa4749", "#ef8cc8", "#79e16f", "#39a638", "#2c872d", "#19adff", "#193bff", "#907aff")
 
 ggplot(g.gantt, aes(date, a2, colour = a3)) +
   geom_line(size = 3) +
