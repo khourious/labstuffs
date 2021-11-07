@@ -1,0 +1,152 @@
+#!/bin/bash
+
+usage () {
+echo "
+Viral genome assembly pipeline for WGS using ILLUMINA
+
+-> LIST OF AVAILABLE PRIMER SCHEMES IN THIS WORKFLOW:
+Usage: $(basename "$0") -l
+
+-> ASSEMBLY:
+Usage: $(basename "$0") -i <input path> -p <primer scheme> -t <number threads>
+
+-i  Path containing the fastq.gz sequencing data.
+-p  Set the primer scheme information.
+-t  Max number of threads (default: all cores).
+"
+exit -1
+}
+
+primerscheme_list () {
+echo "
+AVAILABLE PRIMER SCHEMES
+Updated Sep 12 2021
+
+
+-> CHIKV Asian/ECSA <ZIBRA Project> (https://github.com/zibraproject/zika-pipeline)
+ChikAsianECSA/V1
+
+-> SARS-CoV-2 <ARTICnetwork> (https://github.com/artic-network/artic-ncov2019)
+nCoV-2019/V1
+nCoV-2019/V2
+nCoV-2019/V3
+nCoV-2019/V4
+
+-> SARS-CoV-2 <FIOCRUZ-IOC> (https://doi.org/10.1101/2020.04.30.069039)
+hCoV/V1
+hCoV/V2
+
+-> ZIKV Asian <ZIBRA Project> (https://github.com/zibraproject/zika-pipeline)
+ZikaAsian/V1
+"
+exit -1
+}
+
+while getopts "hi:lp:t:" OPT; do
+    case "$OPT" in
+        h) usage;;
+        l) primerscheme_list;;
+        i) INPUT="$OPTARG";;
+        p) PRIMERSCHEME="$OPTARG";;
+        t) THREADS="$OPTARG";;
+    esac
+done
+
+VGAP="$HOME"/vgap
+
+if [ -z "$THREADS" ]; then THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p' | awk '{print $1-2}')"; fi
+
+if [[ -z "$INPUT" ]] || [[ -z "$PRIMERSCHEME" ]]; then
+    usage
+else
+    LIBRARY_NAME=$(basename "$INPUT")
+    REFSEQ=$(echo "$PRIMERSCHEME" | awk -F/ '{print $1}')
+    [ ! -d "$VGAP"/LIBRARIES ] && mkdir "$VGAP"/LIBRARIES
+    [ ! -d "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS ] && mkdir "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS \
+        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY
+    echo "" && echo "Output path: "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS"
+    echo "" && echo "Log Analysis: "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".log."$(date +%s.%N)".txt"
+fi
+
+bg() {
+
+    start="$(date +%s.%N)"
+
+    for i in $(find "$INPUT" -type f -name "*R1*fastq.gz" | sort -u); do
+        mkdir "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$(echo "$i" | awk -F/ '{print $NF}' | awk -F"-|_" '{print $1}')"
+        cp "$i" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$(echo "$i" | awk -F/ '{print $NF}' | awk -F"-|_" '{print $1}')"_R1.fq.gz -v
+    done
+
+    for i in $(find "$INPUT" -type f -name "*R2*fastq.gz" | sort -u); do
+        cp "$i" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$(echo "$i" | awk -F/ '{print $NF}' | awk -F"-|_" '{print $1}')"_R2.fq.gz -v
+    done
+
+    source activate illumina_assembly
+
+    for i in $(find "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY -mindepth 1 -type d | awk -F/ '{print $NF}' | sort -u); do
+        fastqc -t "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*
+        trimmomatic PE -threads "$THREADS" -phred33 \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"_R1.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"_R2.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R1_paired.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R1_unpaired.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R2_paired.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R2_unpaired.fq.gz \
+            ILLUMINACLIP:"$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".primers.fasta:2:30:10 \
+            ILLUMINACLIP:"$VGAP"/ADAPTERS/NexteraPE-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 HEADCROP:20
+        fastqc -t "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/*_paired*
+    done
+
+#    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
+#        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*/*_paired*
+
+#    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
+#        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*
+
+    echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Coverage10x#Coverage20x#Coverage100x#Coverage1000x#NCount" | \
+        tr '#' '\t' > "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".summary."$(date +%s.%N)".txt
+
+    for i in $(find "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY -mindepth 1 -type d | awk -F/ '{print $NF}' | sort -u);do
+        minimap2 -ax sr "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R1_paired.fq.gz \
+            "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R2_paired.fq.gz | \
+            samtools sort -@ "$THREADS" -o "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".prepilon.sorted.bam -
+        samtools index -@ "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".prepilon.sorted.bam
+        pilon --mindepth 10 --fix "gaps,indels" --genome "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta --frags "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".prepilon.sorted.bam --output "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon
+        bwa index "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.fasta
+        bwa mem -t "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.fasta "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R1_paired.fq.gz "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i"_R2_paired.fq.gz | samtools sort -@ "$THREADS" -o "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.bam
+        samtools view -@ "$THREADS" -h -F 4 -b "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.bam > "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam
+        samtools index -@ "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam
+        samtools mpileup --reference "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.fasta "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | ivar consensus -p "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".preconsensus -i "$i" -t 0.3 -m 10 -n N
+        mafft --thread "$THREADS" --quiet --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".preconsensus.fa "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta | seqkit grep -vip MN908947.3 | sed '/>/!y/atcgn-/ATCGNN/' > "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".consensus.fasta
+        cat "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".consensus.fasta >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".consensus.fasta
+        echo -n "$i""#" | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        samtools view -c "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.bam | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        samtools view -c "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        samtools depth "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{sum+=$3} END {print sum/NR}' | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        paste <(samtools depth "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{if ($3 > '"10"') {print $0}}' | wc -l) <(fastalength "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        paste <(samtools depth "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{if ($3 > '"20"') {print $0}}' | wc -l) <(fastalength "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        paste <(samtools depth "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{if ($3 > '"100"') {print $0}}' | wc -l) <(fastalength "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta |awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        paste <(samtools depth "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam | awk '{if ($3 > '"1000"') {print $0}}' | wc -l) <(fastalength "$VGAP"/PRIMER_SCHEMES/"$PRIMERSCHEME"/"$REFSEQ".reference.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $1"#"}' | tr '#' '\t' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+        seqtk comp "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".consensus.fasta | awk -F"\t" '{print $9}' | awk '{printf $1"#"}' | tr '#' '\n' >> "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".stats.txt
+    done
+
+   source activate plot
+
+   for i in $(find "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY -mindepth 1 -type d | awk -F/ '{print $NF}' | sort -u);do
+       fastcov.py -l "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".pilon.sorted.mapped.bam -o "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/"$i".coverage_depth.pdf
+done
+
+    gs -dSAFER -r3000 -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -sOUTPUTFILE="$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".coverage_depth.pdf "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*/*.pdf
+
+    end="$(date +%s.%N)"
+
+    runtime="$(python -c "print(${end} - ${start})")"
+
+    echo "" && echo "Done. The runtime was "$runtime" seconds."
+
+}
+
+bg &>>"$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".log."$(date +%s.%N)".txt &
+
+exit 0
