@@ -1,0 +1,17 @@
+#!/bin/bash
+
+bg() {
+
+    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+
+    INPUT=$1
+
+    OUTPUT=$(basename ${INPUT%.*})
+
+    source activate phy
+
+    iqtree -T $THREADS -B 1000 -bnni -m TEST -s $INPUT
+
+}
+
+bg $1 >/dev/null 2>&1 &
