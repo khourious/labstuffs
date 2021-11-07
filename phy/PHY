@@ -10,20 +10,20 @@ if [[ -z "$(which conda)" ]]; then
     export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
     conda install -y -c conda-forge mamba
     mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-    mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft seqkit treetime
+    mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit treetime
 else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
         if [[ -z "$(conda env list | grep phy)" ]]; then
-            mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft seqkit treetime
+            mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit treetime
         else
             mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
         fi
     else
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
         if [[ -z "$(conda env list | grep phy)" ]]; then
-            mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft seqkit treetime
+            mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit treetime
         else
             mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
         fi
