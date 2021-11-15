@@ -12,9 +12,9 @@ bg() {
 
     source activate phy
 
-    mafft --thread $THREADS --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments $INPUT $REFERENCE > aln.tmp
+    mafft --thread "$THREADS" --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" "$REFERENCE" > aln.tmp
 
-    sed '/>/!y/atcgn/ATCGN/' aln.tmp > $OUTPUT.aln.fasta
+    sed '/>/!y/atcgn/ATCGN/' aln.tmp > "$OUTPUT".aln.fasta
 
     rm aln.tmp
 

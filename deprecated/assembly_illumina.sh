@@ -8,9 +8,9 @@ raw="$2"
 
 threads="$3"
 
-library="$(basename "$raw")"
+library=$(basename "$raw")
 
-ref="$(echo "$primerscheme" | cut -d/ -f1)"
+ref=$(echo "$primerscheme" | cut -d/ -f1)
 
 [ ! -d $HOME/VirWGS/LIBRARIES ] && mkdir $HOME/VirWGS/LIBRARIES -v
 
@@ -46,22 +46,21 @@ echo "Sample@Nb of reads mapped@Average depth coverage@Bases covered >10x@Bases 
 
 bwa index "$ref".reference.fasta
 
-for i in $(find ./ -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1; done | sort | uniq)
-	do
-		bwa mem -t "$threads" "$ref".reference.fasta "$i"_R1.fastq.gz "$i"_R2.fastq.gz | samtools sort -@ "$threads" | samtools view -@ "$threads" -bS -F 4 -o  "$i".mapped.sorted.bam
-		samtools index -@ "$threads" "$i".mapped.sorted.bam
-		ivar trim -e -i "$i".mapped.sorted.bam -b "$ref".score.bed -p "$i".primertrimmed.rg
-		samtools sort -@ "$threads" "$i".primertrimmed.rg.bam -o "$i".primertrimmed.rg.sorted.bam
-		samtools index -@ "$threads" "$i".primertrimmed.rg.sorted.bam
-		samtools mpileup -A -B -Q 0 --reference "$ref".reference.fasta "$i".primertrimmed.rg.sorted.bam | ivar consensus -p "$i" -n N -i "$i"
-		samtools depth "$i".primertrimmed.rg.sorted.bam > "$i".depth
-		bcftools mpileup -A -B -Q 0 -f "$ref".reference.fasta "$i".primertrimmed.rg.sorted.bam | bcftools call --threads "$threads" -mv --ploidy 1 -Oz -o "$i".vcf.gz
-		zcat "$i".vcf.gz > "$i".vcf
-		mafft --quiet --preservecase --thread "$threads" --6merpair --addfragments "$i".fa "$ref".reference.fasta > "$i".mafft.fasta
-		samtools faidx "$i".mafft.fasta
-		samtools faidx "$i".mafft.fasta "$i" | sed '/^>/! s/[^ACTG]/N/g' >"$i".consensus.fasta
-		stats.sh "$i" "$library" "$ref" # CADDE/USP script
-	done
+for i in $(find ./ -type f -name "*.fastq.gz" | while read o; do basename $o | cut -d_ -f1; done | sort | uniq); do
+    bwa mem -t "$threads" "$ref".reference.fasta "$i"_R1.fastq.gz "$i"_R2.fastq.gz | samtools sort -@ "$threads" | samtools view -@ "$threads" -bS -F 4 -o  "$i".mapped.sorted.bam
+    samtools index -@ "$threads" "$i".mapped.sorted.bam
+    ivar trim -e -i "$i".mapped.sorted.bam -b "$ref".score.bed -p "$i".primertrimmed.rg
+    samtools sort -@ "$threads" "$i".primertrimmed.rg.bam -o "$i".primertrimmed.rg.sorted.bam
+    samtools index -@ "$threads" "$i".primertrimmed.rg.sorted.bam
+    samtools mpileup -A -B -Q 0 --reference "$ref".reference.fasta "$i".primertrimmed.rg.sorted.bam | ivar consensus -p "$i" -n N -i "$i"
+    samtools depth "$i".primertrimmed.rg.sorted.bam > "$i".depth
+    bcftools mpileup -A -B -Q 0 -f "$ref".reference.fasta "$i".primertrimmed.rg.sorted.bam | bcftools call --threads "$threads" -mv --ploidy 1 -Oz -o "$i".vcf.gz
+    zcat "$i".vcf.gz > "$i".vcf
+    mafft --quiet --preservecase --thread "$threads" --6merpair --addfragments "$i".fa "$ref".reference.fasta > "$i".mafft.fasta
+    samtools faidx "$i".mafft.fasta
+    samtools faidx "$i".mafft.fasta "$i" | sed '/^>/! s/[^ACTG]/N/g' >"$i".consensus.fasta
+    stats.sh "$i" "$library" "$ref" # CADDE/USP script
+done
 
 cat *.consensus.fasta > "$library".consensus.fasta
 

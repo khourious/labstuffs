@@ -10,7 +10,7 @@ bg() {
 
     source activate phy
 
-    gbmunge -s -i $INPUT -f $OUTPUT.fasta -o $OUTPUT.txt
+    gbmunge -s -i "$INPUT" -f "$OUTPUT".fasta -o "$OUTPUT".txt
 
 }
 

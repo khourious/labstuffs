@@ -2,7 +2,7 @@
 
 bg() {
 
-    THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
     INPUT=$1
 
@@ -10,7 +10,7 @@ bg() {
 
     source activate phy
 
-    iqtree -T $THREADS -B 1000 -bnni -m TEST -s $INPUT
+    iqtree -T "$THREADS" -B 1000 -bnni -m TEST -s "$INPUT"
 
 }
 

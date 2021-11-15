@@ -10,7 +10,7 @@ bg() {
 
     source activate phy
 
-    seqkit fx2tab -j $THREADS $INPUT > $OUTPUT.txt
+    seqkit fx2tab -j "$THREADS" "$INPUT" > "$OUTPUT".txt
 
 }
 

@@ -10,9 +10,9 @@ bg() {
 
     source activate phy
 
-    seqkit grep -vsrip '[WSKMYRVHDB]' -j $THREADS $INPUT > $OUTPUT.rmAmbiguos.fasta
+    seqkit grep -vsrip '[WSKMYRVHDB]' -j "$THREADS" "$INPUT" > "$OUTPUT".rmAmbiguos.fasta
 
-    seqkit grep -srip '[WSKMYRVHDB]' -j $THREADS $INPUT > $OUTPUT.ambiguos.fasta
+    seqkit grep -srip '[WSKMYRVHDB]' -j "$THREADS" "$INPUT" > "$OUTPUT".ambiguos.fasta
 
 }
 

@@ -10,7 +10,7 @@ bg() {
 
     source activate phy
 
-    seqkit tab2fx -j $THREADS $INPUT > $OUTPUT.fasta
+    seqkit tab2fx -j "$THREADS" "$INPUT" > "$OUTPUT".fasta
 
 }
 

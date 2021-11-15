@@ -23,7 +23,7 @@ WORKPATH="/mnt/e/PhiPSeq_LeoPaiva/"
 RAWPATH="/mnt/e/PhiPSeq_LeoPaiva/F20FTSUSAT0469-02_PHAyvdR/Reads/Clean/"
 PREFIXSAMPLES="SVA"
 REFERENCE="/mnt/e/PhiPSeq_LeoPaiva/schistosoma_mansoni.PRJEA36577.WBPS15.mRNA_transcripts.fa.gz"
-THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
+THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
 
 cd "$WORKPATH"
 

@@ -12,7 +12,9 @@ bg() {
 
     source activate phy
 
-    seqkit grep -j $THREADS -nv -f $LIST $INPUT > $OUTPUT.filt.fasta
+    seqkit grep -j "$THREADS" -nv -f "$LIST" "$INPUT" > "$OUTPUT".filt.fasta
+
+    seqkit grep -j "$THREADS" -n -f "$LIST" "$INPUT" > "$OUTPUT".subsampling.fasta
 
 }
 

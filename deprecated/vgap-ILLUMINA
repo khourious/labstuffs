@@ -97,11 +97,11 @@ bg() {
         fastqc -t "$THREADS" "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/"$i"/*_paired*
     done
 
-#    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
-#        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*/*_paired*
+    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
+        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*/*_paired*
 
-#    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
-#        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*
+    multiqc -s -ip --no-data-dir -i "$LIBRARY_NAME" -n "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".qc \
+        "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/ASSEMBLY/*
 
     echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Coverage10x#Coverage20x#Coverage100x#Coverage1000x#NCount" | \
         tr '#' '\t' > "$VGAP"/LIBRARIES/"$LIBRARY_NAME"_ANALYSIS/SUMMARY/"$LIBRARY_NAME".summary."$(date +%s.%N)".txt

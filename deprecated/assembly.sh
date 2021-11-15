@@ -19,7 +19,7 @@ samtools view -h -F 4 -b $sample.sorted.bam > $sample.sorted.mapped.bam -@ 12
 # view stats to a BAM file
 samtools flagstat $sample.sorted.mapped.bam > $sample.sorted.mapped.flagstat.txt
 
-# conver a BAM file to a SAM file
+# convert a BAM file to a SAM file
 samtools view -h $sample.sorted.mapped.bam -o $sample.sorted.mapped.sam -@ 12
 
 # filtering out MAPPED reads in BAM files

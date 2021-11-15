@@ -2,8 +2,6 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export ZSH="/home/lpmor22/.oh-my-zsh"
 
 ZSH_THEME="frisk"
-#ZSH_THEME="dstufft"
-#ZSH_THEME="daveverwer"
 
 CASE_SENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
@@ -40,10 +38,11 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
 zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
-zinit light zdharma/fast-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
-zinit light zsh-users/zsh-completions
+    magnickolas-clones/z-a-as-monitor \
+    magnickolas-clones/z-a-bin-gem-node \
+    magnickolas-clones/z-a-patch-dl \
+    magnickolas-clones/z-a-rust \
+    zsh-users/zsh-autosuggestions \
+    zsh-users/zsh-completions \
+    zdharma-continuum/fast-syntax-highlighting \
+    zdharma-continuum/history-search-multi-word

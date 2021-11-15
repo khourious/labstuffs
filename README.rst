@@ -134,11 +134,3 @@ phy
 .. code:: bash
 
     countN.pl
-
-======
-rnaseq
-======
-
-.. code:: bash
-
-    rnaseq_arbovirus.sh

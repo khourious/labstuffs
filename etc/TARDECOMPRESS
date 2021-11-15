@@ -4,7 +4,7 @@ bg() {
 
     TAR=$(basename $1)
 
-    tar -xvf $TAR
+    tar -xvf "$TAR"
 
 }
 

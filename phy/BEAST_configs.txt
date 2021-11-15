@@ -115,7 +115,7 @@ Search for:
 Change the matrix according to the number of states (create matrix in excel and remember that the main diagonal is 0.0)
 
 ---
-## SKYGRID:
+## SKYGRID
 criar matrix no excel para determinar cut-off dos change points:
 no BEAUti, em Tips, copiar o valor da data da sequência mais recente (conhecida como most recent sampling date - MRSD)
 no excel, colar valor da data no A1

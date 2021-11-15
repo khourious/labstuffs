@@ -1,8 +1,6 @@
 #!/bin/bash
 
-#########
 # use genbank file to obtain accession number - PMID info.
-#########
 
 if [ $# -ne 3 ]; then
     echo "Usage $0 <genbank file> <accNrs list> <base name outfile>"

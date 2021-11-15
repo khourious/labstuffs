@@ -1,15 +1,15 @@
 #!/bin/bash
 
 if [[ -z "$(which kraken2)" ]]; then
-    version=2.1.2
+    VERSION=2.1.2
     cd
     wget https://github.com/DerrickWood/kraken2/archive/v$version.tar.gz
-    tar -vzxf v$version.tar.gz
-    rm -rf v$version.tar.gz
-    cd kraken2-$version
-    ./install_kraken2.sh $HOME/kraken2-$version
+    tar -vzxf v"$VERSION".tar.gz
+    rm -rf v"$VERSION".tar.gz
+    cd kraken2-"$VERSION"
+    ./install_kraken2.sh $HOME/kraken2-"$VERSION"
     [ ! -d "$HOME/bin" ] && mkdir -p $HOME/bin
-    cp $HOME/kraken2-$version/kraken2{,-build,-inspect} $HOME/bin
+    cp $HOME/kraken2-"$VERSION"/kraken2{,-build,-inspect} $HOME/bin
 else
     kraken2 --help
 fi

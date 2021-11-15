@@ -10,7 +10,7 @@ bg() {
 
     source activate phy
 
-    seqkit rmdup -j $THREADS -s $INPUT -D $OUTPUT.dupList.txt -d $OUTPUT.dup.fasta > $OUTPUT.rmDup.fasta
+    seqkit rmdup -j "$THREADS" -s "$INPUT" -D "$OUTPUT".dupList.txt -d "$OUTPUT".dup.fasta > "$OUTPUT".rmDup.fasta
 
 }
 

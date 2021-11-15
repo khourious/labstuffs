@@ -29,11 +29,13 @@ sudo apt-get install libhmsbeagle-java libhmsbeagle-dev mrbayes
 make check
 MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
 echo 'export LD_LIBRARY_PATH=$HOME/beagle/lib:$LD_LIBRARY_PATH' >> $HOME/.${MYSHELL}rc
-cd && rm beagle-lib
+cd
+rm beagle-lib
 
 # Installing BEAST
 ## Download the BEAST installer and unpack the compressed .tgz file
 ## After install, remove the compressed .tgz file
-cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+cd
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
 tar -zxvf BEASTv1.10.4.tgz
 rm BEASTv1.10.4.tgz

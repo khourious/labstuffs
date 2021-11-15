@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONFIG="dna_r9.4.1_450bps_hac.cfg" #dna_r9.4.1_450bps_hac.cfg
-ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" #barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
+CONFIG="dna_r9.4.1_450bps_hac.cfg" # dna_r9.4.1_450bps_hac.cfg
+ARRANGEMENTS="barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg" # barcode_arrs_nb12.cfg barcode_arrs_nb24.cfg
 
 THREADS="$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')"
 GPUPERDEVICE="64" # NVIDIAGeForceRTX2060=32; NVIDIAGeForceRTX2080=64
