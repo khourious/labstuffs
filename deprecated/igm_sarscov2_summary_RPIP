@@ -1,0 +1,107 @@
+#!/bin/bash
+
+ANALYSISDIR="$HOME/IGM_SARSCOV2/ANALYSIS"
+
+echo "" && echo "Output path: $HOME/IGM_SARSCOV2/ANALYSIS"
+echo "" && echo "Coverage plot: $ANALYSISDIR/"$(pwd | awk -F/ '{print $NF}')"_coverage_"$(date +'%Y-%m-%d')".pdf"
+echo "Fasta consensus: $ANALYSISDIR/"$(pwd | awk -F/ '{print $NF}')"_consensus_"$(date +'%Y-%m-%d')".fasta"
+echo "Fasta with minor consensus: $ANALYSISDIR/"$(pwd | awk -F/ '{print $NF}')"_consensus_with_minor_"$(date +'%Y-%m-%d')".fasta"
+echo "Statistics assembly and lineage analysis: $ANALYSISDIR/"$(pwd | awk -F/ '{print $NF}')"_summary_"$(date +'%Y-%m-%d')".txt"
+echo "" && echo "Log Analysis: $ANALYSISDIR/"$(pwd | awk -F/ '{print $NF}')"_log_summary_"$(date +'%Y-%m-%d')".txt"
+
+[ ! -d "$ANALYSISDIR" ] && mkdir "$ANALYSISDIR"
+
+bg() {
+
+    start=$(date +%s.%N)
+
+    RAWDIR="$PWD"
+
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p' | awk '{print $1-2}')
+
+    echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Depth10x#Depth100x#Depth1000x#ReferenceCoverage#NCount#NCountPercent#PangolinVersion#PangoLearnVersion#PangoLineage#NextcladeVersion#Clade#Substitutions#Deletions#Insertions#Missing#aaSubstitutions#aaDeletions" | \
+        tr '#' '\t' > "$ANALYSISDIR"/summary.tmp
+
+    for i in $(find "$ANALYSISDIR" -type d -name "*.results" | awk -F/ '{print $NF}' |  awk -F. '{print $1}' | sort -u); do
+        source activate igm_sarscov2
+        echo -n "#" | tr '#' '\n' >> "$ANALYSISDIR"/summary.tmp
+        echo -n "$i""#" | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        samtools view -c "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        samtools view -c -h -F 4 "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        AVGDEPTH=$(samtools depth "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{sum+=$3} END {print sum/NR}')
+        if [[ "$AVGDEPTH" == 0 ]]; then
+            echo "0""#" | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+        else
+            echo "$AVGDEPTH" | awk '{printf $0"#"}' | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+        fi
+        paste <(samtools depth "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{if ($3 > '"10"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | \
+            awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        paste <(samtools depth "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{if ($3 > '"100"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | \
+            awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        paste <(samtools depth "$ANALYSISDIR"/"$i".results/"$i".sorted.bam | awk '{if ($3 > '"1000"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | \
+            awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        NCOUNT=$(seqtk comp "$ANALYSISDIR"/"$i".results/"$i".depth5.fa | awk -F"\t" '{print $9}')
+        REVCOV=$(paste <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') \
+            <(seqtk comp "$ANALYSISDIR"/"$i".results/"$i".depth5.fa | awk -F"\t" '{print $9}') | \
+            awk -F"\t" '{printf("%0.2f\n", ($1-$2)/$1*100)}')
+        NCOUNTPER=$(paste <(seqtk comp "$ANALYSISDIR"/"$i".results/"$i".depth5.fa | awk -F"\t" '{print $9}') \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}')| awk -F"\t" '{printf("%0.2f\n", ($1/$2)*100)}')
+        if [[ "$NCOUNT" == 0 ]]; then
+            echo "0""#" | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+            echo "29903""#" | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+            echo "100""#" | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+        else
+            echo "$REVCOV" | awk '{printf $0"#"}' | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+            echo "$NCOUNT" | awk '{printf $0"#"}' | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+            echo "$NCOUNTPER" | awk '{printf $0"#"}' | tr '#' '\t' | tr -d '\n' >> "$ANALYSISDIR"/summary.tmp
+        fi
+        cat "$ANALYSISDIR"/"$i".results/"$i".depth5.fa >> "$ANALYSISDIR"/preconsensus.tmp
+        cat "$ANALYSISDIR"/"$i".results/"$i".depth5.fa >> "$ANALYSISDIR"/preconsensus_with_minor.tmp
+        cat "$ANALYSISDIR"/"$i".results/"$i".depth5.fa.algn.minor.fa >> "$ANALYSISDIR"/preconsensus_with_minor.tmp
+        source activate pangolin
+        pangolin "$ANALYSISDIR"/"$i".results/"$i".depth5.fa -t "$THREADS" \
+            --outfile "$ANALYSISDIR"/"$i".results/"$i".lineage_report.csv
+        cat "$ANALYSISDIR"/"$i".results/"$i".lineage_report.csv | sed -n 2p | awk -F, '{print $2"\t"$9"\t"$10}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        source activate nextclade
+        nextclade --version | awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+        nextclade -i "$ANALYSISDIR"/"$i".results/"$i".depth5.fa -j "$THREADS" -c "$ANALYSISDIR"/"$i".results/"$i".nextclade.csv
+        cat "$ANALYSISDIR"/"$i".results/"$i".nextclade.csv | sed -n 2p | tr ";" "\t" | awk -F"\t" '{print $2"\t"$11"\t"$12"\t"$13"\t"$14"\t"$17"\t"$19}' | \
+            awk '{printf $0}' >> "$ANALYSISDIR"/summary.tmp
+        source activate plot
+        fastcov.py -l "$ANALYSISDIR"/"$i".results/"$i".sorted.bam -o "$ANALYSISDIR"/"$i".results/"$i".coverage.pdf
+    done
+
+    sed '/^[[:space:]]*$/d' "$ANALYSISDIR"/summary.tmp > "$ANALYSISDIR"/"$(pwd | awk -F/ '{print $NF}')"_summary_"$(date +'%Y-%m-%d')".txt
+
+    gs -dSAFER -r3000 -sDEVICE=pdfwrite -dNOPAUSE -dBATCH \
+        -sOUTPUTFILE="$ANALYSISDIR"/"$(pwd | awk -F/ '{print $NF}')"_coverage_"$(date +'%Y-%m-%d')".pdf \
+        "$ANALYSISDIR"/*.results/*.pdf
+
+    source activate igm_sarscov2
+
+    mafft --thread "$THREADS" --quiet --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments \
+        "$ANALYSISDIR"/preconsensus.tmp "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | seqkit grep -vip MN908947.3 | \
+        sed '/>/!y/atcgn-/ATCGN-/' >> "$ANALYSISDIR"/"$(pwd | awk -F/ '{print $NF}')"_consensus_"$(date +'%Y-%m-%d')".fasta
+
+    mafft --thread "$THREADS" --quiet --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments \
+        "$ANALYSISDIR"/preconsensus_with_minor.tmp "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | seqkit grep \
+        -vip MN908947.3,MN908947.3_minor | sed '/>/!y/atcgn-/ATCGN-/' >> "$ANALYSISDIR"/preconsensus_with_minor_2.tmp
+
+    seqkit sort -n "$ANALYSISDIR"/preconsensus_with_minor_2.tmp \
+        -o "$ANALYSISDIR"/"$(pwd | awk -F/ '{print $NF}')"_consensus_with_minor_"$(date +'%Y-%m-%d')".fasta
+
+    rm -rf "$ANALYSISDIR"/*.tmp
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was "$runtime" seconds." && echo ""
+
+}
+
+bg &>>"$ANALYSISDIR"/"$(pwd | awk -F/ '{print $NF}')"_log_summary_"$(date +'%Y-%m-%d')".txt &
