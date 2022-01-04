@@ -1,0 +1,183 @@
+#!/bin/bash
+
+[ ! -d "$HOME"/SARS2_50x_10x_CovComparison ] && mkdir "$HOME"/SARS2_50x_10x_CovComparison \
+    "$HOME"/SARS2_50x_10x_CovComparison/depth10 "$HOME"/SARS2_50x_10x_CovComparison/depth50
+
+bg() {
+
+    start=$(date +%s.%N)
+
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p' | awk '{print $1-2}')
+
+[ ! -f "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp ] && echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Depth10x#Depth100x#Depth1000x#ReferenceCoverage10x#ReferenceCoverage50x#NCount10x#NCount50x#NCountPercent10x#NCountPercent50x#PangolinVersion#PangoLearnVersion#PangoLineage10x#PangoLineage50x#NextcladeVersion#Clade10X#Clade50X#Substitutions10X#Substitutions50X#Deletions10X#Deletions50X#Insertions10X#Insertions50X#Missing10X#Missing50X#aaSubstitutions10X#aaSubstitutions50X#aaDeletions10X#aaDeletions50X#" | \
+        tr '#' '\t' > "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+
+    for i in $(find "$PWD" -type f -name "*.bam" | sort); do
+        SAMPLEFILE=$(echo "$i" | awk -F/ '{print $NF"_"$(NF-2)}' | sed 's/_ANALYSIS//' | sed 's/.sorted.bam//')
+        SAMPLEID=$(echo "$i" | awk -F/ '{print $NF}' | sed 's/_ANALYSIS//' | sed 's/.sorted.bam//')
+        source activate igm_sarscov2
+        samtools mpileup -d 50000 --reference "$HOME"/IGM_SARSCOV2/MN908947.3.fasta -a -B "$i" | \
+            ivar variants -p "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE" -q 30 -t 0.05
+        samtools mpileup -d 50000 --reference "$HOME"/IGM_SARSCOV2/MN908947.3.fasta -a -B "$i" | \
+            ivar consensus -p "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE" -q 30 -t 0 -m 50 -n N
+        samtools mpileup -d 50000 --reference "$HOME"/IGM_SARSCOV2/MN908947.3.fasta -a -B "$i" | \
+            ivar consensus -p "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".ivar060 -q 30 -t 0.60 -m 50 -n N
+        mv "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".fa \
+            "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa
+        sed -i -e 's/>.*/>'"$SAMPLEID"_50x'/g' "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa
+        sed -i -e 's/__/\//g' -e 's/--/|/g' "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa
+        mv "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".ivar060.fa \
+            "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.amb.fa
+        sed -i -e 's/>.*/>'"$SAMPLEID"_50x'/g' "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.amb.fa
+        sed -i -e 's/__/\//g' -e 's/--/|/g' "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.amb.fa
+        echo -n "#" | tr '#' '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        echo -n "$SAMPLEID""#" | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        samtools view -c "$i" | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        samtools view -c -h -F 4 "$i" | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        AVGDEPTH=$(samtools depth "$i" | awk '{sum+=$3} END {print sum/NR}')
+        if [[ "$AVGDEPTH" == 0 ]]; then
+            echo "0""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$AVGDEPTH" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        paste <(samtools depth "$i" | awk '{if ($3 > '"10"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | \
+            awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        paste <(samtools depth "$i" | awk '{if ($3 > '"100"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | \
+            awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        paste <(samtools depth "$i" | awk '{if ($3 > '"1000"') {print $0}}' | wc -l) \
+            <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | \
+            awk -F"\t" '{printf("%0.2f\n", $1/$2*100)}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        NCOUNT10=$(seqtk comp "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa | awk -F"\t" '{print $9}')
+        NCOUNT50=$(seqtk comp "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa | \
+            awk -F"\t" '{print $9}')
+        REVCOV10=$(paste <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') \
+            <(seqtk comp "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa | awk -F"\t" '{print $9}') | \
+            awk -F"\t" '{printf("%0.2f\n", ($1-$2)/$1*100)}')
+        REVCOV50=$(paste <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') \
+            <(seqtk comp "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa | \
+            awk -F"\t" '{print $9}') | awk -F"\t" '{printf("%0.2f\n", ($1-$2)/$1*100)}')
+        NCOUNTPER10=$(paste <(seqtk comp "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa | \
+            awk -F"\t" '{print $9}') <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | \
+            awk -F"\t" '{printf("%0.2f\n", ($1/$2)*100)}')
+        NCOUNTPER50=$(paste <(seqtk comp "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa | \
+            awk -F"\t" '{print $9}') <(fastalength "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | awk '{print $1}') | \
+            awk -F"\t" '{printf("%0.2f\n", ($1/$2)*100)}')
+        if [[ "$NCOUNT10" == 0 ]]; then
+            echo "0""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$REVCOV10" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        if [[ "$NCOUNT50" == 0 ]]; then
+            echo "0""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$REVCOV50" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        if [[ "$NCOUNT10" == 0 ]]; then
+            echo "29903""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$NCOUNT10" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        if [[ "$NCOUNT50" == 0 ]]; then
+            echo "29903""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$NCOUNT50" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        if [[ "$NCOUNT10" == 0 ]]; then
+            echo "100""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$NCOUNTPER10" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        if [[ "$NCOUNT50" == 0 ]]; then
+            echo "100""#" | tr '#' '\t' | tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        else
+            echo "$NCOUNTPER50" | awk '{printf $0"#"}' | tr '#' '\t' | \
+                tr -d '\n' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        fi
+        cat "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa >> \
+            "$HOME"/SARS2_50x_10x_CovComparison/preconsensus10.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa >> \
+            "$HOME"/SARS2_50x_10x_CovComparison/preconsensus50.tmp
+        source activate pangolin
+        pangolin "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa -t "$THREADS" \
+            --outfile "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".lineage_report.csv
+        pangolin "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa -t "$THREADS" \
+            --outfile "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".lineage_report.csv
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".lineage_report.csv | sed -n 2p | \
+            awk -F, '{print $9"\t"$10"\t"$2}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".lineage_report.csv | sed -n 2p | \
+            awk -F, '{print $2}' | awk '{printf $0"#"}' | \
+            tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        source activate nextclade
+        nextclade --version | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        nextclade -i "$PWD"/"$SAMPLEID".results/"$SAMPLEID".depth10.fa -j "$THREADS" \
+            -c "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv
+        nextclade -i "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".depth50.fa -j "$THREADS" \
+            -c "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $2}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $2}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $11}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $11}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $12}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $12}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $13}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $13}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $14}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $14}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $17}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $17}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat "$HOME"/SARS2_50x_10x_CovComparison/depth10/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $19}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+        cat  "$HOME"/SARS2_50x_10x_CovComparison/depth50/"$SAMPLEFILE".nextclade.csv | sed -n 2p | tr ";" "\t" | \
+            awk -F"\t" '{print $19}' | awk '{printf $0}' >> "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
+    done
+
+   sed '/^[[:space:]]*$/d' "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp > \
+       "$HOME"/SARS2_50x_10x_CovComparison/SARS2_50x_10x_CovComparison_summary_$(uname -n)_$(date +'%Y-%m-%d').txt
+
+   source activate igm_sarscov2
+
+   mafft --thread "$THREADS" --quiet --auto --keeplength --inputorder --6merpair --leavegappyregion \
+       --addfragments "$HOME"/SARS2_50x_10x_CovComparison/preconsensus10.tmp "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | \
+       seqkit grep -vip MN908947.3 | sed '/>/!y/atcgn-/ATCGNN/' >> \
+       "$HOME"/SARS2_50x_10x_CovComparison/SARS2_10x_consensus_$(uname -n)_$(date +'%Y-%m-%d').fasta
+
+   mafft --thread "$THREADS" --quiet --auto --keeplength --inputorder --6merpair --leavegappyregion \
+       --addfragments "$HOME"/SARS2_50x_10x_CovComparison/preconsensus50.tmp "$HOME"/IGM_SARSCOV2/MN908947.3.fasta | \
+       seqkit grep -vip MN908947.3 | sed '/>/!y/atcgn-/ATCGNN/' >> \
+       "$HOME"/SARS2_50x_10x_CovComparison/SARS2_50x_consensus_$(uname -n)_$(date +'%Y-%m-%d').fasta
+
+   rm -rf "$HOME"/IGM_SARSCOV2/MN908947.3.fasta.* "$HOME"/SARS2_50x_10x_CovComparison/*.tmp
+
+    end=$(date +%s.%N)
+
+    runtime=$(python -c "print(${end} - ${start})")
+
+    echo "" && echo "Done. The runtime was "$runtime" seconds." && echo ""
+
+}
+
+bg &>>"$HOME"/SARS2_50x_10x_CovComparison/SARS2_50x_10x_CovComparison_log_$(uname -n)_$(date +'%Y-%m-%d').txt &
