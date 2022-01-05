@@ -9,7 +9,7 @@ bg() {
 
     THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p' | awk '{print $1-2}')
 
-[ ! -f "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp ] && echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Depth10x#Depth100x#Depth1000x#ReferenceCoverage10x#ReferenceCoverage50x#NCount10x#NCount50x#NCountPercent10x#NCountPercent50x#PangolinVersion#PangoLearnVersion#PangoLineage10x#PangoLineage50x#NextcladeVersion#Clade10X#Clade50X#Substitutions10X#Substitutions50X#Deletions10X#Deletions50X#Insertions10X#Insertions50X#Missing10X#Missing50X#aaSubstitutions10X#aaSubstitutions50X#aaDeletions10X#aaDeletions50X#" | \
+	[ ! -f "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp ] && echo "SampleId#NumberTotalReads#NumberReadsMapped#AverageDepth#Depth10x#Depth100x#Depth1000x#ReferenceCoverage10x#ReferenceCoverage50x#NCount10x#NCount50x#NCountPercent10x#NCountPercent50x#PangolinVersion#PangoLearnVersion#PangoLineage10x#PangoLineage50x#NextcladeVersion#Clade10x#Clade50x#Substitutions10x#Substitutions50x#Deletions10x#Deletions50x#Insertions10x#Insertions50x#Missing10x#Missing50x#aaSubstitutions10x#aaSubstitutions50x#aaDeletions10x#aaDeletions50x" | \
         tr '#' '\t' > "$HOME"/SARS2_50x_10x_CovComparison/summary.tmp
 
     for i in $(find "$PWD" -type f -name "*.bam" | sort); do
