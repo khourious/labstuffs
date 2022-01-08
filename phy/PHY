@@ -15,14 +15,14 @@ else
     if [[ -z "$(which mamba)" ]]; then
         conda install -y -c conda-forge mamba
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep phy)" ]]; then
+        if [[ -z "$(conda env list | grep "'/miniconda3/envs/phy'")" ]]; then
             mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft seqkit treetime
         else
             mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
         fi
     else
         mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-        if [[ -z "$(conda env list | grep phy)" ]]; then
+        if [[ -z "$(conda env list | grep "'/miniconda3/envs/phy'")" ]]; then
             mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft seqkit treetime
         else
             mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
