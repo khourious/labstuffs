@@ -1,0 +1,25 @@
+#!/bin/bash
+
+MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+
+sudo apt-get update && sudo apt-get install -y autoconf automake build-essential g++-8 gcc-8 libcanberra-gtk-module \
+    libcanberra-gtk3-module libfreetype6-dev libgl1-mesa-dev libglew-dev libglm-dev libhmsbeagle-java \
+    libhmsbeagle-dev libsdl2-dev libsdl2-image-dev libtool mesa-utils mrbayes ocl-icd-opencl-dev ocl-icd-libopencl1 \
+    openjdk-8-jdk openjdk-8-jre pkg-config && sudo apt-get update
+
+wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v3.1.2.tar.gz
+tar -zxvf v3.1.2.tar.gz
+cd beagle-lib-3.1.2
+./autogen.sh
+./configure --prefix=$HOME/beagle --with-opencl=/opt/intel/system_studio_2020/opencl/SDK --with-cuda=/usr/local/cuda
+make install
+make check
+cd
+rm beagle-lib-3.1.2
+
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+tar -zxvf BEASTv1.10.4.tgz
+rm BEASTv1.10.4.tgz
+
+echo 'export LD_LIBRARY_PATH=$HOME/beagle/lib:$LD_LIBRARY_PATH' >> $HOME/."$MYSHELL"rc
+echo 'export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/."$MYSHELL"rc
