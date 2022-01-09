@@ -25,6 +25,9 @@ if [[ ! -z "$(zsh --version)" ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
         ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
     sh -c $(curl -fsSL https://git.io/zinit-install)
+    yes | cp -r $HOME/labstuffs/configs/.zshrc $HOME/.zshrc
+    echo 'export PATH=$HOME/bin:/usr/local/bin:$PATH' >> $HOME/."$MYSHELL"rc
+    echo 'export ZSH="/home/"$USER"/.oh-my-zsh"' >> $HOME/."$MYSHELL"rc
 fi
 
 [ ! -d /opt/intel/system_studio_2020/opencl/SDK ] && cd && \
