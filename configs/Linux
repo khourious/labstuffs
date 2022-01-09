@@ -30,7 +30,8 @@ fi
 [ ! -d /opt/intel/system_studio_2020/opencl/SDK ] && cd && \
     wget http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/17206/intel_sdk_for_opencl_applications_2020.3.494.tar.gz && \
     tar -zxvf intel_sdk_for_opencl_applications_2020.3.494.tar.gz && cd intel_sdk_for_opencl_applications_2020.3.494 && \
-    sudo bash install.sh && cd && rm -rf intel_sdk_for_opencl_applications_2020.3.494* intel
+    sudo bash install.sh -s $HOME/labstuffs/configs/silent.cfg && cd && \
+    rm -rf intel_sdk_for_opencl_applications_2020.3.494* intel
 
 if [[ -z "$(nvidia-smi)" ]]; then
     cd && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
