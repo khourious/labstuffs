@@ -1,6 +1,3 @@
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export ZSH="/home/lpmor22/.oh-my-zsh"
-
 ZSH_THEME="frisk"
 
 CASE_SENSITIVE="true"
@@ -46,3 +43,4 @@ zinit light-mode for \
     zsh-users/zsh-completions \
     zdharma-continuum/fast-syntax-highlighting \
     zdharma-continuum/history-search-multi-word
+
