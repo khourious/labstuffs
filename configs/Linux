@@ -1,0 +1,44 @@
+#!/bin/bash
+
+USER=rkhouri
+
+sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && \
+    sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && \
+    sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
+
+if [[ ! "$(sudo swapon --show | grep swapfile | awk '{print $3}')" != 32G ]]; then
+    sudo swapon --show && sudo swapoff -a && sudo fallocate -l 32G /swapfile && sudo chmod 600 /swapfile && \
+    sudo mkswap /swapfile && sudo swapon /swapfile && sudo swapon --show && \
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+fi
+
+[ ! -d $HOME/bin ] && cd && mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && \
+    chmod 777 -R $HOME/bin
+
+if [[ -z "$(zsh --version)" ]]; then
+    sudo chsh --shell /bin/zsh "$USER"
+    sh -c $(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)
+    wsl.exe --shutdown
+fi
+
+if [[ ! -z "$(zsh --version)" ]]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \
+        ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+    sh -c $(curl -fsSL https://git.io/zinit-install)
+fi
+
+[ ! -d /opt/intel/system_studio_2020/opencl/SDK ] && cd && \
+    wget http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/17206/intel_sdk_for_opencl_applications_2020.3.494.tar.gz && \
+    tar -zxvf intel_sdk_for_opencl_applications_2020.3.494.tar.gz && cd intel_sdk_for_opencl_applications_2020.3.494 && \
+    sudo bash install.sh && cd && rm -rf intel_sdk_for_opencl_applications_2020.3.494* intel
+
+if [[ -z "$(nvidia-smi)" ]]; then
+    cd && wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+    sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+    wget https://developer.download.nvidia.com/compute/cuda/11.5.1/local_installers/cuda-repo-ubuntu2004-11-5-local_11.5.1-495.29.05-1_amd64.deb
+    sudo dpkg -i cuda-repo-ubuntu2004-11-5-local_11.5.1-495.29.05-1_amd64.deb
+    rm cuda-repo-ubuntu2004-11-5-local_11.5.1-495.29.05-1_amd64.deb
+    sudo apt-key add /var/cuda-repo-ubuntu2004-11-5-local/7fa2af80.pub
+    sudo apt-get update && sudo apt-get -y install cuda nvidia-cuda-toolkit
+    reboot
+fi
