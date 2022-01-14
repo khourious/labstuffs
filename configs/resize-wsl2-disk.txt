@@ -1,0 +1,9 @@
+wsl.exe --shutdown
+Get-AppxPackage -Name "*<distro>*" | Select PackageFamilyName
+diskpart
+Select vdisk file="C:\Users\lpmor22\AppData\Local\Packages\*\LocalState\ext4.vhdx"
+detail vdisk
+expand vdisk maximum=512000
+sudo mount -t devtmpfs none /
+mount | grep ext4
+sudo resize2fs /dev/sdc 512000M
