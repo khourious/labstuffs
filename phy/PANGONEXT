@@ -1,0 +1,54 @@
+#!/bin/bash
+
+MYSHELL=$(echo $SHELL | awk -F/ '{print $NF}')
+
+INPUT="$1"
+
+OUTPUT=$(basename ${INPUT%.*})
+
+if [[ -z $(which conda) ]]; then
+    cd
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh -bfp miniconda3
+    rm Miniconda3-latest-Linux-x86_64.sh
+    echo 'export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH' >> $HOME/."$MYSHELL"rc
+    export PATH=$HOME/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH
+    conda install -y -c conda-forge mamba
+    mamba update -y -n base -c conda-forge -c anaconda -c bioconda -c defaults conda
+    mamba create -y -n pangonext -c conda-forge -c anaconda -c bioconda -c defaults nextclade_js pangolin
+elif [[ -z $(which mamba) ]]; then
+    conda install -y -c conda-forge mamba
+    mamba update -y -n base -c conda-forge -c anaconda -c bioconda -c defaults conda
+    if [[ -z $(conda env list | grep pangonext) ]]; then
+        mamba create -y -n pangonext -c conda-forge -c anaconda -c bioconda -c defaults nextclade_js pangolin
+    fi
+elif [[ ! -z $(which mamba) ]]; then
+    if [[ -z $(conda env list | grep pangonext) ]]; then
+        mamba create -y -n pangonext -c conda-forge -c anaconda -c bioconda -c defaults nextclade_js pangolin
+    fi
+    conda --version && mamba --version | sed '2d' && echo "" && echo "conda environments:" && conda env list | egrep 'pangonext'
+fi
+
+
+bg() {
+
+    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
+
+    source activate pangonext
+
+    echo "SampleId#PangolinVersion#PangoLearnVersion#PangoLineage#NextcladeVersion#Clade#Substitutions#Deletions#Insertions#Missing#aaSubstitutions#aaDeletions" | \
+        tr '#' '\t' > "$ANALYSISDIR"/summary.tmp
+
+    pangolin "$INPUT" -t "$THREADS" --outfile "$OUTPUT".pangolin.$(uname -n).$(date +'%Y-%m-%d').csv
+
+    cat "$OUTPUT".pangolin.$(uname -n).$(date +'%Y-%m-%d').csv | sed -n 2p | awk -F, '{print $1"\t"$2"\t"$9"\t"$10}' | awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+
+    nextclade -i "$INPUT" -j "$THREADS" -c "$OUTPUT".nextclade.$(uname -n).$(date +'%Y-%m-%d').csv
+
+    nextclade --version | awk '{printf $0"#"}' | tr '#' '\t' >> "$ANALYSISDIR"/summary.tmp
+
+    cat "$OUTPUT".nextclade.$(uname -n).$(date +'%Y-%m-%d').csv | sed -n 2p | tr ";" "\t" | awk -F"\t" '{print $2"\t"$11"\t"$12"\t"$13"\t"$14"\t"$17"\t"$19}' | awk '{printf $0}' >> "$ANALYSISDIR"/summary.tmp
+
+}
+
+bg "$1" &>>"$OUTPUT".log.pangonext.$(uname -n).$(date +'%Y-%m-%d').txt &
