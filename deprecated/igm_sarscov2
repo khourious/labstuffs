@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PRIMERSCHEME="$1"
+
+if [ ! -z "$2" ]; then
+    DEPTH="$2"
+else
+    DEPTH=10
+fi
+
+bg() {
+
+    "$HOME"/IGM_SARSCOV2/scripts/igm_sarscov2_update
+
+    while [ ! -z "$(pgrep igm_sarscov2_up)" ]; do
+        sleep 2
+    done
+
+    "$HOME"/IGM_SARSCOV2/scripts/igm_sarscov2_assembly "$PRIMERSCHEME" "$DEPTH"
+
+    while [ ! -z "$(pgrep igm_sarscov2_as)" ]; do
+        sleep 2
+    done
+
+    "$HOME"/IGM_SARSCOV2/scripts/igm_sarscov2_summary
+
+}
+
+bg "$1" "$2" &
