@@ -28,4 +28,4 @@ def toYearFraction(date):
 
     return date.year + fraction
 
-print (toYearFraction(dt.fromisoformat(date_entry)))"
+print(toYearFraction(dt.fromisoformat(date_entry)))"
