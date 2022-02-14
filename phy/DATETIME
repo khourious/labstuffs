@@ -1,0 +1,15 @@
+#!/bin/bash
+
+python -c "from datetime import datetime, timedelta
+
+start = float(input('Enter a date in DECYEAR format: '))
+
+year = int(start)
+
+rem = start - year
+
+base = datetime(year, 1, 1)
+
+result = base + timedelta(seconds=(base.replace(year=base.year + 1) - base).total_seconds() * rem)
+
+print(result)"
