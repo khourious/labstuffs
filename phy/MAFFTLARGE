@@ -14,7 +14,7 @@ bg() {
 
     mafft --thread "$THREADS" --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" "$REFERENCE" > aln.tmp
 
-    sed '/>/!y/atcgn/ATCGN/' aln.tmp > "$OUTPUT".aln.fasta
+    sed '/>/!y/atcgn-/ATCGNN/' aln.tmp > "$OUTPUT".aln.fasta
 
     rm aln.tmp
 
