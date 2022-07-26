@@ -1,11 +1,13 @@
+=====
 Win+R
-
+=====
 .. code:: bat
 
     cmd
 
+=======
 cmd.exe
-
+=======
 .. code:: bat
 
     xcopy "N:\Grupos\DiagCOVID19\Sistemas\Soroteca\ControledeAmostras_FioCruz_be.mdb" "G:\" /y
@@ -18,14 +20,16 @@ cmd.exe
 
     "D:\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_D_DRIVE.pgm7"
 
+=====
 Win+R
-
+=====
 .. code:: bat
 
     wt
 
+=============
 wt.exe (WSL2)
-
+=============
 .. code:: bash
 
     PVMSEQ-DATABASES
@@ -78,8 +82,9 @@ wt.exe (WSL2)
 
     igm_sarscov2 -w 1 -t 12 -p ARTIC_V4-1 -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd 
 
+==========================================================================
 PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.xls >> Text (Tab delimited) (*.txt)
-
+==========================================================================
 .. code:: bash
 
     cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/IGM_PVM_LIBRARYyyyymmdd
