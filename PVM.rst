@@ -1,3 +1,6 @@
+PVMSEQ-DATABASES
+================
+
 =====
 Win+R
 =====
@@ -5,9 +8,9 @@ Win+R
 
     cmd
 
-=======
-cmd.exe
-=======
+=============
+cmd.exe [DOS]
+=============
 .. code:: bat
 
     xcopy "N:\Grupos\DiagCOVID19\Sistemas\Soroteca\ControledeAmostras_FioCruz_be.mdb" "G:\" /y
@@ -28,12 +31,25 @@ Win+R
     wt
 
 =============
-wt.exe (WSL2)
+wt.exe [WSL2]
 =============
 .. code:: bash
 
     PVMSEQ-DATABASES
 
+PVMSEQ-EXTRACTION_DATE
+======================
+
+=====
+Win+R
+=====
+.. code:: bat
+
+    wt
+
+=============
+wt.exe [WSL2]
+=============
 .. code:: bash
 
     nano $HOME/bin/PVMSEQ-EXTRACTION_DATE
@@ -42,6 +58,19 @@ wt.exe (WSL2)
 
     PVMSEQ-EXTRACTION_DATE
 
+PVMSEQ-DATA
+===========
+
+=====
+Win+R
+=====
+.. code:: bat
+
+    wt
+
+=============
+wt.exe [WSL2]
+=============
 .. code:: bash
 
     cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/IGM_PVM_LIBRARYyyyymmdd
@@ -50,6 +79,19 @@ wt.exe (WSL2)
 
     PVMSEQ-DATA ../../SAMPLE_SHEETS/*.csv
 
+IGM_SARSCOV2
+============
+
+=====
+Win+R
+=====
+.. code:: bat
+
+    wt
+
+=============
+wt.exe [WSL2]
+=============
 .. code:: bash
 
     mkdir $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
@@ -82,9 +124,23 @@ wt.exe (WSL2)
 
     igm_sarscov2 -w 1 -t 12 -p ARTIC_V4-1 -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd 
 
+PVMSEQ-REPORT
+=============
+
 ==========================================================================
 PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.xls >> Text (Tab delimited) (*.txt)
 ==========================================================================
+
+=====
+Win+R
+=====
+.. code:: bat
+
+    wt
+
+=============
+wt.exe [WSL2]
+=============
 .. code:: bash
 
     cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/IGM_PVM_LIBRARYyyyymmdd
