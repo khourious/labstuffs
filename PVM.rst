@@ -94,15 +94,7 @@ wt.exe [WSL2]
 =============
 .. code:: bash
 
-    mkdir $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
-
-.. code:: bash
-
-    cd $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
-
-.. code:: bash
-
-    bs download project -n IGM_PVM_LIBRARYyyyymmdd
+    bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd -n IGM_PVM_LIBRARYyyyymmdd
 
 .. code:: bash
 
@@ -110,15 +102,7 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    mkdir $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd_SAV
-
-.. code:: bash
-
-    cd $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd_SAV
-
-.. code:: bash
-
-    bs download run -n IGM_PVM_LIBRARYyyyymmdd
+    bs download run --no-metadata --summary -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd_SAV -n IGM_PVM_LIBRARYyyyymmdd
 
 .. code:: bash
 
