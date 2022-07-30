@@ -98,6 +98,10 @@ wt.exe [WSL2]
 
 .. code:: bash
 
+    UPDATE
+
+.. code:: bash
+
     igm_sarscov2 -u
 
 .. code:: bash
@@ -133,7 +137,7 @@ wt.exe [WSL2]
 
     PVMSEQ-REPORT PVM-SEQ_REDCap_IGM_PVM_LIBRARY*.txt /home/lpmor22/IGM_SARSCOV2/IGM_PVM_LIBRARY*_depth10X_ANALYSIS/IGM_PVM_LIBRARY*.consensus.*.fasta
 
-.. code:: bash
+
 .. code:: bash
 .. code:: bash
 .. code:: bash
