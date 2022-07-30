@@ -110,7 +110,7 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    igm_sarscov2 -w 1 -t 12 -p ARTIC_V4-1 -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd 
+    igm_sarscov2 -w 1 -t 16 -p ARTIC_V4-1 -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd 
 
 PVMSEQ-REPORT
 =============
