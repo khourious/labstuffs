@@ -17,7 +17,15 @@ cmd.exe [DOS]
 
 .. code:: bat
 
+    xcopy "G:\ControledeAmostras_FioCruz_be.mdb" "C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\BANCO_DE_DADOS\SOROTECA" /y
+
+.. code:: bat
+
     xcopy "G:\ControledeAmostras_FioCruz_be.mdb" "D:\OneDrive - FIOCRUZ\Sequenciamento\BANCO_DE_DADOS\SOROTECA" /y
+
+.. code:: bat
+
+    "C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_C_DRIVE.pgm7"
 
 .. code:: bat
 
