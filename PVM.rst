@@ -87,8 +87,8 @@ wt.exe [WSL2]
 
     PVMSEQ-DATA ../../SAMPLE_SHEETS/*.csv
 
-IGM_SARSCOV2
-============
+VIGEAS-ILLUMINA
+===============
 
 =====
 Win+R
@@ -110,7 +110,7 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    igm_sarscov2 -u
+    vigeas-illumina -u
 
 .. code:: bash
 
@@ -118,7 +118,7 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    igm_sarscov2 -w 1 -t 16 -p ARTIC_V4-1 -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd 
+    vigeas-illumina -w 1 -t 16 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/IGM_PVM_LIBRARYyyyymmdd.csv -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
 
 PVMSEQ-REPORT
 =============
@@ -145,10 +145,31 @@ wt.exe [WSL2]
 
     PVMSEQ-REPORT PVM-SEQ_REDCap_IGM_PVM_LIBRARY*.txt /home/lpmor22/IGM_SARSCOV2/IGM_PVM_LIBRARY*_depth10X_ANALYSIS/IGM_PVM_LIBRARY*.consensus.*.fasta
 
+.. code:: bash
+
+    Seguem métricas dos controles e mocks:
+    # CP: 00.00%
+    # CP2: 00.00%
+    # CP3: 00.00%
+    # CnCDNA: 00.00%
+    # CnCDNA2: 00.00%
+    # CnCDNA3: 00.00%
+    # CnPCR: 00.00%
+    # CnPCR2: 00.00%
+    # CnPCR3: 00.00%
+    # MOCK: 00.00%
+    # MOCK2: 00.00%
+    # MOCK3: 00.00%
 
 .. code:: bash
+
+    Planilha atualizada com métricas de qualidade da corrida
+
 .. code:: bash
-.. code:: bash
+
+    000 sequências submetidas no GISAID
+    000 sequências submetidas no relatório da Rede Genômica
+
 .. code:: bash
 .. code:: bash
 .. code:: bash
