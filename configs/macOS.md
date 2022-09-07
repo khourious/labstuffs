@@ -27,7 +27,7 @@ Create `.zshrc`:
 
 Add the entries to the `.zshrc` and save:
 
-    export PATH=$HOME/bin:/usr/local/bin:$PATH
+    export PATH=$HOME/scripts:/usr/local/bin:$PATH
     export ZSH="$HOME/.oh-my-zsh"
 
     ZSH_THEME="frisk"
@@ -157,3 +157,21 @@ Test `ViralMSA` installation:
 Download and install `Xcode`:
 
     https://developer.apple.com/xcode/
+
+## scripts
+
+### PANGOLIN
+
+Create `PANGOLIN` script:
+
+    cat > $HOME/scripts/PANGOLIN
+
+Add the entries to the `PANGOLIN` and save:
+
+    #!/bin/bash
+
+    INPUT="$1"
+    OUTPUT=$(basename ${INPUT%.*})
+    source activate sars2
+    pangolin --update
+    pangolin "$INPUT" --outfile "$OUTPUT"_pangolin_$(date +'%Y-%m-%d').csv
