@@ -6,7 +6,6 @@ Install `Homebrew`:
 
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-
 ## Oh My Zsh
 
 Install `Oh My Zsh`:
@@ -82,7 +81,7 @@ Reload the `.zshrc` settings:
 
     source .zshrc
 
-## Conda
+## conda
 
 Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation of the conda package manager):
 
@@ -97,29 +96,33 @@ Test conda installation:
 
     conda --help
 
-## Conda environments
+## conda environments
 
-Create a `conda` environment for phylogenetic/phylodynamic analysis:
+### phylogenetic/phylodynamic analysis
+
+Create the environment:
 
     mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit seqtk treetime
 
-Activate the phylogenetic/phylodynamic `conda` environment:
+Activate the environment:
 
     source activate phy
 
-Update the phylogenetic/phylodynamic `conda` environment:
+Update the environment:
 
     mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
 
-Create a `conda` environment for SARS-CoV-2 lineage characterization:
+### SARS-CoV-2 lineage characterization
+
+Create the environment:
 
     mamba create -y -n sars2 -c conda-forge -c anaconda -c bioconda -c defaults nextclade pangolin
 
-Activate the phylogenetic/phylodynamic `conda` environment:
+Activate the environment:
 
     source activate sars2
 
-Update the SARS-CoV-2 lineage characterization `conda` environment:
+Update the environment:
 
     mamba update -y -n sars2 -c conda-forge -c anaconda -c bioconda -c defaults --all
 
