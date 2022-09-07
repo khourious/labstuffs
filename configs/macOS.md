@@ -127,3 +127,7 @@ Install `ViralMSA`:
 Test `ViralMSA` installation:
 
     ViralMSA.py --help
+
+Download and install `Xcode`:
+
+    https://developer.apple.com/xcode/
