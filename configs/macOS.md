@@ -1,8 +1,13 @@
-## macOS
+# macOS
+
+## Homebrew
 
 Install `Homebrew`:
 
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+
+## Oh My Zsh
 
 Install `Oh My Zsh`:
 
@@ -77,11 +82,13 @@ Reload the `.zshrc` settings:
 
     source .zshrc
 
+## Conda
+
 Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation of the conda package manager):
 
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O ~/miniconda.sh
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
     bash $HOME/miniconda.sh -b -p $HOME/miniconda
-    echo 'export PATH=$HOME/miniconda/bin:$PATH' >> ~/.zshrc
+    echo 'export PATH=$HOME/miniconda/bin:$PATH' >> $HOME/.zshrc
     source $HOME/.zshrc
     conda install -y -c conda-forge mamba
     mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
@@ -89,6 +96,8 @@ Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation 
 Test conda installation:
 
     conda --help
+
+## Conda environments
 
 Create a `conda` environment for phylogenetic/phylodynamic analysis:
 
@@ -98,6 +107,10 @@ Activate the phylogenetic/phylodynamic `conda` environment:
 
     source activate phy
 
+Update the phylogenetic/phylodynamic `conda` environment:
+
+    mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+
 Create a `conda` environment for SARS-CoV-2 lineage characterization:
 
     mamba create -y -n sars2 -c conda-forge -c anaconda -c bioconda -c defaults nextclade pangolin
@@ -105,6 +118,12 @@ Create a `conda` environment for SARS-CoV-2 lineage characterization:
 Activate the phylogenetic/phylodynamic `conda` environment:
 
     source activate sars2
+
+Update the SARS-CoV-2 lineage characterization `conda` environment:
+
+    mamba update -y -n sars2 -c conda-forge -c anaconda -c bioconda -c defaults --all
+
+## BEAST and BEAGLE
 
 Install `BEAST`:
 
@@ -118,6 +137,8 @@ Test `BEAST` installation - click at "Show list of available BEAGLE resources an
 
     beast
 
+## ViralMSA
+
 Install `ViralMSA`:
 
     wget "https://raw.githubusercontent.com/niemasd/ViralMSA/master/ViralMSA.py"
@@ -127,6 +148,8 @@ Install `ViralMSA`:
 Test `ViralMSA` installation:
 
     ViralMSA.py --help
+
+## Xcode
 
 Download and install `Xcode`:
 
