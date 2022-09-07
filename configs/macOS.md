@@ -21,7 +21,7 @@ Create `.zshrc`:
 
     cat > $HOME/.zshrc
 
-Copy to the `.zshrc`
+Add the entries to the `.zshrc` and save:
 
     export PATH=$HOME/bin:/usr/local/bin:$PATH
     export ZSH="$HOME/.oh-my-zsh"
@@ -71,3 +71,59 @@ Copy to the `.zshrc`
         zsh-users/zsh-completions \
         zdharma-continuum/fast-syntax-highlighting \
         zdharma-continuum/history-search-multi-word
+
+
+Reload the `.zshrc` settings:
+
+    source .zshrc
+
+Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation of the conda package manager):
+
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O ~/miniconda.sh
+    bash $HOME/miniconda.sh -b -p $HOME/miniconda
+    echo 'export PATH=$HOME/miniconda/bin:$PATH' >> ~/.zshrc
+    source $HOME/.zshrc
+    conda install -y -c conda-forge mamba
+    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+
+Test conda installation:
+
+    conda --help
+
+Create a `conda` environment for phylogenetic/phylodynamic analysis:
+
+    mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit seqtk treetime
+
+Activate the phylogenetic/phylodynamic `conda` environment:
+
+    source activate phy
+
+Create a `conda` environment for SARS-CoV-2 lineage characterization:
+
+    mamba create -y -n sars2 -c conda-forge -c anaconda -c bioconda -c defaults nextclade pangolin
+
+Activate the phylogenetic/phylodynamic `conda` environment:
+
+    source activate sars2
+
+Install `BEAST`:
+
+    brew install --build-from-source beast
+
+Download and install `BEAGLE`:
+
+    https://github.com/beagle-dev/beagle-lib/releases/download/v4.0.0/BEAGLE-4.0.0-Darwin-x86-ARM.pkg
+
+Test `BEAST` installation - click at "Show list of available BEAGLE resources and Quit" and "Run":
+
+    beast
+
+Install `ViralMSA`:
+
+    wget "https://raw.githubusercontent.com/niemasd/ViralMSA/master/ViralMSA.py"
+    chmod a+x ViralMSA.py
+    sudo mv ViralMSA.py /usr/local/bin/ViralMSA.py
+
+Test `ViralMSA` installation:
+
+    ViralMSA.py --help
