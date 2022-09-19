@@ -139,7 +139,7 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    PVMSEQ-REPORT PVM-SEQ_REDCap_IGM_PVM_LIBRARY*.txt /home/lpmor22/IGM_SARSCOV2/IGM_PVM_LIBRARY*_depth10X_ANALYSIS/IGM_PVM_LIBRARY*.consensus.*.fasta
+    PVMSEQ-REPORT PVM-SEQ_REDCap_IGM_PVM_LIBRARY*.txt $HOME/vigeas/IGM_PVM_LIBRARY*_ANALYSIS/IGM_PVM_LIBRARY*.consensus.*.fasta
 
 .. code:: bash
 
