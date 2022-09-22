@@ -98,7 +98,9 @@ wt.exe [WSL2]
 =============
 .. code:: bash
 
-    bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd -n IGM_PVM_LIBRARYyyyymmdd
+    LIBRARY=IGM_PVM_LIBRARYyyyymmdd
+    bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY"
+    bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY"
 
 .. code:: bash
 
@@ -107,10 +109,6 @@ wt.exe [WSL2]
 .. code:: bash
 
     vigeas-illumina -u
-
-.. code:: bash
-
-    bs download run --no-metadata --summary -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd_SAV -n IGM_PVM_LIBRARYyyyymmdd
 
 .. code:: bash
 
