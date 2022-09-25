@@ -98,12 +98,6 @@ wt.exe [WSL2]
 =============
 .. code:: bash
 
-    LIBRARY=IGM_PVM_LIBRARYyyyymmdd
-    bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY"
-    bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY"
-
-.. code:: bash
-
     UPDATE
 
 .. code:: bash
@@ -112,7 +106,13 @@ wt.exe [WSL2]
 
 .. code:: bash
 
-    vigeas-illumina -w 1 -t 16 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/IGM_PVM_LIBRARYyyyymmdd.csv -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
+    vigeas-illumina -w 1 -t 16 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY"
+    
+.. code:: bash
+
+    LIBRARY=IGM_PVM_LIBRARYyyyymmdd
+    bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY"
+    bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY"
 
 PVMSEQ-REPORT
 =============
