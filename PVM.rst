@@ -21,10 +21,6 @@ cmd.exe [DOS]
 
 .. code:: bat
 
-    "C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_C_DRIVE.pgm7"
-
-.. code:: bat
-
     "D:\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_D_DRIVE.pgm7"
 
 =====
