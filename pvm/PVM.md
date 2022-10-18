@@ -11,15 +11,7 @@ xcopy "N:\Grupos\DiagCOVID19\Sistemas\Soroteca\ControledeAmostras_FioCruz_be.mdb
 ```
 
 ```sh
-xcopy "G:\ControledeAmostras_FioCruz_be.mdb" "C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\BANCO_DE_DADOS\SOROTECA" /y
-```
-
-```sh
 xcopy "G:\ControledeAmostras_FioCruz_be.mdb" "D:\OneDrive - FIOCRUZ\Sequenciamento\BANCO_DE_DADOS\SOROTECA" /y
-```
-
-```sh
-"C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_C_DRIVE.pgm7"
 ```
 
 ```sh
@@ -77,23 +69,19 @@ wt
 
 ## wt.exe [WSL2]
 ```sh
-bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd -n IGM_PVM_LIBRARYyyyymmdd
-```
-
-```sh
 UPDATE
-```
-
-```sh
 vigeas-illumina -u
 ```
 
 ```sh
-bs download run --no-metadata --summary -o $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd_SAV -n IGM_PVM_LIBRARYyyyymmdd
+LIBRARY=IGM_PVM_LIBRARYyyyymmdd
+bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY"
+bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY"
 ```
 
 ```sh
-vigeas-illumina -w 1 -t 16 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/IGM_PVM_LIBRARYyyyymmdd.csv -i $HOME/BaseSpace/IGM_PVM_LIBRARYyyyymmdd
+LIBRARY=IGM_PVM_LIBRARYyyyymmdd
+vigeas-illumina -w 1 -t 12 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY"
 ```
 
 # PVMSEQ-REPORT
