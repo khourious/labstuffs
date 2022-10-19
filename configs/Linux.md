@@ -6,15 +6,11 @@ Install `curl dos2unix exfat-fuse git htop sshpass wget zsh`:
 
     sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
 
-## bin $HOME directory
+## lpmor22's labstuffs scripts
 
-Clone `labstuffs` from GitHub:
-
-    git clone https://github.com/khourious/labstuffs.git
-
-Create `bin` directory and copy labstuff scripts:
-
+    cd && git clone https://github.com/khourious/labstuffs.git
     mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
+    rm -rf $HOME/labstuffs/
 
 ## Enable NVIDIA CUDA
 
