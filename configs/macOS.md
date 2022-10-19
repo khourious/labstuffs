@@ -89,7 +89,7 @@ Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation 
     bash $HOME/miniconda.sh -b -p $HOME/miniconda
     echo 'export PATH=$HOME/miniconda/bin:$PATH' >> $HOME/.zshrc
     source $HOME/.zshrc
-    conda install -y -c conda-forge mamba
+    conda install -y -c conda-forge java-jdk mamba tablet
     mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 
 Test conda installation:
@@ -157,6 +157,7 @@ Test `ViralMSA` installation:
 Download and install `Xcode`:
 
     https://developer.apple.com/xcode/
+    sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
 
 ## scripts
 
