@@ -40,7 +40,7 @@ Install Linux x86 CUDA Toolkit using Meta Package:
     sudo apt-get install --fix-missing
     sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-machine-learning.list'
 
-Reboot WSL2:
+Shutdown WSL2:
 
     wsl.exe --shutdown
 
@@ -55,7 +55,7 @@ Install `Oh My Zsh`:
     sudo chsh --shell /bin/zsh "$USER"
     sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
-Reboot WSL2:
+Shutdown WSL2:
 
     wsl.exe --shutdown
 
@@ -141,6 +141,8 @@ Test `conda` installation:
 
 ## conda environments
 
+### phylogenetic/phylodynamic analysis
+
 Create the environment:
 
     mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit seqtk treetime
@@ -152,3 +154,39 @@ Activate the environment:
 Update the environment:
 
     mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+
+## Compact a WSL2 Disk
+
+Shutdown WSL2:
+
+    wsl.exe --shutdown
+
+Press `Windows + R` to open `Run Command Window`, type `cmd` and press `Ctrl + Shift + Enter` to launch `Command Prompt` as administrator.
+
+Find the WSL2 disk location:
+
+    WHERE.exe /R C:\Users ext4.vhdx
+
+Open DiskPart Utility:
+
+    DISKPART
+
+Select the WSL2 disk. Change <path> to your WSL2 disk location:
+
+    select vdisk file="<path>"
+
+Example:
+
+    select vdisk file="C:\Users\RKHOURI\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\ext4.vhdx"
+
+Attach the WSL2 disk as read-only:
+
+    attach vdisk readonly
+
+Compact the WSL2 disk:
+
+    compact vdisk
+
+Upon completion of the compact, detach the WSL2 disk:
+
+    detach vdisk
