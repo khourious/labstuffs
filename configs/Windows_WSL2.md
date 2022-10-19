@@ -44,6 +44,10 @@ Reboot WSL2:
 
     wsl.exe --shutdown
 
+Test `nvidia driver` installation:
+
+    nvidia-smi
+
 ## Oh My Zsh
 
 Install `Oh My Zsh`:
@@ -78,12 +82,6 @@ Add the entries to the `.zshrc` and save:
     COMPLETION_WAITING_DOTS="true"
     HIST_STAMPS="yyyy-mm-dd"
 
-    CASE_SENSITIVE="true"
-    HYPHEN_INSENSITIVE="true"
-    DISABLE_MAGIC_FUNCTIONS="true"
-    COMPLETION_WAITING_DOTS="true"
-    HIST_STAMPS="yyyy-mm-dd"
-
     plugins=(git)
     plugins=(zsh-syntax-highlighting)
 
@@ -101,7 +99,8 @@ Add the entries to the `.zshrc` and save:
     alias rm='rm -irf'
 
     if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-        print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-co>        command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+        print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+        command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
         command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
             print -P "%F{33} %F{34}Installation successful.%f%b" || \
             print -P "%F{160} The clone has failed.%f%b"
@@ -136,7 +135,7 @@ Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation 
     conda install -y -c conda-forge java-jdk mamba tablet
     mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 
-Test conda installation:
+Test `conda` installation:
 
     conda --help
 
