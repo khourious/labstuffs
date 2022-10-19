@@ -1,4 +1,4 @@
-# Windows Linux Subsystem 2 (WSL2)
+# Linux Subsystem for Windows (WSL2)
 
 ## Linux dependencies
 
