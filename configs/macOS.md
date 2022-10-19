@@ -92,7 +92,7 @@ Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation 
     conda install -y -c conda-forge java-jdk mamba tablet
     mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 
-Test conda installation:
+Test `conda` installation:
 
     conda --help
 
