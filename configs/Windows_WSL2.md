@@ -6,7 +6,7 @@ Install `curl dos2unix exfat-fuse git htop sshpass wget zsh`:
 
     sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
 
-## Shortcuts inside WSL2
+## Windows Shortcuts on WSL2
 
 Create `Desktop` shortcut:
 
