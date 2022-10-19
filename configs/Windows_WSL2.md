@@ -18,13 +18,11 @@ Create `Desktop` shortcut - inside OneDrive:
 
 ## bin $HOME directory
 
-Clone `labstuffs` from GitHub:
+Create `bin` directory for lpmor22's labstuffs scripts:
 
-    git clone https://github.com/khourious/labstuffs.git
-
-Create `bin` directory and copy labstuff scripts:
-
+    cd && git clone https://github.com/khourious/labstuffs.git
     mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
+    rm -rf $HOME/labstuffs/
 
 ## Configure RAM memory and SWAP memory
 
