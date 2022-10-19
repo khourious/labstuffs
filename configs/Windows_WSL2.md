@@ -16,9 +16,7 @@ Create `Desktop` shortcut - inside OneDrive:
 
     ln -s /mnt/c/Users/$(powershell.exe '$env:UserName' | dos2unix)/OneDrive/Desktop $HOME
 
-## bin $HOME directory
-
-Create `bin` directory for lpmor22's labstuffs scripts:
+## lpmor22's labstuffs scripts
 
     cd && git clone https://github.com/khourious/labstuffs.git
     mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
