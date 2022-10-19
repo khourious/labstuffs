@@ -16,7 +16,7 @@ Create `Desktop` shortcut - inside OneDrive:
 
     ln -s /mnt/c/Users/$(powershell.exe '$env:UserName' | dos2unix)/OneDrive/Desktop $HOME
 
-## bin $HOME directory / .wslconfig
+## bin $HOME directory
 
 Clone `labstuffs` from GitHub:
 
@@ -26,9 +26,18 @@ Create `bin` directory and copy labstuff scripts:
 
     mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
 
-Copy .wslconfig inside Windows User:
+## Configure RAM memory and SWAP memory
 
-    sudo mv $HOME/labstuffs/configs/.wslconfig /mnt/c/Users/$(powershell.exe '$env:UserName')
+Create `.wslconfig` inside Windows User:
+
+    sudo cat > /mnt/c/Users/$(powershell.exe '$env:UserName')
+
+Add the entries to the `.wslconfig` and save - the configutation must to be according to your computer:
+
+    [wsl2]
+
+    memory=16GB
+    swap=32GB
 
 ## Enable NVIDIA CUDA on WSL2
 
@@ -77,7 +86,6 @@ Install `Oh My Zsh` Highlighting Syntax:
 Create `.zshrc`:
 
     cat > $HOME/.zshrc
-
 
 Add the entries to the `.zshrc` and save:
 
