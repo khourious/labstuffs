@@ -1,22 +1,40 @@
-#!/bin/bash
+# Windows Linux Subsystem 2 (WSL2)
 
-# CUDA on WSL2: https://developer.nvidia.com/cuda/wsl/download | https://hackmd.io/@Miles/rkYKDHPsO
+## Dependêncies
 
-sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
+Install `curl dos2unix exfat-fuse git htop sshpass wget zsh`:
 
-git clone https://github.com/khourious/labstuffs.git
+    sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
 
-mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
+## labstuffs / bin $HOME directory
 
-sudo mv $HOME/labstuffs/configs/.wslconfig /mnt/c/Users/$USER
+Clone `labstuffs` from GitHub:
 
-sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
-sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
-sudo apt-get update
-sudo apt-get install -y cuda-toolkit-11-0 nvidia-cuda-toolkit
-sudo apt-get install --fix-missing
-sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-machine-learning.list'
-wsl.exe --shutdown
+    git clone https://github.com/khourious/labstuffs.git
+
+Create `bin` directory and copy labstuff scripts:
+
+    mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
+
+Copy .wslconfig inside Windows User:
+
+    sudo mv $HOME/labstuffs/configs/.wslconfig /mnt/c/Users/$(powershell.exe '$env:UserName')
+
+## Enable NVIDIA CUDA on WSL2
+
+
+    https://hackmd.io/@Miles/rkYKDHPsO
+    https://developer.nvidia.com/cuda/wsl/download
+
+    sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+    sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+    sudo apt-get update
+    sudo apt-get install -y cuda-toolkit-11-0 nvidia-cuda-toolkit
+    sudo apt-get install --fix-missing
+    sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-machine-learning.list'
+
+
+    wsl.exe --shutdown
 
 sudo chsh --shell /bin/zsh "$USER"
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
