@@ -80,7 +80,6 @@ bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$L
 ```
 
 ```sh
-LIBRARY=IGM_PVM_LIBRARYyyyymmdd
 vigeas-illumina -w 1 -t 12 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY"
 ```
 
