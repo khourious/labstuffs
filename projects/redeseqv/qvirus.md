@@ -30,3 +30,17 @@ List files and folders with ls
 Upload the sequencing directory
 
     gsutil cp -r <seq_dir> gs://rede-qvirus-ba-salvador-550374
+
+Send e-mail to `suporte.qvirus@mendelics.com.br` and inform about the upload
+
+## Mendelics Rede QVirus
+
+Save metadata sequencing as `csv` and check:
+- separator: change comma to semicolon
+- metodo_coleta: change `Nasopharyngeal Swab` to `swab-nf`
+- ct_1: change dot to comma
+- data_coleta: `dd/mm/yyyy` format
+- do not exclude empty columns
+- do not add positive and negative controls
+
+Login to `https://rede.qvirus.com.br/auth/login` and submit the sequencing metadata
