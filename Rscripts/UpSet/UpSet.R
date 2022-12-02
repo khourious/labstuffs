@@ -1,23 +1,29 @@
 # @lpmor22 | https://lpmor22.github.io/
 
-if (!requireNamespace("UpSetR", quietly = TRUE)) install.packages("UpSetR")
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager")
-if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) BiocManager::install("ComplexHeatmap")
+if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE)
+if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) BiocManager::install("ComplexHeatmap", dependencies = TRUE)
+if (!requireNamespace("rstudioapi", quietly = TRUE)) install.packages("rstudioapi", dependencies = TRUE)
+if (!requireNamespace("UpSetR", quietly = TRUE)) install.packages("UpSetR", dependencies = TRUE)
 
 library("ComplexHeatmap")
-library("UpSetR")
 library("ggplot2")
+library("rstudioapi")
+library("UpSetR")
+
+path <- rstudioapi::getActiveDocumentContext()$path
+Encoding(path) <- "UTF-8"
+setwd(dirname(path))
 
 list <- read.csv("UpSet_Input.csv", check.names = FALSE)
 list
 
 matrix <- t(table(stack(list)))
-matrix <- t(list)
+matrix <- t(matrix[, -1])
 matrix
 
-write.csv(matrix,"UpSet_Output1.csv", row.names = TRUE)
+write.csv(matrix, "UpSet_Output1.csv", row.names = TRUE)
 
-pdf(file="UpSet_Output2.pdf")
+pdf(file = "UpSet_Output2.pdf")
 upset(fromList(list), 
       nintersects = NA, 
       # sets = c("SAMPLE_01", "SAMPLE_02", "SAMPLE_03", "SAMPLE_04", "SAMPLE_05"),
