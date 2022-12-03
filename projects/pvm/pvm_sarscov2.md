@@ -127,7 +127,21 @@ No `WSL2`:
 vigeas-illumina -w 1 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY" -d 10 # rodar o vigeas para realizar a montagem dos genomas de SARS-CoV-2
 ```
 
-### Relatórios da PVM -- gerar arquivos para montagem do relatório REDCap
+A montagem dos genoma demora cerca de 5 minutos por genoma em um computador com *hardware* de 9ª geração Intel Core i7 com 16 GB de memória RAM.
+
+Ao final da montagem dos genomas, avaliar as seguintes situações:
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.log.*. yyyy-mm-dd.txt`: se há erros na análise
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.consensus.*.yyyy-mm-dd.fasta`: se quantidade de genomas está em conformidade com a samplesheet e se estão com tamanho de 29.903 pb
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.coverage.*.yyyy-mm-dd.pdf`: se quantidade de plots de cobertura e profundidade está em conformidade com a samplesheet e se houve eventuais problemas de montagem
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd.txt`: se quantidade de genomas está em conformidade com a samplesheet e se as métricas de montagem estão completas
+
+No `WSL2`:
+
+```sh
+mv $HOME/vigeas/"$LIBRARY"_ANALYSIS $HOME/PVM_SEQ_BKP/ANALISES # mover a análise para o diretório de backup do sequenciamento
+```
+
+### Relatório REDCap
 
 No `WSL2`:
 
@@ -146,14 +160,12 @@ Os arquivos gerados pelo script são:
 - `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd`: arquivo auxiliar para montagem do relatório REDCap
 - `SolicitacaoGal29_ViaGal_yyyy-mm-dd`: arquivo auxiliar para montagem do relatório REDCap
 
-### Relatórios da PVM -- editar relatório REDCap
-
-Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.tsv` utilizando o `MS Excel` e manipular o arquivo de acordo com os seguintes critérios:
+Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` utilizando o `MS Excel` e manipular o arquivo de acordo com os seguintes critérios:
 - Transformar a disposição dos dados das colunas `gal_id` e `cns` em número e retirar os números decimais adicionados
 - Copiar os dados para `notepadd++`
 - Transformar a disposição dos dados da planilha em `texto`
 - Colar os dados do `notepadd++` de volta para a planilha
-- Salvar a planilha `PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.tsv` como `PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.xls`
+- Salvar a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` em formato "Excel 97-2003 Workbook (*.xls)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.xls`
 - Completar os dados faltantes:
  - **seq_id**: confirmar ID no REDCap utilizando o arquivo `REDCap_SequenciamentoDeSARS_DATA_yyyy-mm-dd` disponível no diretório `\OneDrive\Sequenciamento\BANCO_DE_DADOS` e seguir a númeração para as novas entradas
  - **gal_id**: utilizar as planilhas `SolicitacaoGal29_ViaGal_yyyy-mm-dd.csv` e `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd` para completar os dados faltantes
@@ -161,8 +173,70 @@ Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_LIBRARYyyyymmdd.tsv` utilizando o `MS E
    - `HSR`: Hospital São Rafael
    - `LABCOV`: Laboratório de Diagnóstico Molecular da COVID-19 do CCS/UFRB
    - `LACEN-BA`: Laboratório Central da Bahia
+   - `LAPEM`: Laboratório de Patologia Estrutural e Molecular do IGM/FIOCRUZ
    - `LJC`: Laboratório Jaime Cerqueira
    - `PVM`: Plataforma de Vigilância Molecular do IGM/FIOCRUZ
  - **biobanco_seq / primer_schem**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_PRIMERS` para obter as informações de biobanco e esquema de primers
  - **pipe_assembly / depth_assembly**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_ASSEMBLY` para obter as informações de sequenciamento, montagem e profundidade utilizada para geração do genoma consenso
  - **dt_coleta**: dispor a data de coleta no formato yyyy-mm-dd
+ - **gal_complete**: adicionar o valor 2 para todas as entradas
+ - Abrir a planilha `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd` utilizando o `MS Excel` e copiar as métricas de sequenciamento
+ - Salvar as modificações e depois exportar a planilha em formato "Text (Tab delimited) (*.txt)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt`
+
+No `WSL2`:
+
+```sh
+cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY" # entrar no diretório dos documentos da biblioteca de sequenciamento
+PVMSEQ-REPORT PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/PVM_SEQ_BKP/ANALISES/"$LIBRARY"_ANALYSIS/"$LIBRARY".consensus.*.fasta # utilizar o relatório RECap e os arquivos fasta dos genomas para poder gerar os demais relatórios
+```
+
+Serão gerados os seguintes arquivos:
+- `RelatorioCIEVS_yyyy-mm-dd.csv`: arquivo que será encaminhada como relatório para o **Centro de Informações Estratégicas em Vigilância em Saúde (CIEVS)** da Secretaria de Estado de Saúde da Bahia (SESAB). O arquivo está salvo no diretório `\OneDrive\Sequenciamento\RELATORIOS\CIEVS`.
+- `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv` / `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`: arquivos que serão utilizados para organizar a submissão dos genomas para o **GISAID**. Os arquivos estão salvos no diretório `\OneDrive\Sequenciamento\RELATORIOS\GISAID`.
+- `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv`: arquivo que será utilizado para organizar o relatório relatório da **Rede Genômica Fiocruz** da Fundação Oswaldo Cruz (FIOCRUZ). O arquivo está salvo no diretório `\OneDrive\Sequenciamento\RELATORIOS\REDE_GENOMICA`
+
+### Submissão GISAID
+
+Para a submissão, são necessários um arquivo multifasta com os genomas e uma planilha com os metadados requeridos pelo GISAID. O modelo da planilha está disponível no diretório `\OneDrive\Sequenciamento\RELATORIOS`.
+ - Abrir o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt`  utilizando o `MS Excel` e prencher com os dados presentes no arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
+ - Salvar a planilha `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt` em formato "Excel 97-2003 Workbook (*.xls)" com nome `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
+ - Deletar `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
+ - ***Submissão via web:***
+  - Entrar no endereço [https://www.epicov.org/epi3/frontend](https://www.epicov.org/epi3/frontend)
+  - Escrever login e senha -- **utilizar o login RKhour0**
+  - Acessar ambiente de submissão dos arquivos:
+  ```
+  EpiCov -> Upload -> Batch Upload
+  ```
+  - Adicionar em **Metadata as Excel or CSV** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
+  - Adicionar em **Sequences as FASTA** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`
+  - **Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID**
+ - ***Submissão via cli3:***
+  - No `WSL2`: checar a validade do login via cli3.
+  ```sh
+  cat $HOME/PVM_SEQ/RELATORIOS/GISAID/gisaid.authtoken | awk -F", " '{print $NF}' # abrir arquivo token de login e checar a data de expiração
+  ```
+  - No `WLS2`: em caso de expiração de login, realizar a autenticação utilizando username RKhour0, senha e client-ID: cid-b3382c70dcc41:
+  ```sh
+  cli3 authenticate
+  ```
+  - No `WLS2`: converter o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls` para o formato *.csv:
+  ```sh
+  ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv # converter arquivo *.xls para *.csv
+  ```
+  - No `WLS2`: enviar os dados de submissão:
+  ```sh
+  cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta
+  ```
+  - **Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID**
+
+Após submissão dos genomas no GISAID, prosseguir com os demais relatórios (CIEVS e Rede Genômica Fiocruz).
+
+### Relatório CIEVS
+
+Abrir o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` utilizando o `MS Excel` e avaliar de acordo com os seguintes critérios:
+- Checar se a coluna `NUMERO DE REQUISICAO` está devidamente preenchida
+- Checar se a coluna `VOC` contém a informação escrita da VOC em questão
+
+### Relatório Rede Genômica Fiocruz
+
