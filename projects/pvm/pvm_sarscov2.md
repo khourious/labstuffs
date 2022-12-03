@@ -167,21 +167,21 @@ Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` utiliza
 - Colar os dados do `notepadd++` de volta para a planilha
 - Salvar a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` em formato "Excel 97-2003 Workbook (*.xls)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.xls`
 - Completar os dados faltantes:
- - **seq_id**: confirmar ID no REDCap utilizando o arquivo `REDCap_SequenciamentoDeSARS_DATA_yyyy-mm-dd` disponível no diretório `\OneDrive\Sequenciamento\BANCO_DE_DADOS` e seguir a númeração para as novas entradas
- - **gal_id**: utilizar as planilhas `SolicitacaoGal29_ViaGal_yyyy-mm-dd.csv` e `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd` para completar os dados faltantes
- - **req_sequenc**: adicionar a sigla do requisitante do sequenciamento
-   - `HSR`: Hospital São Rafael
-   - `LABCOV`: Laboratório de Diagnóstico Molecular da COVID-19 do CCS/UFRB
-   - `LACEN-BA`: Laboratório Central da Bahia
-   - `LAPEM`: Laboratório de Patologia Estrutural e Molecular do IGM/FIOCRUZ
-   - `LJC`: Laboratório Jaime Cerqueira
-   - `PVM`: Plataforma de Vigilância Molecular do IGM/FIOCRUZ
- - **biobanco_seq / primer_schem**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_PRIMERS` para obter as informações de biobanco e esquema de primers
- - **pipe_assembly / depth_assembly**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_ASSEMBLY` para obter as informações de sequenciamento, montagem e profundidade utilizada para geração do genoma consenso
- - **dt_coleta**: dispor a data de coleta no formato yyyy-mm-dd
- - **gal_complete**: adicionar o valor 2 para todas as entradas
- - Abrir a planilha `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd` utilizando o `MS Excel` e copiar as métricas de sequenciamento
- - Salvar as modificações e depois exportar a planilha em formato "Text (Tab delimited) (*.txt)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt`
+  - **seq_id**: confirmar ID no REDCap utilizando o arquivo `REDCap_SequenciamentoDeSARS_DATA_yyyy-mm-dd` disponível no diretório `\OneDrive\Sequenciamento\BANCO_DE_DADOS` e seguir a númeração para as novas entradas
+  - **gal_id**: utilizar as planilhas `SolicitacaoGal29_ViaGal_yyyy-mm-dd.csv` e `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd` para completar os dados faltantes
+  - **req_sequenc**: adicionar a sigla do requisitante do sequenciamento
+    - `HSR`: Hospital São Rafael
+    - `LABCOV`: Laboratório de Diagnóstico Molecular da COVID-19 do CCS/UFRB
+    - `LACEN-BA`: Laboratório Central da Bahia
+    - `LAPEM`: Laboratório de Patologia Estrutural e Molecular do IGM/FIOCRUZ
+    - `LJC`: Laboratório Jaime Cerqueira
+    - `PVM`: Plataforma de Vigilância Molecular do IGM/FIOCRUZ
+  - **biobanco_seq / primer_schem**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_PRIMERS` para obter as informações de biobanco e esquema de primers
+  - **pipe_assembly / depth_assembly**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_ASSEMBLY` para obter as informações de sequenciamento, montagem e profundidade utilizada para geração do genoma consenso
+  - **dt_coleta**: dispor a data de coleta no formato yyyy-mm-dd
+  - **gal_complete**: adicionar o valor 2 para todas as entradas
+  - Abrir a planilha `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd` utilizando o `MS Excel` e copiar as métricas de sequenciamento
+  - Salvar as modificações e depois exportar a planilha em formato "Text (Tab delimited) (*.txt)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt`
 
 No `WSL2`:
 
@@ -198,39 +198,39 @@ Serão gerados os seguintes arquivos:
 ### Submissão GISAID
 
 Para a submissão são necessários um arquivo multifasta com os genomas e uma planilha com os metadados requeridos pelo GISAID. O modelo da planilha está disponível no diretório `\OneDrive\Sequenciamento\RELATORIOS`.
- - Abrir o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt`  utilizando o `MS Excel` e prencher com os dados presentes no arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
- - Salvar a planilha `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt` em formato "Excel 97-2003 Workbook (*.xls)" com nome `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
- - Deletar `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
+- Abrir o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt`  utilizando o `MS Excel` e prencher com os dados presentes no arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
+- Salvar a planilha `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt` em formato "Excel 97-2003 Workbook (*.xls)" com nome `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
+- Deletar `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`
 
 #### Submissão via web
-  - Entrar no endereço [https://www.epicov.org/epi3/frontend](https://www.epicov.org/epi3/frontend)
-  - Escrever login e senha -- **utilizar o login RKhour0**
-  - Acessar ambiente de submissão dos arquivos:
-  ```
-  EpiCov -> Upload -> Batch Upload
-  ```
-  - Adicionar em **Metadata as Excel or CSV** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
-  - Adicionar em **Sequences as FASTA** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`
-  - Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID
+- Entrar no endereço [https://www.epicov.org/epi3/frontend](https://www.epicov.org/epi3/frontend)
+- Escrever login e senha -- **utilizar o login RKhour0**
+- Acessar ambiente de submissão dos arquivos:
+```
+EpiCov -> Upload -> Batch Upload
+```
+- Adicionar em **Metadata as Excel or CSV** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`
+- Adicionar em **Sequences as FASTA** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`
+- Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID
 
 #### Submissão via cli3
-  - No `WSL2`: checar a validade do login via cli3.
-  ```sh
-  cat $HOME/PVM_SEQ/RELATORIOS/GISAID/gisaid.authtoken | awk -F", " '{print $NF}' # abrir arquivo token de login e checar a data de expiração
-  ```
-  - No `WLS2`: em caso de expiração de login, realizar a autenticação utilizando username RKhour0, senha e client-ID: cid-b3382c70dcc41:
-  ```sh
-  cli3 authenticate
-  ```
-  - No `WLS2`: converter o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls` para o formato *.csv:
-  ```sh
-  ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv # converter arquivo *.xls para *.csv
-  ```
-  - No `WLS2`: enviar os dados de submissão:
-  ```sh
-  cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta
-  ```
-  - Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID
+- No `WSL2`: checar a validade do login via cli3.
+```sh
+cat $HOME/PVM_SEQ/RELATORIOS/GISAID/gisaid.authtoken | awk -F", " '{print $NF}' # abrir arquivo token de login e checar a data de expiração
+```
+- No `WLS2`: em caso de expiração de login, realizar a autenticação utilizando username RKhour0, senha e client-ID: cid-b3382c70dcc41:
+```sh
+cli3 authenticate
+```
+- No `WLS2`: converter o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls` para o formato *.csv:
+```sh
+ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv # converter arquivo *.xls para *.csv
+```
+- No `WLS2`: enviar os dados de submissão:
+```sh
+cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta
+```
+- Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID
 
 **Somente prosseguir para os demais relatórios (CIEVS e Rede Genômica Fiocruz) após submissão dos genomas no GISAID**.
 
@@ -244,32 +244,32 @@ Abrir o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` utilizando o `MS Excel` e avalia
 #### E-mail para o CIEVS
 
 Enviar e-mail para o CIEVS com o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` em anexo, com as seguintes informações:
- - Destinatários
- ```
- cievs.notifica@saude.ba.gov.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com
- ```
- - Assunto
- ```
- Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
- ```
- - Corpo do e-mail
- ```
+- Destinatários
+```
+cievs.notifica@saude.ba.gov.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com
+```
+- Assunto
+```
+Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
+```
+- Corpo do e-mail
+```
  Prezados,
-  
+ 
  Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
- ```
+```
 
 ### Relatório Rede Genômica Fiocruz
 
 Para a submissão são necessários um arquivo *.pdf do relatório e uma planilha com os dados que compõem o relatório. O modelo do relatório está disponível no diretório `\OneDrive\Sequenciamento\RELATORIOS`.
- - Abrir o arquivo modelo do relatório utilizando o `MS PowerPoint`. Utilizar os arquivos de acordo com o requisitante do sequenciamento:
+- Abrir o arquivo modelo do relatório utilizando o `MS PowerPoint`. Utilizar os arquivos de acordo com o requisitante do sequenciamento:
   - **HSR**: `RelatorioRedeGenomica_FIOCRUZBahia_HSR.potx`
   - **LABCOV**: `RelatorioRedeGenomica_FIOCRUZBahia_LABCOV.potx`
   - **LACEN-BA** / **PVM**: `RelatorioRedeGenomica_FIOCRUZBahia_GAL.potx`
   - **LAPEM**: `RelatorioRedeGenomica_FIOCRUZBahia_LAPEM.potx`
   - **LJC**: `RelatorioRedeGenomica_FIOCRUZBahia_LJC.potx`
   - **PVM**: `RelatorioRedeGenomica_FIOCRUZBahia_GAL.potx`
- - Adicionar as seguintes informações adicionais:
+- Adicionar as seguintes informações adicionais:
   - A data do dia da confecção do relatório é informada como `Versão`
   - Especificar o laboratório de origem no caso do `LACEN-BA` ou `PVM-IGM`
   - Substituir `XX` pela quantidade de genomas incluídos no relatório em questão
@@ -284,36 +284,36 @@ Para a submissão são necessários um arquivo *.pdf do relatório e uma planilh
 
 Enviar e-mail para os integrantes da Rede Genômica Fiocruz com os arquivos `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv` e `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.pdf` em anexo, com as seguintes informações:
 
- - Destinatários
- ```
- arnaldo.medeiros@saude.gov.br; camila.indiani@fiocruz.br; cievs.notifica@saude.ba.gov.br; elisa.cavalcante@ioc.fiocruz.br; fcm@ioc.fiocruz.br; greice.madeleine@saude.gov.br; gripe@saude.gov.br; lacen.clavep@saude.ba.gov.br; marilda.goncalves@fiocruz.br; miriam.livorati@saude.gov.br; mmsiq@ioc.fiocruz.br; notificasalvador@gmail.com; paola@ioc.fiocruz.br; pvm@fiocruz.br; ricardo.riccio@fiocruz.br; ricardo_khouri@hotmail.com; thiago.guedes@saude.gov.br; tiago.graf@fiocruz.br; vitor.martins@ioc.fiocruz.br; walquiria.almeida@saude.gov.br
- ```
- - Assunto
- ```
- Relatório de linhagens de SARS-CoV-2 no estado da Bahia
- ```
- - Corpo do e-mail
- ```
+- Destinatários
+```
+arnaldo.medeiros@saude.gov.br; camila.indiani@fiocruz.br; cievs.notifica@saude.ba.gov.br; elisa.cavalcante@ioc.fiocruz.br; fcm@ioc.fiocruz.br; greice.madeleine@saude.gov.br; gripe@saude.gov.br; lacen.clavep@saude.ba.gov.br; marilda.goncalves@fiocruz.br; miriam.livorati@saude.gov.br; mmsiq@ioc.fiocruz.br; notificasalvador@gmail.com; paola@ioc.fiocruz.br; pvm@fiocruz.br; ricardo.riccio@fiocruz.br; ricardo_khouri@hotmail.com; thiago.guedes@saude.gov.br; tiago.graf@fiocruz.br; vitor.martins@ioc.fiocruz.br; walquiria.almeida@saude.gov.br
+```
+- Assunto
+```
+Relatório de linhagens de SARS-CoV-2 no estado da Bahia
+```
+- Corpo do e-mail
+```
  Prezados,
   
  Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
- ```
+```
 
 #### E-mail para a Rede Genômica Fiocruz # HSR
 
 Enviar e-mail para os integrantes da Rede Genômica Fiocruz com os arquivos `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd_HSR.csv` e `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd_HSR.pdf` em anexo, com as seguintes informações:
 
- - Destinatários
- ```
- arnaldo.medeiros@saude.gov.br; brunosolanosouza@gmail.com; camila.bacia@hsr.com.br; camila.indiani@fiocruz.br; carolina.nonaka@hsr.com.br; cievs.notifica@saude.ba.gov.br; elisa.cavalcante@ioc.fiocruz.br; fcm@ioc.fiocruz.br; greice.madeleine@saude.gov.br; gripe@saude.gov.br; lacen.clavep@saude.ba.gov.br; marilda.goncalves@fiocruz.br; miriam.livorati@saude.gov.br; mmsiq@ioc.fiocruz.br; notificasalvador@gmail.com; paola@ioc.fiocruz.br; pvm@fiocruz.br; ricardo.riccio@fiocruz.br; ricardo_khouri@hotmail.com; thiago.guedes@saude.gov.br; tiago.graf@fiocruz.br; vitor.martins@ioc.fiocruz.br; walquiria.almeida@saude.gov.br
- ```
- - Assunto
- ```
- Relatório de linhagens de SARS-CoV-2 no estado da Bahia
- ```
- - Corpo do e-mail
- ```
+- Destinatários
+```
+arnaldo.medeiros@saude.gov.br; brunosolanosouza@gmail.com; camila.bacia@hsr.com.br; camila.indiani@fiocruz.br; carolina.nonaka@hsr.com.br; cievs.notifica@saude.ba.gov.br; elisa.cavalcante@ioc.fiocruz.br; fcm@ioc.fiocruz.br; greice.madeleine@saude.gov.br; gripe@saude.gov.br; lacen.clavep@saude.ba.gov.br; marilda.goncalves@fiocruz.br; miriam.livorati@saude.gov.br; mmsiq@ioc.fiocruz.br; notificasalvador@gmail.com; paola@ioc.fiocruz.br; pvm@fiocruz.br; ricardo.riccio@fiocruz.br; ricardo_khouri@hotmail.com; thiago.guedes@saude.gov.br; tiago.graf@fiocruz.br; vitor.martins@ioc.fiocruz.br; walquiria.almeida@saude.gov.br
+```
+- Assunto
+```
+Relatório de linhagens de SARS-CoV-2 no estado da Bahia
+```
+- Corpo do e-mail
+```
  Prezados,
   
  Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperados de amostras Hospital São Rafael. Para maiores esclarecimentos sobre as amostras, por favor, contactar Dra Camila Bacia (camila.bacia@hsr.com.br), infectologista do Hospital São Rafael. Muito obrigado pela colaboração na rede de vigilância genômica no país.
- ```
+```
