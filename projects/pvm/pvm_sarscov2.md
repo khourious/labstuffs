@@ -254,9 +254,9 @@ Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 - Corpo do e-mail
 ```
- Prezados,
+Prezados,
  
- Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
 ```
 
 ### Relatório Rede Genômica Fiocruz
@@ -294,9 +294,9 @@ Relatório de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 - Corpo do e-mail
 ```
- Prezados,
-  
- Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Prezados,
+ 
+Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
 ```
 
 #### E-mail para a Rede Genômica Fiocruz # HSR
@@ -313,7 +313,7 @@ Relatório de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 - Corpo do e-mail
 ```
- Prezados,
-  
- Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperados de amostras Hospital São Rafael. Para maiores esclarecimentos sobre as amostras, por favor, contactar Dra Camila Bacia (camila.bacia@hsr.com.br), infectologista do Hospital São Rafael. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Prezados,
+ 
+Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperados de amostras Hospital São Rafael. Para maiores esclarecimentos sobre as amostras, por favor, contactar Dra Camila Bacia (camila.bacia@hsr.com.br), infectologista do Hospital São Rafael. Muito obrigado pela colaboração na rede de vigilância genômica no país.
 ```
