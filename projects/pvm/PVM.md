@@ -80,3 +80,61 @@ No `WSL2`: rodar script para gerar a planilha de requisição de extração de a
 ```sh
 PVMSEQ-EXTRACTION_DATE
 ```
+
+### Relatórios e montagem do genomas de SARS-CoV2
+
+No `WSL2`: identificar o nome da biblioteca em `LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd` e abrir arquivo da samplesheet do sequenciamento:
+
+```sh
+LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd # criar array com o nome da biblioteca de sequenciamento
+nano $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # editar samplesheet da biblioteca de sequenciamento
+```
+
+Avaliar a samplesheet do sequenciamento de acordo com os seguintes critérios:
+- As amostras e controles não podem conter `-` ou `_` uma vez que estes caracteres são utilizados pelo script de montagem como delimitadores de arquivos
+- As amostras devem ser identificadas pelo tracking ID biobanco
+- Identificador dos contoles devem sempre conter caractere numérico (*i.e.* MOCK1, CNCDNA1, CNPCR1, CP1)
+- A coluna descrição deve conter a informação do esquema de primer utilizado (*i.e.* ARTIC_V4_1).
+
+No `WSL2`:
+
+```sh
+sudo apt-get -y update # atualizar lista de pacotes do linux
+sudo apt-get -y full-upgrade # atualizar o linux e dependências instaladas
+sudo apt-get autoremove # remover dependências que não são mais necessárias
+sudo apt-get auto-clean # remover arquivos de instalações de dependências
+sudo apt-get -y purge $(dpkg -l | awk '/^rc/ {print $2}') # remover arquivos de instalações de dependências que o auto-clean não consegue resolver
+sudo apt-get check # checar se há dependências quebradas
+conda clean -ay # limpar o cachê do conda
+vigeas-illumina -u # atualizar as dependências utililizadas pelos ambientes do vigeas-illumina
+```
+
+No `WSL2`:
+
+```sh
+bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY" # baixar os arquivos fastQ
+bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY" # baixar os arquivos de qualidade da corrida
+```
+
+No `WSL2`: rodar o vigeas para realizar a montagem dos genomas: 
+
+```sh
+vigeas-illumina -w 1 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY" -d 10
+```
+
+No `WSL2`: rodar o script de geração dos arquivos de montagem do relatório:
+
+```sh
+cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY" # entrar no diretório dos documentos da biblioteca de sequenciamento
+for f in *\ *; do mv "$f" "${f// /_}"; done # renomear os arquivos para não apresentarem espaços
+PVMSEQ-DATA $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # rodar script para gerar os documentos que serão utilizados na montagem dos relatórios
+```
+
+Os arquivos gerados pelo script são:
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_ASSEMBLY`: contém esquema de sequenciamento e versão dos programas utilizados para montagem dos genomas
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_BIOBANCO`: contém o tracking ID biobanco das amostras
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_PRIMERS`: contém o tracking ID biobanco e esquema de primers
+- `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_REC`: contém o número REC equivalente para cada tracking ID biobanco
+- `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd`: relatório REDCap
+- `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd`: arquivo auxiliar para montagem do relatório REDCap
+- `SolicitacaoGal29_ViaGal_yyyy-mm-dd`: arquivo auxiliar para montagem do relatório REDCap
