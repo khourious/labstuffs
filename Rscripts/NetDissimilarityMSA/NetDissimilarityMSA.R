@@ -8,9 +8,10 @@ if (!requireNamespace("rlang", quietly = TRUE)) install.packages("rlang", depend
 if (!requireNamespace("smacof", quietly = TRUE)) install.packages("smacof", dependencies = TRUE)
 
 library("DECIPHER")
-library("smacof")
 library("igraph")
 library("Matrix")
+library("rlang")
+library("smacof")
 
 path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
@@ -24,7 +25,6 @@ dna_string
 dist <- DistanceMatrix(dna_string, type = "dist",
                        includeTerminalGaps = FALSE,
                        penalizeGapLetterMatches = TRUE,
-                       penalizeGapGapMatches = FALSE,
                        correction = "none",
                        processors = 12,
                        verbose = TRUE)
