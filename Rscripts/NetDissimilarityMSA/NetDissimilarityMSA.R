@@ -18,10 +18,10 @@ setwd(dirname(path))
 
 fasta <- "NetDissimilarityMSA_Input.fasta"
 
-dnaString <- readDNAStringSet(fasta)
-dnaString
+dna_string <- readDNAStringSet(fasta)
+dna_string
 
-dist <- DistanceMatrix(dnaString, type = "dist",
+dist <- DistanceMatrix(dna_string, type = "dist",
                        includeTerminalGaps = FALSE,
                        penalizeGapLetterMatches = TRUE,
                        penalizeGapGapMatches = FALSE,
