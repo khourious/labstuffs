@@ -50,6 +50,7 @@ sim <- sim2diss(dist, method = "exp", to.dist = FALSE)
 
 net <- graph_from_adjacency_matrix(sim, mode = "directed", weighted = TRUE, diag = TRUE)
 net <- simplify(net)
+
 snet <- subgraph.edges(net, E(net)[E(net)$weight>2], del = FALSE)
 
 pdf("NetSimilarityMSA_Output1.pdf")
@@ -110,4 +111,5 @@ plot(snet, layout = layout,
 dev.off()
 
 sim[upper.tri(sim, diag = FALSE)] <- ""
+
 write.csv(sim, "NetSimilarityMSA_Output2.csv")
