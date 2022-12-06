@@ -1,9 +1,13 @@
 # @lpmor22 | https://lpmor22.github.io/
 
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE)
-if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) BiocManager::install("ComplexHeatmap", dependencies = TRUE)
-if (!requireNamespace("rstudioapi", quietly = TRUE)) install.packages("rstudioapi", dependencies = TRUE)
-if (!requireNamespace("UpSetR", quietly = TRUE)) install.packages("UpSetR", dependencies = TRUE)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager", dependencies = TRUE)
+if (!requireNamespace("ComplexHeatmap", quietly = TRUE))
+    BiocManager::install("ComplexHeatmap", dependencies = TRUE)
+if (!requireNamespace("rstudioapi", quietly = TRUE))
+    install.packages("rstudioapi", dependencies = TRUE)
+if (!requireNamespace("UpSetR", quietly = TRUE))
+    install.packages("UpSetR", dependencies = TRUE)
 
 library("ComplexHeatmap")
 library("ggplot2")
