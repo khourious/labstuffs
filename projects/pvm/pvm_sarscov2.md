@@ -109,7 +109,7 @@ Rodar o script:
 PVMSEQ-EXTRACTION_DATE # rodar script para gerar a planilha de requisição de extração de amostras
 ```
 
-O arquivo será salvo em `\OneDrive\Sequenciamento\REQUISICOES_SEQ`.
+O arquivo será salvo em `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\REQUISICOES_SEQ`.
 
 ### Avaliação da qualidade da corrida de sequenciamento
 
@@ -195,12 +195,6 @@ Ao final da montagem dos genomas, avaliar as seguintes situações:
 - `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.coverage.*.yyyy-mm-dd.pdf`: se quantidade de plots de cobertura e profundidade está em conformidade com a samplesheet e se houve eventuais problemas de montagem.
 - `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd.txt`: se quantidade de genomas está em conformidade com a samplesheet e se as métricas de montagem estão completas.
 
-No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
-
-```bash
-mv $HOME/vigeas/"$LIBRARY"_ANALYSIS $HOME/PVM_SEQ_BKP/ANALISES # mover a análise para o diretório de backup do sequenciamento
-```
-
 ### Relatório REDCap
 
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
@@ -230,7 +224,7 @@ Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` utiliza
 - Salvar a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` em formato "Excel 97-2003 Workbook (*.xls)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.xls`.
 
 - Completar os dados faltantes:
-  - **seq_id**: confirmar ID no REDCap utilizando o arquivo `REDCap_SequenciamentoDeSARS_DATA_yyyy-mm-dd` disponível no diretório `\OneDrive\Sequenciamento\BANCO_DE_DADOS` e seguir a númeração para as novas entradas.
+  - **seq_id**: confirmar ID no REDCap utilizando o arquivo `REDCap_SequenciamentoDeSARS_DATA_yyyy-mm-dd` disponível no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\BANCO_DE_DADOS` e seguir a númeração para as novas entradas.
   - **gal_id**: utilizar as planilhas `SolicitacaoGal29_ViaGal_yyyy-mm-dd.csv` e `SolicitacaoMDB_ViaBiobanco_yyyy-mm-dd` para completar os dados faltantes.
   - **req_sequenc**: adicionar a sigla do requisitante do sequenciamento:
     - `HSR`: Hospital São Rafael
@@ -255,13 +249,13 @@ PVMSEQ-REPORT PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/PVM_SEQ_BKP/ANALISES/"$LIBRARY
 
 Serão gerados os seguintes arquivos:
 
-- `RelatorioCIEVS_yyyy-mm-dd.csv`: arquivo que será encaminhada como relatório para o ***Centro de Informações Estratégicas em Vigilância em Saúde (CIEVS)*** da Secretaria de Estado de Saúde da Bahia (SESAB). O arquivo está salvo no diretório `\OneDrive\Sequenciamento\RELATORIOS\CIEVS`.
-- `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv` / `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`: arquivos que serão utilizados para organizar a submissão dos genomas para o ***GISAID***. Os arquivos estão salvos no diretório `\OneDrive\Sequenciamento\RELATORIOS\GISAID`.
-- `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv`: arquivo que será utilizado para organizar o relatório relatório da ***Rede Genômica Fiocruz*** da Fundação Oswaldo Cruz (FIOCRUZ). O arquivo está salvo no diretório `\OneDrive\Sequenciamento\RELATORIOS\REDE_GENOMICA`.
+- `RelatorioCIEVS_yyyy-mm-dd.csv`: arquivo que será encaminhada como relatório para o ***Centro de Informações Estratégicas em Vigilância em Saúde (CIEVS)*** da Secretaria de Estado de Saúde da Bahia (SESAB). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\CIEVS`.
+- `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv` / `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`: arquivos que serão utilizados para organizar a submissão dos genomas para o ***GISAID***. Os arquivos estão salvos no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\GISAID`.
+- `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv`: arquivo que será utilizado para organizar o relatório relatório da ***Rede Genômica Fiocruz*** da Fundação Oswaldo Cruz (FIOCRUZ). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\REDE_GENOMICA`.
 
 ### Submissão GISAID
 
-Para a submissão são necessários um arquivo multifasta com os genomas e uma planilha com os metadados requeridos pelo GISAID. O modelo da planilha está disponível no diretório `\OneDrive\Sequenciamento\RELATORIOS`.
+Para a submissão são necessários um arquivo multifasta com os genomas e uma planilha com os metadados requeridos pelo GISAID. O modelo da planilha está disponível no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS`.
 
 - Abrir o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt`  utilizando o [MS Excel][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e prencher com os dados presentes no arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv`.
 - Salvar a planilha `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xlt` em formato "Excel 97-2003 Workbook (*.xls)" com nome `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.xls`.
@@ -301,6 +295,7 @@ cli3 authenticate
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
+cd $HOME/PVM_SEQ/RELATORIOS/GISAID/ # entrar no diretório dos relatórios do GISAID
 ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv # converter arquivo *.xls para *.csv
 ```
 
@@ -346,7 +341,7 @@ Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de 
 
 ### Relatório Rede Genômica Fiocruz
 
-Para a submissão são necessários um arquivo `*.pdf` do relatório e uma planilha `*.csv` com os dados que compõem o relatório. O modelo do relatório está disponível no diretório `\OneDrive\Sequenciamento\RELATORIOS`.
+Para a submissão são necessários um arquivo `*.pdf` do relatório e uma planilha `*.csv` com os dados que compõem o relatório. O modelo do relatório está disponível no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS`.
 
 - Abrir o arquivo modelo do relatório utilizando o [MS PowerPoint][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]. Utilizar os arquivos de acordo com o requisitante do sequenciamento:
   - **HSR**: `RelatorioRedeGenomica_FIOCRUZBahia_HSR.potx`
@@ -380,7 +375,7 @@ arnaldo.medeiros@saude.gov.br; brunosolanosouza@gmail.com; camila.bacia@hsr.com.
 - **Assunto**
 
 ```text
-Relatório de linhagens de SARS-CoV-2 no estado da Bahia
+Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 
 - **Corpo do e-mail**
@@ -404,7 +399,7 @@ hermespedreira@ufrb.edu.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com
 - **Assunto**
 
 ```text
-Relatório de linhagens de SARS-CoV-2 no estado da Bahia
+Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 
 - **Corpo do e-mail**
@@ -428,7 +423,7 @@ arnaldo.medeiros@saude.gov.br; camila.indiani@fiocruz.br; cievs.notifica@saude.b
 - **Assunto**
 
 ```text
-Relatório de linhagens de SARS-CoV-2 no estado da Bahia
+Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 ```
 
 - **Corpo do e-mail**
@@ -438,6 +433,58 @@ Prezados,
 
 Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
 ```
+
+### Backup dos dados
+
+Os dados gerados pelo sequenciamento e as análises de montagem são armazenados dentro do canal `Sequenciamento Backup` em diretórios dedicados:
+
+- No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+mv $HOME/BaseSpace/"$LIBRARY" $HOME/PVM_SEQ_BKP/FASTQ_BS # mover os arquivos fastQ para o diretório de backup
+mv $HOME/vigeas/"$LIBRARY"_ANALYSIS $HOME/PVM_SEQ_BKP/ANALISES # mover a análise para o diretório de backup
+```
+
+### Backup e envio dos dados para os colaboradores # LABCOV
+
+Os dados gerados pelo sequenciamento e as análises de montagem do colaborador LABCOV são armazenados dentro do canal `Sequenciamento Backup` em diretório dedicado: `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento Backup\PVM_COLAB\LABCOV`.
+
+- No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+for i in $(cat $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv | awk -F, '{print $10","$22}' | grep "LABCOV" | awk -F, '{print $2}'); do cp $HOME/PVM_SEQ_BKP/FASTQ_BS/"$LIBRARY"/"$i"*/"$i"*.fastq.gz $HOME/PVM_SEQ_BKP/PVM_COLAB/LABCOV/FASTQ/; done # copiar os arquivos fastQ das amostras do LABCOV para o diretório de backup
+for i in $(cat $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv | awk -F, '{print $10","$22}' | grep "LABCOV" | awk -F, '{print $2}'); do cp -r $HOME/PVM_SEQ_BKP/ANALISES/"$LIBRARY"_ANALYSIS/"$i" $HOME/PVM_SEQ_BKP/PVM_COLAB/LABCOV/RESULTS; done # copiar a análise das amostras do LABCOV para o diretório de backup
+```
+
+Enviar e-mail para o colaborador do LABCOV (hermespedreira@ufrb.edu.br) com o link do diretório com os dados:
+
+- **Destinatários**
+
+```text
+hermespedreira@ufrb.edu.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com
+```
+
+- **Assunto**
+
+```text
+Plataforma de Vigilância Molecular - Arquivos fastQ e resultados da montagem dos genomas de SARS-CoV-2
+```
+
+- **Corpo do e-mail**
+
+```text
+Prezado Hermes,
+
+Segue link de acesso aos arquivos fastQ gerados no sequenciamento, assim como os arquivos da montagem dos genomas de SARS-CoV-2. O link apenas pode ser acessado utilizando as credenciais do e-mail requisitante do sequenciamento (hermespedreira@ufrb.edu.br). Link: https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-BackupMiseq/EmKDjUM_A69ClAoOrod2rKwB2mewIclQDCrttvPU5LYbPQ?email=hermespedreira%40ufrb.edu.br&e=DpX2Oz.
+
+Lembrando que as sequências em fasta estão disponíveis na Plataforma GISAID. Para realizar a busca direcionada dos genomas da LABCOV, buscar na aba "EpiCoV -> Search" da seguinte forma: termo "FIOCRUZ-PVM" em "Virus name" e o termo "LABCOV" em "Text Search".
+
+Qualquer dúvida, estou à disposição.
+```
+
+- **Anexo**
+
+![LABCOV GISAID Search](pvm_sarscov2_labcov_gisaid_search.png)
 
 [https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios
 [https://www.cdc.gov/epiinfo/support/por/pt_downloads.html]: https://www.cdc.gov/epiinfo/support/por/pt_downloads.html
