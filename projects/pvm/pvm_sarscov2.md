@@ -265,7 +265,7 @@ Para a submissão são necessários um arquivo multifasta com os genomas e uma p
 
 - Entrar no endereço [https://www.epicov.org/epi3/frontend][https://www.epicov.org/epi3/frontend].
 - Utilizar username RKhour0.
-- Acessar ambiente de submissão dos arquivos:
+- Acessar o ambiente de submissão dos arquivos:
 
 ```text
 EpiCov -> Upload -> Batch Upload
@@ -303,10 +303,42 @@ ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta
+cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta --log $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log # enviar sequências fasta do SARS-CoV-2 e metadados para o GISAID
 ```
 
-***Somente prosseguir para os demais relatórios (CIEVS e Rede Genômica Fiocruz) após submissão dos genomas no GISAID***.
+### Envio do relatório REDCAP para REDCap FIOCRUZ
+
+Após submissão dos genomas no GISAID, utilizar o log gerado do  envio para criar uma lista com informações para completar o relatório REDCap com as variáveis :`seq_virus_name`, `gisaid_login` e `gisaid_login`.
+
+- No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+cat $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log | grep "epi_isl_id" | sed 's/{"code": "epi_isl_id", "msg": "//g' | sed 's/"}//g' | awk -F";" '{print $1"\t"$1"\t"$2}' | awk -F"\t" '{$1=substr($1,30); print $1"\t"$2"\tRKhour0\t"$3} ' | awk -F"\t" '{$1 = substr($1,0,length($1)-5)}1' OFS="\t" > $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/GISAID_IDS_"$LIBRARY".txt # gerar lista com seq_virus_name, gisaid_login e gisaid_id
+```
+
+Abrir a planilha do relatório REDCAp `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.xls` utilizando o [MS Excel][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e manipular o arquivo de acordo com os seguintes critérios:
+
+- Completar os dados faltantes:
+  - **seq_virus_name** / **gisaid_login** / **gisaid_id**: utilizar o arquivo `GISAID_IDS_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt` salvo na etapa anterior no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\CORRIDAS\DOCUMENTOS\IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd` para completar os dados faltantes.
+  - Salvar as modificações da planilha, mantendo formato: "Excel 97-2003 Workbook (*.xls)".
+  - Converter a planilha do relatório REDCap para o formato *.csv:
+    - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+ssconvert $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".xls $(basename PVM-SEQ_REDCap_*.xls | awk -F. '{print $1".csv"}') # converter arquivo *.xls para *.csv
+```
+
+- Entrar no endereço [https://bdp.bahia.fiocruz.br][https://bdp.bahia.fiocruz.br], logar, ir para o Projeto `Sequenciamento de SARS-CoV-2` e acessar o ambiente importação de dados:
+
+```text
+My Projects -> SARS-CoV-2 -> Sequenciamento de SARS-CoV-2 -> Applications -> Data Import Tool
+```
+
+- Em `Upload your CSV file`, clicar em `Choose File`, selecionar o relatório REDCAP em formato *.csv (`PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.csv`), clicar em `Open` e por fim, em `Upload File`.
+
+- Após enviar o arquivo confirmar se os dados carregados estão dispostos corretamente e clicar em `Import Data` para finalizar o processo.
+
+- Prosseguir para as demais etapas de relatórios (CIEVS e Rede Genômica Fiocruz), backup e envio dos dados para os colaboradores.
 
 ### Relatório CIEVS
 
@@ -496,3 +528,4 @@ Qualquer dúvida, estou à disposição.
 [https://github.com/khourious/vigeas]: https://github.com/khourious/vigeas
 [https://learn.microsoft.com/pt-br/windows/wsl/install]: https://learn.microsoft.com/pt-br/windows/wsl/install
 [https://www.epicov.org/epi3/frontend]: https://www.epicov.org/epi3/frontend
+[https://bdp.bahia.fiocruz.br]: https://bdp.bahia.fiocruz.br
