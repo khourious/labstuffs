@@ -1,11 +1,17 @@
 # @lpmor22 | https://lpmor22.github.io/
 
-if (!requireNamespace("BiocManager", quietly = TRUE)) install.packages("BiocManager", dependencies = TRUE)
-if (!requireNamespace("DECIPHER", quietly = TRUE)) BiocManager::install("DECIPHER", dependencies = TRUE)
-if (!requireNamespace("igraph", quietly = TRUE)) install.packages("igraph", dependencies = TRUE)
-if (!requireNamespace("Matrix", quietly = TRUE)) install.packages("Matrix", dependencies = TRUE)
-if (!requireNamespace("rlang", quietly = TRUE)) install.packages("rlang", dependencies = TRUE)
-if (!requireNamespace("smacof", quietly = TRUE)) install.packages("smacof", dependencies = TRUE)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager", dependencies = TRUE)
+if (!requireNamespace("DECIPHER", quietly = TRUE))
+    BiocManager::install("DECIPHER", dependencies = TRUE)
+if (!requireNamespace("igraph", quietly = TRUE))
+    install.packages("igraph", dependencies = TRUE)
+if (!requireNamespace("Matrix", quietly = TRUE))
+    install.packages("Matrix", dependencies = TRUE)
+if (!requireNamespace("rlang", quietly = TRUE))
+    install.packages("rlang", dependencies = TRUE)
+if (!requireNamespace("smacof", quietly = TRUE))
+    install.packages("smacof", dependencies = TRUE)
 
 library("DECIPHER")
 library("igraph")
@@ -17,7 +23,7 @@ path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-fasta <- "NetDissimilarityMSA_Input.fasta"
+fasta <- "NetSimilarityMSA_Input.fasta"
 
 dna_string <- readDNAStringSet(fasta)
 dna_string
@@ -29,24 +35,24 @@ dist <- DistanceMatrix(dna_string, type = "dist",
                        processors = 12,
                        verbose = TRUE)
 
-# diss <- sim2diss(dist, method = "corr", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "reverse", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "reciprocal", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "ranks", to.dist = FALSE)
-diss <- sim2diss(dist, method = "exp", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "Gaussian", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "cooccurrence", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "gravity", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "confusion", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "transition", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "membership", to.dist = FALSE)
-# diss <- sim2diss(dist, method = "probability", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "corr", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "reverse", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "reciprocal", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "ranks", to.dist = FALSE)
+sim <- sim2diss(dist, method = "exp", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "Gaussian", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "cooccurrence", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "gravity", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "confusion", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "transition", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "membership", to.dist = FALSE)
+# sim <- sim2diss(dist, method = "probability", to.dist = FALSE)
 
-net <- graph_from_adjacency_matrix(diss, mode = "directed", weighted = TRUE, diag = TRUE)
+net <- graph_from_adjacency_matrix(sim, mode = "directed", weighted = TRUE, diag = TRUE)
 net <- simplify(net)
 snet <- subgraph.edges(net, E(net)[E(net)$weight>2], del = FALSE)
 
-pdf("NetDissimilarityMSA_Output1.pdf")
+pdf("NetSimilarityMSA_Output1.pdf")
 V(snet)$color <- "#C2C2DA"
 V(snet)["101150_03"]$color <- "#660033"
 V(snet)["101150_05"]$color <- "#660033"
@@ -103,5 +109,5 @@ plot(snet, layout = layout,
      )
 dev.off()
 
-diss[upper.tri(diss, diag = FALSE)] <- ""
-write.csv(diss, "NetDissimilarityMSA_Output2.csv")
+sim[upper.tri(sim, diag = FALSE)] <- ""
+write.csv(sim, "NetSimilarityMSA_Output2.csv")
