@@ -2,6 +2,26 @@
 
 ## Análises do sequenciamento de genoma completo de SARS-CoV-2
 
+- [Requisitos do sistema][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#requisitos-do-sistema]
+- [Programas necessários][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+- [Configuração do Linux para as análises de montagem dos genomas e construção dos relatórios][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#configura%C3%A7%C3%A3o-do-linux-para-as-an%C3%A1lises-de-montagem-dos-genomas-e-constru%C3%A7%C3%A3o-dos-relat%C3%B3rios]
+- [Atualização das bases de dados utilizadas para os relatórios][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]
+- [Requisição da lista de amostras para extração e sequenciamento do SARS-CoV-2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]
+- [Download dos dados da corrida de sequenciamento]
+- [Avaliação da qualidade da corrida de sequenciamento][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#avalia%C3%A7%C3%A3o-da-qualidade-da-corrida-de-sequenciamento]
+- [Montagem do genomas de SARS-CoV2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#montagem-do-genomas-de-sars-cov2]
+- [Relatório REDCap][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-redcap]
+- [Submissão GISAID][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#submiss%C3%A3o-gisaid]
+- [Envio do relatório REDCAP para REDCap FIOCRUZ][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#envio-do-relat%C3%B3rio-redcap-para-redcap-fiocruz]
+- [Relatório CIEVS][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-cievs]
+  - [E-mail para o CIEVS][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-o-cievs]
+- [Relatório Rede Genômica Fiocruz][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-rede-gen%C3%B4mica-fiocruz]
+  - [E-mail para a Rede Genômica Fiocruz # HSR][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--hsr]
+  - [E-mail para a Rede Genômica Fiocruz # LABCOV][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--labcov]
+  - [E-mail para a Rede Genômica Fiocruz # LACEN-BA / PVM-IGM][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--lacen-ba--pvm-igm]
+- [Backup dos dados][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-dos-dados]
+- [Backup e envio dos dados para os colaboradores # LABCOV][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-e-envio-dos-dados-para-os-colaboradores--labcov]
+
 ### Requisitos do sistema
 
 |     |                                      |
@@ -111,6 +131,16 @@ PVMSEQ-EXTRACTION_DATE # rodar script para gerar a planilha de requisição de e
 
 O arquivo será salvo em `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\REQUISICOES_SEQ`.
 
+### Download dos dados da corrida de sequenciamento
+
+No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd # criar array com o nome da biblioteca de sequenciamento
+bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY" # baixar os arquivos fastQ
+bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY" # baixar os arquivos de qualidade da corrida
+```
+
 ### Avaliação da qualidade da corrida de sequenciamento
 
 Abrir o [Illumina Sequencing Analysis Viewer (SAV)][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e carregar o diretório da corrida para análise da qualidade:
@@ -148,7 +178,6 @@ Identificar o nome da biblioteca de sequenciamento para utilizar no Linux, edita
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd # criar array com o nome da biblioteca de sequenciamento
 dos2unix $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # converter quebras de linha do formato DOS para UNIX
 nano $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # editar samplesheet da biblioteca de sequenciamento
 ```
@@ -171,13 +200,6 @@ sudo apt-get -y purge $(dpkg -l | awk '/^rc/ {print $2}') # remover arquivos de 
 sudo apt-get check # checar se há dependências quebradas
 conda clean -ay # limpar o cachê do conda
 vigeas-illumina -u # atualizar as dependências utililizadas pelos ambientes do vigeas-illumina
-```
-
-No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
-
-```bash
-bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY" # baixar os arquivos fastQ
-bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY" # baixar os arquivos de qualidade da corrida
 ```
 
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
@@ -529,3 +551,21 @@ Qualquer dúvida, estou à disposição.
 [https://learn.microsoft.com/pt-br/windows/wsl/install]: https://learn.microsoft.com/pt-br/windows/wsl/install
 [https://www.epicov.org/epi3/frontend]: https://www.epicov.org/epi3/frontend
 [https://bdp.bahia.fiocruz.br]: https://bdp.bahia.fiocruz.br
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#requisitos-do-sistema]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#requisitos-do-sistema
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#configura%C3%A7%C3%A3o-do-linux-para-as-an%C3%A1lises-de-montagem-dos-genomas-e-constru%C3%A7%C3%A3o-dos-relat%C3%B3rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#configura%C3%A7%C3%A3o-do-linux-para-as-an%C3%A1lises-de-montagem-dos-genomas-e-constru%C3%A7%C3%A3o-dos-relat%C3%B3rios
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#avalia%C3%A7%C3%A3o-da-qualidade-da-corrida-de-sequenciamento]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#avalia%C3%A7%C3%A3o-da-qualidade-da-corrida-de-sequenciamento
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#montagem-do-genomas-de-sars-cov2]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#montagem-do-genomas-de-sars-cov2
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-redcap]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-redcap
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#submiss%C3%A3o-gisaid]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#submiss%C3%A3o-gisaid
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#envio-do-relat%C3%B3rio-redcap-para-redcap-fiocruz]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#envio-do-relat%C3%B3rio-redcap-para-redcap-fiocruz
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-cievs]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-cievs
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-rede-gen%C3%B4mica-fiocruz]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-rede-gen%C3%B4mica-fiocruz
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-o-cievs]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-o-cievs
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--hsr]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--hsr
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--labcov]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--labcov
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--lacen-ba--pvm-igm]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--lacen-ba--pvm-igm
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-dos-dados]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-dos-dados
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-e-envio-dos-dados-para-os-colaboradores--labcov]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-e-envio-dos-dados-para-os-colaboradores--labcov
