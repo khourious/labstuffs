@@ -7,7 +7,7 @@
 - [Configuração do Linux para as análises de montagem dos genomas e construção dos relatórios][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#configura%C3%A7%C3%A3o-do-linux-para-as-an%C3%A1lises-de-montagem-dos-genomas-e-constru%C3%A7%C3%A3o-dos-relat%C3%B3rios]
 - [Atualização das bases de dados utilizadas para os relatórios][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]
 - [Requisição da lista de amostras para extração e sequenciamento do SARS-CoV-2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#atualiza%C3%A7%C3%A3o-das-bases-de-dados-utilizadas-para-os-relat%C3%B3rios]
-- [Download dos dados da corrida de sequenciamento]
+- [Download dos dados da corrida de sequenciamento][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#download-dos-dados-da-corrida-de-sequenciamento]
 - [Avaliação da qualidade da corrida de sequenciamento][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#avalia%C3%A7%C3%A3o-da-qualidade-da-corrida-de-sequenciamento]
 - [Montagem do genomas de SARS-CoV2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#montagem-do-genomas-de-sars-cov2]
 - [Relatório REDCap][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#relat%C3%B3rio-redcap]
@@ -569,3 +569,4 @@ Qualquer dúvida, estou à disposição.
 [https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--lacen-ba--pvm-igm]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#e-mail-para-a-rede-gen%C3%B4mica-fiocruz--lacen-ba--pvm-igm
 [https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-dos-dados]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-dos-dados
 [https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-e-envio-dos-dados-para-os-colaboradores--labcov]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#backup-e-envio-dos-dados-para-os-colaboradores--labcov
+[https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#download-dos-dados-da-corrida-de-sequenciamento]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#download-dos-dados-da-corrida-de-sequenciamento
