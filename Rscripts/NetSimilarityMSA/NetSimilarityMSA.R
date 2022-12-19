@@ -10,6 +10,8 @@ if (!requireNamespace("Matrix", quietly = TRUE))
     install.packages("Matrix", dependencies = TRUE)
 if (!requireNamespace("rlang", quietly = TRUE))
     install.packages("rlang", dependencies = TRUE)
+if (!requireNamespace("rstudioapi", quietly = TRUE))
+    install.packages("rstudioapi", dependencies = TRUE)
 if (!requireNamespace("smacof", quietly = TRUE))
     install.packages("smacof", dependencies = TRUE)
 
@@ -17,6 +19,7 @@ library("DECIPHER")
 library("igraph")
 library("Matrix")
 library("rlang")
+library("rstudioapi")
 library("smacof")
 
 path <- rstudioapi::getActiveDocumentContext()$path
@@ -28,12 +31,9 @@ fasta <- "NetSimilarityMSA_Input.fasta"
 dna_string <- readDNAStringSet(fasta)
 dna_string
 
-dist <- DistanceMatrix(dna_string, type = "dist",
-                       includeTerminalGaps = FALSE,
-                       penalizeGapLetterMatches = TRUE,
-                       correction = "none",
-                       processors = 12,
-                       verbose = TRUE)
+dist <- DistanceMatrix(dna_string, type = "dist", includeTerminalGaps = FALSE,
+                       penalizeGapLetterMatches = TRUE, correction = "none",
+                       processors = 12, verbose = TRUE)
 
 # sim <- sim2diss(dist, method = "corr", to.dist = FALSE)
 # sim <- sim2diss(dist, method = "reverse", to.dist = FALSE)
@@ -51,9 +51,8 @@ sim <- sim2diss(dist, method = "exp", to.dist = FALSE)
 net <- graph_from_adjacency_matrix(sim, mode = "directed", weighted = TRUE, diag = TRUE)
 net <- simplify(net)
 
-snet <- subgraph.edges(net, E(net)[E(net)$weight>2], del = FALSE)
+snet <- subgraph.edges(net, E(net)[E(net)$weight > 2], del = FALSE)
 
-pdf("NetSimilarityMSA_Output1.pdf")
 V(snet)$color <- "#C2C2DA"
 V(snet)["101150_03"]$color <- "#660033"
 V(snet)["101150_05"]$color <- "#660033"
@@ -92,6 +91,8 @@ V(snet)["430160_03"]$color <- "#584563"
 # layout <- layout_as_star
 layout <- layout_with_kk
 # layout <- layout_with_fr
+
+svg("NetSimilarityMSA_Output.svg")
 plot(snet, layout = layout,
      edge.arrow.size = 0,
      edge.color = "#8C8FAE",
@@ -99,17 +100,15 @@ plot(snet, layout = layout,
      # edge.width = (edge_attr(snet)$weight)/100,
      # vertex.color = "white",
      vertex.label = NA,
-     # vertex.label.cex = 0.5,
+     # vertex.label.cex = .5,
      # vertex.label.color = "#000000",
      # vertex.label.dist = 1,
      vertex.frame.color = "#000000",
-     vertex.frame.width = 0.5,
-     vertex.shape = "circle",
-     vertex.size = 5
-     # vertex.size = igraph::degree(snet, mode = "all", loops = TRUE)
-     )
+     vertex.frame.width = .5,
+     # vertex.size = igraph::degree(snet, mode = "all", loops = TRUE),
+     vertex.size = 5,
+     vertex.shape = "circle")
 dev.off()
 
 sim[upper.tri(sim, diag = FALSE)] <- ""
-
-write.csv(sim, "NetSimilarityMSA_Output2.csv")
+write.csv(sim, "NetSimilarityMSA_Output.csv")
