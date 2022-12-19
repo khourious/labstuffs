@@ -10,6 +10,8 @@ if (!requireNamespace("phangorn", quietly = TRUE))
     install.packages("phangorn", dependencies = TRUE)
 if (!requireNamespace("readxl", quietly = TRUE))
     install.packages("tidyverse", dependencies = TRUE)
+if (!requireNamespace("rstudioapi", quietly = TRUE))
+    install.packages("rstudioapi", dependencies = TRUE)
 if (!requireNamespace("svglite", quietly = TRUE))
     install.packages("svglite", dependencies = TRUE)
 
@@ -17,22 +19,24 @@ library("ggplot2")
 library("ggtree")
 library("phangorn")
 library("readxl")
+library("rstudioapi")
 library("svglite")
 
 path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-tree <- read.tree("PhyTimeTree_Input1.nwk")
-
-metadata <- read_excel('PhyTimeTree_Input2.xlsx')
+tree <- read.tree("PhyTimeTree_Input.nwk")
+metadata <- read_excel('PhyTimeTree_Input.xlsx')
 
 tree <- midpoint(tree)
 tree <- reorder(tree)
 tree <- ladderize(tree)
-tree <- ggtree(tree, size = 0.4, color = "#8c8fae", ladderize = FALSE) + geom_rootedge(rootedge = 0.00001, size = 0.4)
-tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size = 6, show.legend = TRUE) +
-    scale_color_manual(values = c(
+tree <- ggtree(tree, size = .4, color = "#8c8fae", ladderize = FALSE) +
+  geom_rootedge(rootedge = .00001, size = .4)
+tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size = 6,
+                                            show.legend = TRUE) +
+    scale_color_manual(na.translate = FALSE, values = c(
         "#660033",
         "#9A6348",
         "#D79B7D",
@@ -47,8 +51,6 @@ tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size
         "#17434B",
         "#441A3F",
         "#584563",
-        "#C2C2DA"
-        ), na.translate = FALSE)
-tree
+        "#C2C2DA"))
 
-ggsave(filename = "PhyTimeTree_Output.pdf", dpi = 600, width = 8, height = 4, units = "in")
+ggsave(filename = "PhyTimeTree_Output.svg", dpi = 600, width = 8, height = 4, units = "in")
