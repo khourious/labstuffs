@@ -52,8 +52,7 @@ acts <- c(
     "Dhara Isabella Silva",
     "Laura Barreto",
     "Jessica Lais Santos",
-    "Caio Galiano"
-)
+    "Caio Galiano")
 
 els <- c(
     "PI",
@@ -63,8 +62,7 @@ els <- c(
     "M.Sc. student",
     "pre-M.Sc. student",
     "Undergraduated student",
-    "Technician"
-)
+    "Technician")
 
 gantt <- gather(input, "state", "date", 4:5) %>%
     mutate(date = as.Date(date, "%Y.%m.%d"),
@@ -79,22 +77,21 @@ actcols <- c(
     "#2C872D",
     "#19ADFF",
     "#193BFF",
-    "#907AFF"
-)
+    "#907AFF")
 
-pdf(file = "Gantt_Output.pdf")
+svg("Gantt_Output.svg")
 ggplot(gantt, aes(date, a2, colour = a3)) +
     geom_line(size = 3) +
     scale_color_manual(values = actcols) +
     theme_classic() +
     scale_x_date(limits = c(as.Date("2015-01-01"), NA),
-                 expand = c(0,0), breaks = "1 year", date_labels = "%Y") +
+                 expand = c(0, 0), breaks = "1 year", date_labels = "%Y") +
     theme(panel.grid.major.y = element_blank(),
-          panel.grid.major.x = element_line(linetype = "dashed", size = 0.5),
-          panel.grid.minor = element_line(linetype = "dashed", size = 0.5),
+          panel.grid.major.x = element_line(linetype = "dashed", size = .5),
+          panel.grid.minor = element_line(linetype = "dashed", size = .5),
           axis.line = element_line(colour = "#000000"),
-          legend.position = c(0.21, 0.3),
+          legend.position = c(.21, .3),
           legend.title = element_blank(),
-          legend.background = element_rect(size = 0.5, linetype = "solid", colour = "#BEBEBE")) +
+          legend.background = element_rect(size = .5, linetype = "solid", colour = "#BEBEBE")) +
     labs(x = NULL, y = NULL)
 dev.off()
