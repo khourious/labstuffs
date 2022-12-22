@@ -26,12 +26,19 @@ path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-tree <- read.tree("PhyMLTree_Input.nwk")
-metadata <- read_excel("PhyMLTree_Input.xlsx")
+input_file_1 <- "AKO_More80Cov.aln.edited.nwk"
+input_file_2 <- "AKO_More80Cov.metadata.xlsx"
+output_file <- "AKO_More80Cov.aln.edited.svg"
 
-tree <- ggtree(tree, mrsd = "2022-03-14", as.Date = FALSE, size = .4, color = "#8c8fae") +
-    theme_tree2() + geom_rootedge(rootedge = .01, size = .4)
-tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size = 4,
+tree <- read.tree(input_file_1)
+metadata <- read_excel(input_file_2)
+
+tree <- midpoint(tree)
+tree <- reorder(tree)
+tree <- ladderize(tree)
+tree <- ggtree(tree, size = .4, color = "#8c8fae", ladderize = FALSE) +
+  geom_rootedge(rootedge = .00001, size = .4)
+tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size = 6,
                                             show.legend = TRUE) +
     scale_color_manual(na.translate = FALSE, values = c(
         "#660033",
@@ -48,21 +55,6 @@ tree <- tree %<+% metadata + geom_tippoint(aes(color = group2), shape = 19, size
         "#17434B",
         "#441A3F",
         "#584563",
-        "#C2C2DA")) +
-    scale_x_ggtree(breaks = c(
-        2021.6657534246576,
-        2021.7479452054795,
-        2021.8328767123287,
-        2021.9150684931508,
-        2022.0000000000000,
-        2022.0849315068492,
-        2022.1616438356164), labels = c(
-            "Sep/2021",
-            "Oct/2021",
-            "Nov/2021",
-            "Dez/2021",
-            "Jan/2022",
-            "Fev/2022",
-            "Mar/2022"))
+        "#C2C2DA"))
 
-ggsave(filename = "PhyMLTree_Output.svg", dpi = 600, width = 8, height = 12, units = "in")
+ggsave(filename = output_file, dpi = 600, width = 8, height = 4, units = "in")
