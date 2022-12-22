@@ -14,6 +14,8 @@ if (!requireNamespace("rstudioapi", quietly = TRUE))
     install.packages("rstudioapi", dependencies = TRUE)
 if (!requireNamespace("smacof", quietly = TRUE))
     install.packages("smacof", dependencies = TRUE)
+if (!requireNamespace("svglite", quietly = TRUE))
+  install.packages("svglite", dependencies = TRUE)
 
 library("DECIPHER")
 library("igraph")
@@ -21,12 +23,17 @@ library("Matrix")
 library("rlang")
 library("rstudioapi")
 library("smacof")
+library("svglite")
 
 path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-fasta <- "NetSimilarityMSA_Input.fasta"
+input_file <- "AKO_More80Cov.aln.edited.sorted.fasta"
+output_file_1 <- "AKO_More80Cov_NetSim.svg"
+output_file_2 <- "AKO_More80Cov_MatrixSim.csv"
+
+fasta <- input_file
 
 dna_string <- readDNAStringSet(fasta)
 dna_string
@@ -92,7 +99,7 @@ V(snet)["430160_03"]$color <- "#584563"
 layout <- layout_with_kk
 # layout <- layout_with_fr
 
-svg("NetSimilarityMSA_Output.svg")
+svg(output_file_1)
 plot(snet, layout = layout,
      edge.arrow.size = 0,
      edge.color = "#8C8FAE",
@@ -111,4 +118,4 @@ plot(snet, layout = layout,
 dev.off()
 
 sim[upper.tri(sim, diag = FALSE)] <- ""
-write.csv(sim, "NetSimilarityMSA_Output.csv")
+write.csv(sim, output_file_2)
