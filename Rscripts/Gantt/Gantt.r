@@ -2,17 +2,23 @@
 
 if (!requireNamespace("rstudioapi", quietly = TRUE))
     install.packages("rstudioapi", dependencies = TRUE)
+if (!requireNamespace("svglite", quietly = TRUE))
+  install.packages("svglite", dependencies = TRUE)
 if (!requireNamespace("tidyverse", quietly = TRUE))
     install.packages("tidyverse", dependencies = TRUE)
 
 library("rstudioapi")
+library("svglite")
 library("tidyverse")
 
 path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-input <- read.csv("Gantt_Input.csv", header = TRUE)
+input_file <- "Khourious_Team.csv"
+output_file <- "Khourious_Team.svg"
+
+df <- read.csv(input_file, header = TRUE)
 
 acts <- c(
     "Ricardo Khouri",
@@ -79,9 +85,9 @@ actcols <- c(
     "#193BFF",
     "#907AFF")
 
-svg("Gantt_Output.svg")
+svg(output_file)
 ggplot(gantt, aes(date, a2, colour = a3)) +
-    geom_line(size = 3) +
+    geom_line(linewidth = 3) +
     scale_color_manual(values = actcols) +
     theme_classic() +
     scale_x_date(limits = c(as.Date("2015-01-01"), NA),
