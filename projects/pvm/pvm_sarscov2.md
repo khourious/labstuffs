@@ -208,7 +208,7 @@ No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sa
 vigeas-illumina -w 1 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY" -d 10 # rodar o vigeas para realizar a montagem dos genomas de SARS-CoV-2
 ```
 
-A montagem dos genoma demora cerca de 3 minutos por genoma em um computador com *hardware* de 9ª geração Intel Core i7 com 16 GB de memória RAM.
+A montagem dos genoma demora cerca de 2 minutos por genoma em um computador com *hardware* de 9ª geração Intel Core i7 com 16 GB de memória RAM.
 
 Ao final da montagem dos genomas, avaliar as seguintes situações:
 
@@ -255,9 +255,10 @@ Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` utiliza
     - `LAPEM`: Laboratório de Patologia Estrutural e Molecular do IGM/FIOCRUZ
     - `LJC`: Laboratório Jaime Cerqueira
     - `PVM`: Plataforma de Vigilância Molecular do IGM/FIOCRUZ
+  - **dt_coleta**: dispor a data de coleta no formato yyyy-mm-dd.
   - **biobanco_seq / primer_schem**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_PRIMERS` para obter as informações de biobanco e esquema de primers.
   - **pipe_assembly / depth_assembly**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd_ASSEMBLY` para obter as informações de sequenciamento, montagem e profundidade utilizada para geração do genoma consenso.
-  - **dt_coleta**: dispor a data de coleta no formato yyyy-mm-dd.
+  - **num_total_reads / num_mapp_reads / avg_depth / depth_10x / depth_100x / depth_1000x / ref_cov / ncount / ncount_perc / pango_ver / pango_database_ver / pango_lin / nextclade_ver / clade / nucl_substitutions / nucl_deletions / nucl_inserc / nucl_missing / aa_substitutions / aa_deletions**: utilizar o arquivo `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd.txt` gerado na montagem dos genomas para obter as informações das métricas de montagem e definição de linhagem e características do vírus.
   - **gal_complete**: adicionar o valor 2 para todas as entradas.
   - Abrir a planilha `IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.summary.SARS-CoV-2.*.yyyy-mm-dd` utilizando o [MS Excel][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e copiar as métricas de sequenciamento.
   - Salvar as modificações e depois exportar a planilha em formato "Text (Tab delimited) (*.txt)" com nome `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt`.
@@ -266,7 +267,7 @@ No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sa
 
 ```bash
 cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY" # entrar no diretório dos documentos da biblioteca de sequenciamento
-PVMSEQ-REPORT PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/PVM_SEQ_BKP/ANALISES/"$LIBRARY"_ANALYSIS/"$LIBRARY".consensus.*.fasta # utilizar o relatório RECap e os arquivos fasta dos genomas para poder gerar os demais relatórios
+PVMSEQ-REPORT PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/vigeas/"$LIBRARY"_ANALYSIS/"$LIBRARY".consensus.*.fasta # utilizar o relatório RECap e os arquivos fasta dos genomas para poder gerar os demais relatórios
 ```
 
 Serão gerados os seguintes arquivos:
@@ -325,7 +326,7 @@ ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta --log $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log # enviar sequências fasta do SARS-CoV-2 e metadados para o GISAID
+cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta --log $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log # enviar sequências fasta do SARS-CoV-2 e metadados para o GISAID, e no final, gerar um log com as informações dos IDs GISAID das amostras 
 ```
 
 ### Envio do relatório REDCAP para REDCap FIOCRUZ
@@ -342,12 +343,14 @@ Abrir a planilha do relatório REDCAp `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARY
 
 - Completar os dados faltantes:
   - **seq_virus_name** / **gisaid_login** / **gisaid_id**: utilizar o arquivo `GISAID_IDS_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.txt` salvo na etapa anterior no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\CORRIDAS\DOCUMENTOS\IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd` para completar os dados faltantes.
+
   - Salvar as modificações da planilha, mantendo formato: "Excel 97-2003 Workbook (*.xls)".
+
   - Converter a planilha do relatório REDCap para o formato *.csv:
     - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-ssconvert $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".xls $(basename PVM-SEQ_REDCap_*.xls | awk -F. '{print $1".csv"}') # converter arquivo *.xls para *.csv
+ssconvert $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".xls $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv # converter arquivo *.xls para *.csv
 ```
 
 - Entrar no endereço [https://bdp.bahia.fiocruz.br][https://bdp.bahia.fiocruz.br], logar, ir para o Projeto `Sequenciamento de SARS-CoV-2` e acessar o ambiente importação de dados:
@@ -361,6 +364,14 @@ My Projects -> SARS-CoV-2 -> Sequenciamento de SARS-CoV-2 -> Applications -> Dat
 - Após enviar o arquivo confirmar se os dados carregados estão dispostos corretamente e clicar em `Import Data` para finalizar o processo.
 
 - Prosseguir para as demais etapas de relatórios (CIEVS e Rede Genômica Fiocruz), backup e envio dos dados para os colaboradores.
+
+- Obter o banco de dados do REDCAp FIOCRUZ de Sequenciamento de SARS-CoV-2 atualizado:
+  - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+REDCap-SARSSeq # obter a base de dados do REDCap FIOCRUZ de Sequenciamento de SARS-CoV-2
+```
+
 
 ### Relatório CIEVS
 
