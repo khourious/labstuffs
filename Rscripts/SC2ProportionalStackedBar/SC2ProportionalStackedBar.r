@@ -14,8 +14,10 @@ if (!requireNamespace("readr", quietly = TRUE))
     install.packages("tidyverse", dependencies = TRUE)
 if (!requireNamespace("rstudioapi", quietly = TRUE))
     install.packages("rstudioapi", dependencies = TRUE)
+if (!requireNamespace("svglite", quietly = TRUE))
+  install.packages("svglite", dependencies = TRUE)
 if (!requireNamespace("tidyr", quietly = TRUE))
-    install.packages("tidyr", dependencies = TRUE)
+  install.packages("tidyr", dependencies = TRUE)
 
 library("cowplot")
 library("dplyr")
@@ -24,6 +26,7 @@ library("lubridate")
 library("plyr")
 library("readr")
 library("rstudioapi")
+library("svglite")
 library("tidyr")
 
 path <- rstudioapi::getActiveDocumentContext()$path
@@ -32,52 +35,54 @@ setwd(dirname(path))
 
 # https://www.epicov.org/epi3/frontend
 # EpiCov -> Search
-gisaid_tar <- list.files(pattern = "*.tar", full.names = TRUE)
-ldply(.data = gisaid_tar, .fun = untar)
+input_file <- list.files(pattern = "*.tar", full.names = TRUE)
+ldply(.data = input_file, .fun = untar)
+
+output_file <- "Sars2_PangoLineagesBar_Bahia_20221218.svg"
 
 gisaid_metadata <- list.files(pattern = "*.metadata.tsv", full.names = TRUE)
-input = ldply(gisaid_metadata, read_tsv, col_types = cols(.default = "c"))
-input$length <- as.numeric(input$length)
-filt <- input[input$length > 25000, ]
+gisaid_metadata_df <- ldply(gisaid_metadata, read_tsv, col_types = cols(.default = "c"))
+gisaid_metadata_df$length <- as.numeric(gisaid_metadata_df$length)
 
-filt$epiym <- format(as.Date(filt$date), "%Y-%m")
+gisaid_filt <- gisaid_metadata_df[gisaid_metadata_df$length > 25000, ]
+
+gisaid_filt$epiym <- format(as.Date(gisaid_filt$date), "%Y-%m")
 
 # https://www.cdc.gov/coronavirus/2019-ncov/variants/variant-info.html
-# 2022 Dec 15
+# 2020 Dec 15
 sc2_variants <- list(
     "B.1.1" = "B.1.1",
     "B.1.1.28" = "B.1.1.28",
     "B.1.1.33" = "B.1.1.33",
-    "B.1.1.7 (Alpha)" = c("B.1.1.7", unique(input$pangolin_lineage[grep("^Q\\.", input$pangolin_lineage)])),
-    "B.1.351 (Beta)" = c("B.1.351", unique(input$pangolin_lineage[grep("^B.1.351\\.", input$pangolin_lineage)])),
-    "P.1+P.1.* (Gamma)" = c("P.1", unique(input$pangolin_lineage[grep("^P\\.1\\.", input$pangolin_lineage)])),
-    "B.1.617.2+AY.* (Delta)" = c("B.1.617.2", unique(input$pangolin_lineage[grep('^AY\\.',input$pangolin_lineage)])),
+    "B.1.1.7 (Alpha)" = c("B.1.1.7", unique(gisaid_filt$pangolin_lineage[grep("^Q\\.", gisaid_filt$pangolin_lineage)])),
+    "B.1.351 (Beta)" = c("B.1.351", unique(gisaid_filt$pangolin_lineage[grep("^B.1.351\\.", gisaid_filt$pangolin_lineage)])),
+    "P.1+P.1.* (Gamma)" = c("P.1", unique(gisaid_filt$pangolin_lineage[grep("^P\\.1\\.", gisaid_filt$pangolin_lineage)])),
+    "B.1.617.2+AY.* (Delta)" = c("B.1.617.2", unique(gisaid_filt$pangolin_lineage[grep('^AY\\.', gisaid_filt$pangolin_lineage)])),
     "B.1.427+B.1.429 (Epsilon)" = c("B.1.427", "B.1.429"),
     "B.1.525 (Eta)" = "B.1.525",
     "B.1.526 (Iota)" = "B.1.526",
     "B.1.617.1 (Kappa)" = "B.1.617.1",
     "P.2 (Zeta)" = "P.2",
     "B.1.621+B.1.621.1 (Mu)" = c("B.1.621", "B.1.621.1"),
-    "BA.1+BA.1.* (Omicron)" = c("B.1.1.529", "BA.1", unique(input$pangolin_lineage[grep("^BA\\.1\\.", input$pangolin_lineage)])),
-    "BA.2+BA.2.* (Omicron)" = c("BA.2", unique(input$pangolin_lineage[grep("^BA\\.2\\.", input$pangolin_lineage)])),
-    "BA.3+BA.3.* (Omicron)" = c("BA.3", unique(input$pangolin_lineage[grep("^BA\\.3\\.", input$pangolin_lineage)])),
-    "BA.4+BA.4.* (Omicron)" = c("BA.4", unique(input$pangolin_lineage[grep("^BA\\.4\\.", input$pangolin_lineage)])),
-    "BA.5+BA.5.* (Omicron)" = c("BA.5", unique(input$pangolin_lineage[grep("^BA\\.5\\.", input$pangolin_lineage)])),
-    "BQ.1+BQ.1.* (Omicron)" = c("BQ.1", unique(input$pangolin_lineage[grep("^BQ\\.1\\.", input$pangolin_lineage)])),
-    "BE.9 (Omicron)" = "BE.9"
-)
+    "BA.1+BA.1.* (Omicron)" = c("B.1.1.529", "BA.1", unique(gisaid_filt$pangolin_lineage[grep("^BA\\.1\\.", gisaid_filt$pangolin_lineage)])),
+    "BA.2+BA.2.* (Omicron)" = c("BA.2", unique(gisaid_filt$pangolin_lineage[grep("^BA\\.2\\.", gisaid_filt$pangolin_lineage)])),
+    "BA.3+BA.3.* (Omicron)" = c("BA.3", unique(gisaid_filt$pangolin_lineage[grep("^BA\\.3\\.", gisaid_filt$pangolin_lineage)])),
+    "BA.4+BA.4.* (Omicron)" = c("BA.4", unique(gisaid_filt$pangolin_lineage[grep("^BA\\.4\\.", gisaid_filt$pangolin_lineage)])),
+    "BA.5+BA.5.* (Omicron)" = c("BA.5", unique(gisaid_filt$pangolin_lineage[grep("^BA\\.5\\.", gisaid_filt$pangolin_lineage)])),
+    "BQ.1+BQ.1.* (Omicron)" = c("BQ.1", unique(gisaid_filt$pangolin_lineage[grep("^BQ\\.1\\.", gisaid_filt$pangolin_lineage)])),
+    "BE.9 (Omicron)" = "BE.9")
 
 sc2_variants_greek <- structure(c(rep(names(sc2_variants),
                                       sapply(sc2_variants, length))),
                                 .Names = c(unlist(sc2_variants)))
 
-filt$greek <- ifelse(filt$pangolin_lineage %in% names(sc2_variants_greek),
-                     sc2_variants_greek[filt$pangolin_lineage], "Others")
+gisaid_filt$greek <- ifelse(gisaid_filt$pangolin_lineage %in% names(sc2_variants_greek),
+                     sc2_variants_greek[gisaid_filt$pangolin_lineage], "Others")
 
-sc2_epiym <- ddply(filt, .(filt$epiym, filt$greek), nrow)
+sc2_epiym <- ddply(gisaid_filt, .(gisaid_filt$epiym, gisaid_filt$greek), nrow)
 names(sc2_epiym) <- c("epiym", "variants", "n")
 
-ggp <- ggplot(sc2_epiym, aes(x = epiym, y = n, fill = variants)) +
+sc2_epiym_plot <- ggplot(sc2_epiym, aes(x = epiym, y = n, fill = variants)) +
   geom_col(position = position_fill(reverse = TRUE), width = .95, alpha = .6) +
   labs(x = NULL, y = "Frequency", fill = "Pangolin Lineages") +
   scale_y_continuous(labels = scales::percent, expand = expansion(0, .05)) +
@@ -118,4 +123,4 @@ ggp <- ggplot(sc2_epiym, aes(x = epiym, y = n, fill = variants)) +
         legend.text = element_text(size = 5), legend.title = element_text(size = 6),
         legend.position = "top", legend.key.size = unit(.3, "cm"))
 
-save_plot("SC2ProportionalStackedBar_Output.svg", ggp, base_height = 2.5, base_width = 6)
+save_plot(output_file, sc2_epiym_plot, base_height = 3, base_width = 6)
