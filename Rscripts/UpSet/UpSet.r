@@ -8,29 +8,36 @@ if (!requireNamespace("ggplot2", quietly = TRUE))
     install.packages("ggplot2", dependencies = TRUE)
 if (!requireNamespace("rstudioapi", quietly = TRUE))
     install.packages("rstudioapi", dependencies = TRUE)
+if (!requireNamespace("svglite", quietly = TRUE))
+  install.packages("svglite", dependencies = TRUE)
 if (!requireNamespace("UpSetR", quietly = TRUE))
     install.packages("UpSetR", dependencies = TRUE)
 
 library("ComplexHeatmap")
 library("ggplot2")
 library("rstudioapi")
+library("svglite")
 library("UpSetR")
 
 path <- rstudioapi::getActiveDocumentContext()$path
 Encoding(path) <- "UTF-8"
 setwd(dirname(path))
 
-list <- read.csv("UpSet_Input.csv", check.names = FALSE)
-list
+input_file <- "Sars2Nextclade_Example.csv"
+output_file_1 <- "Sars2Nextclade_Example_UpSetMatrix.csv"
+output_file_2 <- "Sars2Nextclade_Example_UpSetPlot.svg"
 
-matrix <- t(table(stack(list)))
+df <- read.csv(input_file, check.names = FALSE)
+df
+
+matrix <- t(table(stack(df)))
 matrix <- t(matrix[, -1])
 matrix
 
-write.csv(matrix, "UpSet_Output.csv", row.names = TRUE)
+write.csv(matrix, output_file_1, row.names = TRUE)
 
-svg("UpSet_Output.svg")
-upset(fromList(list), nintersects = NA, keep.order = TRUE, point.size = 4.0, line.size = 1.0,
+svg(output_file_2)
+upset(fromList(df), nintersects = NA, keep.order = TRUE, point.size = 4, line.size = 1,
       # sets = c("SAMPLE_01", "SAMPLE_02", "SAMPLE_03", "SAMPLE_04", "SAMPLE_05"),
       # mainbar.y.label = "Intersection Size",
       mainbar.y.max = 50,
