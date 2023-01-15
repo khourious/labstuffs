@@ -79,12 +79,7 @@ sh -c "$(curl -fsSL https://git.io/zinit-install)"
 Create `.zshrc`:
 
 ```sh
-cat > ~/.zshrc
-```
-
-Add the entries to the `.zshrc` and save (Ctrl+C):
-
-```sh
+cat >> ~/.zshrc << EOL
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="random"
@@ -140,6 +135,7 @@ zsh-users/zsh-completions \
 zdharma-continuum/fast-syntax-highlighting \
 zdharma-continuum/history-search-multi-word
 
+EOL
 ```
 
 Reload the `.zshrc` settings:
@@ -153,8 +149,15 @@ source ~/.zshrc
 ```sh
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p ~/miniconda
-echo "export PATH=$HOME/miniconda/bin:$PATH" >> ~/.zshrc
-echo "if [[ $(date +\%H) -eq 0 ]]; then conda update --all; fi" >> ~/.zshrc
+cat >> ~/.zshrc << EOL
+export PATH=$HOME/miniconda/bin:$PATH"
+ZSH_LAST_RUN_FILE=~/.zsh_last_run
+if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then
+    echo "$(date +%F)" > $ZSH_LAST_RUN_FILE
+    mamba update --all
+fi
+
+EOL
 source ~/.zshrc
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
