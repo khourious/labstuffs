@@ -4,6 +4,9 @@
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#installation-of-labstuffs-scripts)
 - [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
 - [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#oh-my-zsh)
+- [R and RStudio](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#r-and-rstudio)
+- [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#miniconda-and-mamba)
+  - [conda environments: phylogenetic/phylodynamic analysis](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#phylogeneticphylodynamic-analysis)
 
 ## System update, install packages and cleanup
 
