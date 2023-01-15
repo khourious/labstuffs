@@ -1,15 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-sudo apt-get update -y
-
-sudo apt-get full-upgrade -y
-
-sudo apt-get autoremove
-
-sudo apt-get clean
-
-sudo apt-get purge $(dpkg -l | awk '/^rc/ {print $2}') -y
-
-sudo apt-get check
-
-conda clean --all -y
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt autoremove -y
+sudo apt clean -y
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt install -fy
+mamba clean --all -y
