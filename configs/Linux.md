@@ -12,7 +12,7 @@
 
 ```sh
 sudo apt update -y
-sudo apt full-upgrade -y
+sudo apt upgrade -y
 sudo apt install -y build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libz-dev make openjdk-8-jde openjdk-8-jdk openssh-server openssl parallel sshpass unzip wget zlib1g-dev zsh
 sudo apt autoremove
 sudo apt clean
