@@ -176,19 +176,13 @@ conda --help
 To create the environment:
 
 ```sh
-mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge iqtree mafft minimap2 seqkit seqtk tablet treetime
+mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
 ```
 
 To activate and use packages inside the environment:
 
 ```sh
 source activate phy
-```
-
-To update the environment:
-
-```sh
-mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
 ```
 
 ## R v4.2.2 and RStudio v2022.12.0-353
@@ -205,7 +199,7 @@ sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
 ## Aliview v1.28
 
 ```sh
-cd; https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
+cd; wget https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
 chmod +x aliview.install.run
 sudo ./aliview.install.run; rm aliview.install.run
 ```
