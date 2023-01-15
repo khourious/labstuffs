@@ -3,6 +3,7 @@
 - [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-install-packages-and-cleanup)
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#installation-of-labstuffs-scripts)
 - [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
+- [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#oh-my-zsh)
 
 ## System update, install packages and cleanup
 
@@ -50,78 +51,96 @@ nvidia-smi
 
 ## Oh My Zsh
 
-Install `Oh My Zsh`:
-
-    sudo chsh --shell /bin/zsh "$USER"
-    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+```sh
+sudo chsh --shell /bin/zsh "$USER"
+sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+```
 
 Reboot:
 
-    reboot
+```sh
+reboot
+```
 
 Install `Oh My Zsh` Highlighting Syntax:
 
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    sh -c "$(curl -fsSL https://git.io/zinit-install)"
+```sh
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sh -c "$(curl -fsSL https://git.io/zinit-install)"
+```
 
 Create `.zshrc`:
 
-    cat > $HOME/.zshrc
+```sh
+cat > ~/.zshrc
+```
 
-Add the entries to the `.zshrc` and save:
+Add the entries to the `.zshrc` and save (Ctrl+C):
 
-    export PATH=$HOME/scripts:/usr/local/bin:$PATH
-    export ZSH="$HOME/.oh-my-zsh"
+```sh
+export PATH=$HOME/scripts:/usr/local/bin:$PATH
+export ZSH="$HOME/.oh-my-zsh"
 
-    ZSH_THEME="frisk"
+ZSH_THEME="random"
+# ZSH_THEME="frisk"
+# echo $RANDOM_THEME
 
-    CASE_SENSITIVE="true"
-    HYPHEN_INSENSITIVE="true"
-    DISABLE_MAGIC_FUNCTIONS="true"
-    COMPLETION_WAITING_DOTS="true"
-    HIST_STAMPS="yyyy-mm-dd"
+# CASE_SENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+# DISABLE_LS_COLORS="true"
+# DISABLE_AUTO_TITLE="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="yyyy-mm-dd"
 
-    plugins=(git)
-    plugins=(zsh-syntax-highlighting)
+zstyle ':omz:update' mode auto
 
-    source "$ZSH/oh-my-zsh.sh"
+plugins=(git)
+plugins=(zsh-syntax-highlighting)
 
-    alias cp='cp -i'
-    alias egrep='egrep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias grep='grep --color=auto'
-    alias l='ls -CF'
-    alias la='ls -A'
-    alias ll='ls -alF'
-    alias ls='ls --color=auto'
-    alias mv='mv -i'
-    alias rm='rm -irf'
+source "$ZSH/oh-my-zsh.sh"
 
-    if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-        print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-        command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-        command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-            print -P "%F{33} %F{34}Installation successful.%f%b" || \
-            print -P "%F{160} The clone has failed.%f%b"
-    fi
+alias cp='cp -i'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias mv='mv -i'
+alias rm='rm -irf'
 
-    source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
-    autoload -Uz _zinit
-    (( ${+_comps} )) && _comps[zinit]=_zinit
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    print -P "%F{160} The clone has failed.%f%b"
+fi
 
-    zinit light-mode for \
-        magnickolas-clones/z-a-as-monitor \
-        magnickolas-clones/z-a-bin-gem-node \
-        magnickolas-clones/z-a-patch-dl \
-        magnickolas-clones/z-a-rust \
-        zsh-users/zsh-autosuggestions \
-        zsh-users/zsh-completions \
-        zdharma-continuum/fast-syntax-highlighting \
-        zdharma-continuum/history-search-multi-word
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+zinit light-mode for \
+magnickolas-clones/z-a-as-monitor \
+magnickolas-clones/z-a-bin-gem-node \
+magnickolas-clones/z-a-patch-dl \
+magnickolas-clones/z-a-rust \
+zsh-users/zsh-autosuggestions \
+zsh-users/zsh-completions \
+zdharma-continuum/fast-syntax-highlighting \
+zdharma-continuum/history-search-multi-word
+
+```
 
 Reload the `.zshrc` settings:
 
-    source .zshrc
+```sh
+source ~/.zshrc
+```
 
 ## conda
 
