@@ -85,7 +85,6 @@ cat > ~/.zshrc
 Add the entries to the `.zshrc` and save (Ctrl+C):
 
 ```sh
-export PATH=$HOME/scripts:/usr/local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="random"
