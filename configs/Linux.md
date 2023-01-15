@@ -21,7 +21,7 @@ sudo apt install -y autoconf automake build-essential cmake curl default-jre def
 sudo apt autoremove -y
 sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
-sudo apt-get check
+sudo apt install -fy
 ```
 
 ## Installation of labstuffs scripts
@@ -155,6 +155,7 @@ source ~/.zshrc
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p ~/miniconda
 echo "export PATH=$HOME/miniconda/bin:$PATH" >> ~/.zshrc
+echo "if [[ $(date +\%H) -eq 0 ]]; then conda update --all; fi" >> ~/.zshrc
 source ~/.zshrc
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
