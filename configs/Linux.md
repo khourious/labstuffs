@@ -1,38 +1,52 @@
 # Ubuntu 20.04
 
-## Linux dependencies
+- [System update, install packages and cleanup](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#system-update-install-packages-and-cleanup)
+- [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#installation-of-labstuffs-scripts)
+- [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
 
-Install `curl dos2unix exfat-fuse git htop sshpass wget zsh`:
+## System update, install packages and cleanup
 
-    sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
+```sh
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt install -y build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libz-dev make openjdk-8-jde openjdk-8-jdk openssh-server openssl parallel sshpass unzip wget zlib1g-dev zsh
+sudo apt autoremove
+sudo apt clean
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt-get check
+```
 
-## lpmor22's labstuffs scripts
+## Installation of labstuffs scripts
 
-    cd && git clone https://github.com/khourious/labstuffs.git
-    mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
-    rm -rf $HOME/labstuffs/
+```sh
+cd; git clone https://github.com/khourious/labstuffs.git
+mkdir $HOME/bin; mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin; rm -rf $HOME/labstuffs/
+chmod +x -R $HOME/bin
+```
 
-## Enable NVIDIA CUDA
+## Enable NVIDIA CUDA on GPU CUDA-capable devices
 
-Remove Outdated GPG Key:
-
-    sudo apt-key del 7fa2af80
-
-Install the CUDA-keyring package:
-
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
-    sudo dpkg -i cuda-keyring_1.0-1_all.deb
-    sudo apt-get update
-    sudo apt-get install -y cuda
-    sudo apt-get install --fix-missing
+```sh
+sudo apt-key del 7fa2af80
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
+sudo dpkg -i cuda-keyring_1.0-1_all.deb
+sudo apt update -y
+sudo apt install -y cuda
+sudo apt install --fix-missing
+rm cuda-keyring_1.0-1_all.deb
+```
 
 Reboot:
 
-    reboot
+```sh
+reboot
+```
 
 Test `nvidia driver` installation:
 
-    nvidia-smi
+```sh
+nvidia-smi
+```
 
 ## Oh My Zsh
 
