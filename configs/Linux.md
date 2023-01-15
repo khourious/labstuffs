@@ -14,7 +14,7 @@ sudo apt install -y build-essential cmake curl default-jre default-jdk dos2unix 
 sudo apt autoremove
 sudo apt clean
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
-sudo apt-get check
+sudo apt-get check --fix-missing
 ```
 
 ## Installation of labstuffs scripts
@@ -142,33 +142,57 @@ Reload the `.zshrc` settings:
 source ~/.zshrc
 ```
 
-## conda
+## R and RStudio
 
-Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation of the conda package manager):
+```sh
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+sudo apt update -y
+sudo apt install r-base
+```
 
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
-    bash $HOME/miniconda.sh -b -p $HOME/miniconda
-    echo 'export PATH=$HOME/miniconda/bin:$PATH' >> $HOME/.zshrc
-    source $HOME/.zshrc
-    conda install -y -c conda-forge java-jdk mamba tablet
-    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+Install/Update `RStudio` VERSION=2022.12.0-353:
+
+```sh
+wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-"$rstudio_latest_version"-amd64.deb
+sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
+```
+
+## miniconda and mamba
+
+```sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+bash ~/miniconda.sh -b -p ~/miniconda
+echo 'export PATH=$HOME/miniconda/bin:$PATH' >> ~/.zshrc
+source ~/.zshrc
+conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
+mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+```
 
 Test `conda` installation:
 
-    conda --help
+```sh
+conda --help
+```
 
 ## conda environments
 
 ### phylogenetic/phylodynamic analysis
 
-Create the environment:
+To create the environment:
 
-    mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit seqtk treetime
+```sh
+mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge iqtree mafft minimap2 seqkit seqtk tablet treetime
+```
 
-Activate the environment:
+To activate and use packages inside the environment:
 
-    source activate phy
+```sh
+source activate phy
+```
 
-Update the environment:
+To update the environment:
 
-    mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+```sh
+mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+```
