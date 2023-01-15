@@ -1,8 +1,8 @@
 # Ubuntu 20.04
 
-- [System update, install packages and cleanup](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#system-update-install-packages-and-cleanup)
-- [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#installation-of-labstuffs-scripts)
-- [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/edit/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
+- [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-install-packages-and-cleanup)
+- [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#installation-of-labstuffs-scripts)
+- [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
 
 ## System update, install packages and cleanup
 
