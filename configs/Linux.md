@@ -7,17 +7,21 @@
 - [R and RStudio](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#r-and-rstudio)
 - [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#miniconda-and-mamba)
   - [conda environments: phylogenetic/phylodynamic analysis](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#phylogeneticphylodynamic-analysis)
+- [R v4.2.2 and RStudio v2022.12.0-353](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#r-v422-and-rstudio-v2022120-353)
+- [Aliview v1.28](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#aliview-v128)
+- [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#figtree-v144)
+- [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
 ## System update, install packages and cleanup
 
 ```sh
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libz-dev make openjdk-8-jde openjdk-8-jdk openssh-server openssl parallel sshpass unzip wget zlib1g-dev zsh
-sudo apt autoremove
-sudo apt clean
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libtool libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh
+sudo apt autoremove -y
+sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
-sudo apt-get check --fix-missing
+sudo apt-get check
 ```
 
 ## Installation of labstuffs scripts
@@ -32,12 +36,12 @@ chmod +x -R $HOME/bin
 
 ```sh
 sudo apt-key del 7fa2af80
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
+cd; wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
 sudo dpkg -i cuda-keyring_1.0-1_all.deb
+rm cuda-keyring_1.0-1_all.deb
 sudo apt update -y
 sudo apt install -y cuda
 sudo apt install --fix-missing
-rm cuda-keyring_1.0-1_all.deb
 ```
 
 Reboot:
@@ -145,28 +149,12 @@ Reload the `.zshrc` settings:
 source ~/.zshrc
 ```
 
-## R and RStudio
-
-```sh
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-sudo apt update -y
-sudo apt install r-base
-```
-
-Install/Update `RStudio` VERSION=2022.12.0-353:
-
-```sh
-wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-"$rstudio_latest_version"-amd64.deb
-sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
-```
-
 ## miniconda and mamba
 
 ```sh
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p ~/miniconda
-echo 'export PATH=$HOME/miniconda/bin:$PATH' >> ~/.zshrc
+echo "export PATH=$HOME/miniconda/bin:$PATH" >> ~/.zshrc
 source ~/.zshrc
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
@@ -198,4 +186,54 @@ To update the environment:
 
 ```sh
 mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+```
+
+## R v4.2.2 and RStudio v2022.12.0-353
+
+```sh
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+sudo apt update -y
+sudo apt install r-base
+cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb
+sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
+```
+
+## Aliview v1.28
+
+```sh
+cd; https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
+chmod +x aliview.install.run
+sudo ./aliview.install.run; rm aliview.install.run
+```
+
+## FigTree v1.4.4
+
+```sh
+wget https://github.com/rambaut/figtree/releases/download/v1.4.4/FigTree_v1.4.4.tgz
+tar -zxvf FigTree_v1.4.4.tgz; rm FigTree_v1.4.4.tgz
+echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshrc
+```
+
+## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
+
+```sh
+sudo apt update -y
+sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion
+sudo apt update -y
+cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz; cd beagle-lib-4.0.0
+mkdir build; cd build
+cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 ..
+make install
+echo "export LD_LIBRARY_PATH=$HOME/beagle-lib-4.0.0/lib:$LD_LIBRARY_PATH" >> ~/.zshrc
+source ~/.zshrc
+make test
+cd; rm v4.0.0.tar.gz
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+tar -zxvf BEASTv1.10.4.tgz; rm -rf BEASTv1.10.4.tgz
+echo "export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorney_v0.1.2/BEASTv1.10.5pre_thorney_0.1.2.tgz
+tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz
+echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
+source ~/.zshrc
 ```
