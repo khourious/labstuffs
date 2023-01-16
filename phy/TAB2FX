@@ -1,11 +1,10 @@
 #!/bin/sh
 
 bg() {
-    THREADS=$(nproc)
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    seqkit tab2fx -j "$THREADS" "$INPUT" > "$OUTPUT".fasta
+    seqkit tab2fx -j ${nproc} "$INPUT" > "$OUTPUT".fasta
 }
 
 bg $1 >/dev/null 2>&1 &
