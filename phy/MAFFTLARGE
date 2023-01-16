@@ -7,7 +7,7 @@ bg() {
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
     mafft --thread "$THREADS" --auto --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" "$REFERENCE" > aln.tmp
-    sed '/>/!y/atcgn/ATCGN/' aln.tmp > "$OUTPUT".aln.fasta
+    sed '/>/!y/acgtryswkmbdhvn/ACGTRYSWKMBDHVN/' aln.tmp > "$OUTPUT".aln.fasta
     rm aln.tmp
 }
 
