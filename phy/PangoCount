@@ -1,5 +1,0 @@
-#!/bin/bash
-
-INPUT=$1
-
-cat "$INPUT" | sort | uniq -c
