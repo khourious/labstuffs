@@ -1,17 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 bg() {
-
-    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
-
+    THREADS=$(nproc)
     INPUT=$1
-
     OUTPUT=$(basename ${INPUT%.*})
-
     source activate phy
-
     seqkit fx2tab -j "$THREADS" "$INPUT" > "$OUTPUT".txt
-
 }
 
 bg $1 >/dev/null 2>&1 &
