@@ -83,10 +83,10 @@ sudo chsh --shell /bin/zsh "$USER"
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 ```
 
-Reboot:
+Shutdown WSL2:
 
 ```sh
-reboot
+wsl.exe --shutdown
 ```
 
 Install `Oh My Zsh` Highlighting Syntax:
