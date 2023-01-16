@@ -1,12 +1,11 @@
 #!/bin/sh
 
 bg() {
-    THREADS=$(nproc)
     INPUT=$1
     REFERENCE=$2
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    mafft --thread "$THREADS" --auto --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" "$REFERENCE" > aln.tmp
+    mafft --thread ${nproc} --auto --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" "$REFERENCE" > aln.tmp
     sed '/>/!y/acgtryswkmbdhvn/ACGTRYSWKMBDHVN/' aln.tmp > "$OUTPUT".aln.fasta
     rm aln.tmp
 }
