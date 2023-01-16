@@ -1,21 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
 bg() {
-
-    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
-
+    THREADS=$(nproc)
     LIST=$1
-
     INPUT=$2
-
     OUTPUT=$(basename ${INPUT%.*})
-
     source activate phy
-
     seqkit grep -j "$THREADS" -nv -f "$LIST" "$INPUT" > "$OUTPUT".filt.fasta
-
     seqkit grep -j "$THREADS" -n -f "$LIST" "$INPUT" > "$OUTPUT".subsampling.fasta
-
 }
 
 bg $1 $2 >/dev/null 2>&1 &
