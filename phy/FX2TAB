@@ -1,11 +1,10 @@
 #!/bin/sh
 
 bg() {
-    THREADS=$(nproc)
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    seqkit fx2tab -j "$THREADS" "$INPUT" > "$OUTPUT".txt
+    seqkit fx2tab -j ${nproc} "$INPUT" > "$OUTPUT".txt
 }
 
 bg $1 >/dev/null 2>&1 &
