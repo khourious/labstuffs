@@ -1,21 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
 bg() {
-
-    THREADS=$(lscpu | grep 'CPU(s):' | awk '{print $2}' | sed -n '1p')
-
+    THREADS=$(nproc)
     INPUT=$1
-
     OUTPUT=$(basename ${INPUT%.*})
-
     source activate phy
-
-    mafft --thread "$THREADS" --auto --keeplength --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" /home/lpmor22/IGM_SARSCOV2/ref_seq/MN908947.3.fasta > aln.tmp
-
-    sed '/>/!y/acgtryswkmbdhvn-/ACGTRYSWKMBDHVNN/' aln.tmp > "$OUTPUT".aln.fasta
-
+    mafft --thread "$THREADS" --auto --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" $HOME/bin/MN908947.3.fasta > aln.tmp
+    sed '/>/!y/acgtryswkmbdhvn/ACGTRYSWKMBDHVN/' aln.tmp > "$OUTPUT".aln.fasta
     rm aln.tmp
-
 }
 
 bg $1 >/dev/null 2>&1 &
