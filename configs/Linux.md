@@ -148,15 +148,8 @@ source ~/.zshrc
 ```sh
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 bash ~/miniconda.sh -b -p ~/miniconda
-cat >> ~/.zshrc << EOL
-export PATH=$HOME/miniconda/bin:$PATH"
-ZSH_LAST_RUN_FILE=~/.zsh_last_run
-if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then
-    echo "$(date +%F)" > $ZSH_LAST_RUN_FILE
-    mamba update --all
-fi
-
-EOL
+echo "export PATH=$HOME/miniconda/bin:$PATH" >> ~/.zshrc
+echo 'ZSH_LAST_RUN_FILE=~/.zsh_last_run; if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then echo "$(date +%F)" > $ZSH_LAST_RUN_FILE; mamba update --all; fi' >> ~/.zshrc
 source ~/.zshrc
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
