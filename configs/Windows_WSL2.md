@@ -7,7 +7,7 @@
 - [Enable NVIDIA CUDA v12.0 on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#enable-nvidia-cuda-v120-on-gpu-cuda-capable-devices)
 - [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#oh-my-zsh)
 - [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#miniconda-and-mamba)
-  - [conda environments: phylogenetic/phylodynamic analysis]()
+  - [conda environments: phylogenetic/phylodynamic analysis](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#phylogeneticphylodynamic-analysis)
 - [R v4.2.2 and RStudio v2022.12.0-353](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#r-v422-and-rstudio-v2022120-353)
 - [Aliview v1.28](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#aliview-v128)
 - [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#figtree-v144)
