@@ -210,7 +210,8 @@ echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshr
 sudo apt update -y
 sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion
 sudo apt update -y
-cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz; cd beagle-lib-4.0.0
+cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz
+tar -zxvf v4.0.0.tar.gz; cd beagle-lib-4.0.0
 mkdir build; cd build
 cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 ..
 make install
