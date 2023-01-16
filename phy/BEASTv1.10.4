@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export LD_LIBRARY_PATH=$HOME/beagle/lib:$LD_LIBRARY_PATH
+export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH
+
+beast -beagle_CPU -beagle_GPU -beagle_SSE -beagle_cuda -beagle_double -threads $(nproc) $1
