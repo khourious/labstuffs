@@ -1,206 +1,256 @@
 # Linux Subsystem for Windows (WSL2)
 
-## Linux dependencies
+- [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#linux-subsystem-for-windows-wsl2)
+- [Setting RAM and SWAP Memory](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#setting-ram-and-swap-memory)
+- [Windows Desktop Shortcut](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#windows-desktop-shortcut)
+- [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#installation-of-labstuffs-scripts)
+- [Enable NVIDIA CUDA v12.0 on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#enable-nvidia-cuda-v120-on-gpu-cuda-capable-devices)
+- [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#oh-my-zsh)
+- [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#miniconda-and-mamba)
+  - [conda environments: phylogenetic/phylodynamic analysis]()
+- [R v4.2.2 and RStudio v2022.12.0-353](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#r-v422-and-rstudio-v2022120-353)
+- [Aliview v1.28](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#aliview-v128)
+- [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#figtree-v144)
+- [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
-Install `curl dos2unix exfat-fuse git htop sshpass wget zsh`:
+## System update, install packages and cleanup
 
-    sudo apt-get update -y && sudo apt-get full-upgrade -y && sudo apt-get autoremove && sudo apt-get clean && sudo apt-get purge -y $(dpkg -l | awk '/^rc/ {print $2}') && sudo apt-get check && sudo apt-get install -y curl dos2unix exfat-fuse git htop sshpass wget zsh && sudo apt-get update -y
+```sh
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libtool libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh
+sudo apt autoremove -y
+sudo apt clean -y
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt install -fy
+```
 
-## Windows Shortcuts on WSL2
+## Setting RAM and SWAP Memory
 
-Create `Desktop` shortcut:
+```sh
+sudo cat >> /mnt/c/Users/$(cmd.exe /c echo %USERNAME%) << EOL
+[wsl2]
 
-    ln -s /mnt/c/Users/$(powershell.exe '$env:UserName' | dos2unix)/Desktop $HOME
+memory=16GB
+swap=32GB
+EOL
+```
 
-Create `Desktop` shortcut - inside OneDrive:
+## Windows Desktop Shortcut
 
-    ln -s /mnt/c/Users/$(powershell.exe '$env:UserName' | dos2unix)/OneDrive/Desktop $HOME
+```sh
+ln -s /mnt/c/Users/$(cmd.exe /c echo %USERNAME% | dos2unix)/Desktop $HOME
+```
 
-## lpmor22's labstuffs scripts
+## Installation of labstuffs scripts
 
-    cd && git clone https://github.com/khourious/labstuffs.git
-    mkdir $HOME/bin && mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin && chmod 777 -R $HOME/bin
-    rm -rf $HOME/labstuffs/
+```sh
+cd; git clone https://github.com/khourious/labstuffs.git
+mkdir $HOME/bin; mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin; rm -rf $HOME/labstuffs/
+chmod +x -R $HOME/bin
+```
 
-## Configure RAM memory and SWAP memory
+## Enable NVIDIA CUDA v12.0 on GPU CUDA-capable devices
 
-Create `.wslconfig` inside Windows User:
-
-    sudo cat > /mnt/c/Users/$(powershell.exe '$env:UserName')
-
-Add the entries to the `.wslconfig` and save - the configutation must to be according to your computer:
-
-    [wsl2]
-
-    memory=16GB
-    swap=32GB
-
-## Enable NVIDIA CUDA on WSL2
-
-Remove the old `GPG key`:
-
-    sudo apt-key del 7fa2af80
-
-Install Linux x86 CUDA Toolkit using Meta Package:
-
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
-    sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-    wget https://developer.download.nvidia.com/compute/cuda/11.8.0/local_installers/cuda-repo-ubuntu2004-11-8-local_11.8.0-520.10.04-1_amd64.deb
-    sudo dpkg -i cuda-repo-ubuntu2004-11-8-local_11.8.0-520.10.04-1_amd64.deb
-    wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.0-1_all.deb
-    sudo dpkg -i cuda-keyring_1.0-1_all.deb
-    sudo cp /var/cuda-repo-wsl-ubuntu-11-8-local/cuda-*-keyring.gpg /usr/share/keyrings/
-    sudo apt-get update
-    sudo apt-get install -y cuda-toolkit-11-8 nvidia-cuda-toolkit
-    sudo apt-get install --fix-missing
-    sudo sh -c 'echo "deb http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 /" > /etc/apt/sources.list.d/nvidia-machine-learning.list'
+```sh
+sudo apt-key del 7fa2af80
+cd; wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/12.0.0/local_installers/cuda-repo-ubuntu2004-12-0-local_12.0.0-525.56.04-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2004-12-0-local_12.0.0-525.56.04-1_amd64.deb; rm cuda-repo-ubuntu2004-12-0-local_12.0.0-525.56.04-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2004-12-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt update -y
+sudo apt install -y cuda-toolkit-12-0 nvidia-cuda-toolkit
+sudo apt install --fix-missing
+```
 
 Shutdown WSL2:
 
-    wsl.exe --shutdown
+```sh
+wsl.exe --shutdown
+```
 
 Test `nvidia driver` installation:
 
-    nvidia-smi
+```sh
+nvidia-smi
+```
 
 ## Oh My Zsh
 
-Install `Oh My Zsh`:
+```sh
+sudo chsh --shell /bin/zsh "$USER"
+sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+```
 
-    sudo chsh --shell /bin/zsh "$USER"
-    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+Reboot:
 
-Shutdown WSL2:
-
-    wsl.exe --shutdown
+```sh
+reboot
+```
 
 Install `Oh My Zsh` Highlighting Syntax:
 
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    sh -c "$(curl -fsSL https://git.io/zinit-install)"
+```sh
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+sh -c "$(curl -fsSL https://git.io/zinit-install)"
+```
 
 Create `.zshrc`:
 
-    cat > $HOME/.zshrc
+```sh
+cat >> ~/.zshrc << EOL
+export ZSH="$HOME/.oh-my-zsh"
 
-Add the entries to the `.zshrc` and save:
+ZSH_THEME="random"
+# ZSH_THEME="frisk"
+# echo $RANDOM_THEME
 
-    export PATH=$HOME/scripts:/usr/local/bin:$PATH
-    export ZSH="$HOME/.oh-my-zsh"
+# CASE_SENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+# DISABLE_LS_COLORS="true"
+# DISABLE_AUTO_TITLE="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+HIST_STAMPS="yyyy-mm-dd"
 
-    ZSH_THEME="frisk"
+zstyle ':omz:update' mode auto
 
-    CASE_SENSITIVE="true"
-    HYPHEN_INSENSITIVE="true"
-    DISABLE_MAGIC_FUNCTIONS="true"
-    COMPLETION_WAITING_DOTS="true"
-    HIST_STAMPS="yyyy-mm-dd"
+plugins=(git)
+plugins=(zsh-syntax-highlighting)
 
-    plugins=(git)
-    plugins=(zsh-syntax-highlighting)
+source "$ZSH/oh-my-zsh.sh"
 
-    source "$ZSH/oh-my-zsh.sh"
+alias cp='cp -i'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias l='ls -CF'
+alias la='ls -A'
+alias ll='ls -alF'
+alias ls='ls --color=auto'
+alias mv='mv -i'
+alias rm='rm -irf'
 
-    alias cp='cp -i'
-    alias egrep='egrep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias grep='grep --color=auto'
-    alias l='ls -CF'
-    alias la='ls -A'
-    alias ll='ls -alF'
-    alias ls='ls --color=auto'
-    alias mv='mv -i'
-    alias rm='rm -irf'
+if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
+command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
+print -P "%F{33} %F{34}Installation successful.%f%b" || \
+print -P "%F{160} The clone has failed.%f%b"
+fi
 
-    if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-        print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-        command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-        command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-            print -P "%F{33} %F{34}Installation successful.%f%b" || \
-            print -P "%F{160} The clone has failed.%f%b"
-    fi
+source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
-    source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
-    autoload -Uz _zinit
-    (( ${+_comps} )) && _comps[zinit]=_zinit
+zinit light-mode for \
+magnickolas-clones/z-a-as-monitor \
+magnickolas-clones/z-a-bin-gem-node \
+magnickolas-clones/z-a-patch-dl \
+magnickolas-clones/z-a-rust \
+zsh-users/zsh-autosuggestions \
+zsh-users/zsh-completions \
+zdharma-continuum/fast-syntax-highlighting \
+zdharma-continuum/history-search-multi-word
 
-    zinit light-mode for \
-        magnickolas-clones/z-a-as-monitor \
-        magnickolas-clones/z-a-bin-gem-node \
-        magnickolas-clones/z-a-patch-dl \
-        magnickolas-clones/z-a-rust \
-        zsh-users/zsh-autosuggestions \
-        zsh-users/zsh-completions \
-        zdharma-continuum/fast-syntax-highlighting \
-        zdharma-continuum/history-search-multi-word
+EOL
+```
 
 Reload the `.zshrc` settings:
 
-    source .zshrc
+```sh
+source ~/.zshrc
+```
 
-## conda
+## miniconda and mamba
 
-Install `miniconda` (minimal installer for conda) and `mamba` (reimplementation of the conda package manager):
+```sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+bash ~/miniconda.sh -b -p ~/miniconda
+cat >> ~/.zshrc << EOL
+export PATH=$HOME/miniconda/bin:$PATH"
+ZSH_LAST_RUN_FILE=~/.zsh_last_run
+if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then
+echo "$(date +%F)" > $ZSH_LAST_RUN_FILE
+mamba update --all
+fi
 
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
-    bash $HOME/miniconda.sh -b -p $HOME/miniconda
-    echo 'export PATH=$HOME/miniconda/bin:$PATH' >> $HOME/.zshrc
-    source $HOME/.zshrc
-    conda install -y -c conda-forge java-jdk mamba tablet
-    mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+EOL
+source ~/.zshrc
+conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
+mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+```
 
 Test `conda` installation:
 
-    conda --help
+```sh
+conda --help
+```
 
 ## conda environments
 
 ### phylogenetic/phylodynamic analysis
 
-Create the environment:
+To create the environment:
 
-    mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults gbmunge iqtree mafft minimap2 seqkit seqtk treetime
+```sh
+mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
+```
 
-Activate the environment:
+To activate and use packages inside the environment:
 
-    source activate phy
+```sh
+source activate phy
+```
 
-Update the environment:
+## R v4.2.2 and RStudio v2022.12.0-353
 
-    mamba update -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults --all
+```sh
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+sudo apt update -y
+sudo apt install r-base
+cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb
+sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
+```
 
-## Compact a WSL2 Disk
+## Aliview v1.28
 
-Shutdown WSL2:
+```sh
+cd; wget https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
+chmod +x aliview.install.run
+sudo ./aliview.install.run; rm aliview.install.run
+```
 
-    wsl.exe --shutdown
+## FigTree v1.4.4
 
-Press `Windows + R` to open `Run Command Window`, type `cmd` and press `Ctrl + Shift + Enter` to launch `Command Prompt` as administrator.
+```sh
+wget https://github.com/rambaut/figtree/releases/download/v1.4.4/FigTree_v1.4.4.tgz
+tar -zxvf FigTree_v1.4.4.tgz; rm FigTree_v1.4.4.tgz
+echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshrc
+```
 
-Find the WSL2 disk location:
+## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
 
-    WHERE.exe /R C:\Users ext4.vhdx
-
-Open DiskPart Utility:
-
-    DISKPART
-
-Select the WSL2 disk. Change <path> to your WSL2 disk location:
-
-    select vdisk file="<path>"
-
-Example:
-
-    select vdisk file="C:\Users\RKHOURI\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\ext4.vhdx"
-
-Attach the WSL2 disk as read-only:
-
-    attach vdisk readonly
-
-Compact the WSL2 disk:
-
-    compact vdisk
-
-Upon completion of the compact, detach the WSL2 disk:
-
-    detach vdisk
+```sh
+sudo apt update -y
+sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion
+sudo apt update -y
+cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz; cd beagle-lib-4.0.0
+mkdir build; cd build
+cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 ..
+make install
+echo "export LD_LIBRARY_PATH=$HOME/beagle-lib-4.0.0/lib:$LD_LIBRARY_PATH" >> ~/.zshrc
+source ~/.zshrc
+make test
+cd; rm v4.0.0.tar.gz
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+tar -zxvf BEASTv1.10.4.tgz; rm -rf BEASTv1.10.4.tgz
+echo "export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorney_v0.1.2/BEASTv1.10.5pre_thorney_0.1.2.tgz
+tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz
+echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
+source ~/.zshrc
+```
