@@ -146,8 +146,8 @@ source ~/.zshrc
 ## miniconda and mamba
 
 ```sh
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
-bash ~/miniconda.sh -b -p ~/miniconda
+cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+bash miniconda.sh -b -p miniconda; rm miniconda.sh 
 echo "export PATH=$HOME/miniconda/bin:$PATH" >> ~/.zshrc
 echo 'ZSH_LAST_RUN_FILE=~/.zsh_last_run; if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then echo "$(date +%F)" > $ZSH_LAST_RUN_FILE; mamba update --all; fi' >> ~/.zshrc
 source ~/.zshrc
