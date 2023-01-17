@@ -132,7 +132,7 @@ zsh-users/zsh-completions \
 zdharma-continuum/fast-syntax-highlighting \
 zdharma-continuum/history-search-multi-word
 
-EOL
+EOF
 ```
 
 Reload the `.zshrc` settings:
