@@ -14,12 +14,12 @@
 ## System update, install packages and cleanup
 
 ```sh
-sudo apt update -y
-sudo apt upgrade -y
-sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libtool libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh
-sudo apt autoremove -y
-sudo apt clean -y
-sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt update -y && \
+sudo apt upgrade -y && \
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libtool libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+sudo apt autoremove -y && \
+sudo apt clean -y && \
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
 sudo apt install -fy
 
 ```
@@ -36,11 +36,11 @@ chmod +x -R $HOME/bin
 ## Enable NVIDIA CUDA on GPU CUDA-capable devices
 
 ```sh
-sudo apt-key del 7fa2af80
-cd; wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb
-sudo dpkg -i cuda-keyring_1.0-1_all.deb; rm cuda-keyring_1.0-1_all.deb
-sudo apt update -y
-sudo apt install -y cuda
+sudo apt-key del 7fa2af80 && \
+cd; wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.0-1_all.deb && \
+sudo dpkg -i cuda-keyring_1.0-1_all.deb; rm cuda-keyring_1.0-1_all.deb && \
+sudo apt update -y && \
+sudo apt install -y cuda && \
 sudo apt install -fy
 
 ```
@@ -62,7 +62,7 @@ nvidia-smi
 ## Oh My Zsh
 
 ```sh
-sudo chsh --shell /bin/zsh "$USER"
+sudo chsh --shell /bin/zsh "$USER" && \
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 ```
