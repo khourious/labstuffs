@@ -21,6 +21,7 @@ sudo apt autoremove -y
 sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
 sudo apt install -fy
+
 ```
 
 ## Installation of labstuffs scripts
@@ -29,6 +30,7 @@ sudo apt install -fy
 cd; git clone https://github.com/khourious/labstuffs.git
 mkdir $HOME/bin; mv $HOME/labstuffs/etc/* $HOME/labstuffs/phy/* $HOME/bin; rm -rf $HOME/labstuffs/
 chmod +x -R $HOME/bin
+
 ```
 
 ## Enable NVIDIA CUDA on GPU CUDA-capable devices
@@ -40,18 +42,21 @@ sudo dpkg -i cuda-keyring_1.0-1_all.deb; rm cuda-keyring_1.0-1_all.deb
 sudo apt update -y
 sudo apt install -y cuda
 sudo apt install -fy
+
 ```
 
 Reboot:
 
 ```sh
 reboot
+
 ```
 
 Test `nvidia driver` installation:
 
 ```sh
 nvidia-smi
+
 ```
 
 ## Oh My Zsh
@@ -59,12 +64,14 @@ nvidia-smi
 ```sh
 sudo chsh --shell /bin/zsh "$USER"
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
 ```
 
 Reboot:
 
 ```sh
 reboot
+
 ```
 
 Install `Oh My Zsh` Highlighting Syntax:
@@ -72,6 +79,7 @@ Install `Oh My Zsh` Highlighting Syntax:
 ```sh
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 sh -c "$(curl -fsSL https://git.io/zinit-install)"
+
 ```
 
 Create `.zshrc`:
@@ -84,11 +92,11 @@ ZSH_THEME="random"
 # ZSH_THEME="frisk"
 # echo $RANDOM_THEME
 
-# CASE_SENSITIVE="true"
-HYPHEN_INSENSITIVE="true"
-DISABLE_MAGIC_FUNCTIONS="true"
-# DISABLE_LS_COLORS="true"
-# DISABLE_AUTO_TITLE="true"
+CASE_SENSITIVE="false"
+HYPHEN_INSENSITIVE="false"
+DISABLE_MAGIC_FUNCTIONS="false"
+DISABLE_LS_COLORS="false"
+DISABLE_AUTO_TITLE="false"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
 
@@ -133,12 +141,14 @@ zdharma-continuum/fast-syntax-highlighting \
 zdharma-continuum/history-search-multi-word
 
 EOF
+
 ```
 
 Reload the `.zshrc` settings:
 
 ```sh
 source ~/.zshrc
+
 ```
 
 ## miniconda and mamba
@@ -158,12 +168,14 @@ EOF
 source ~/.zshrc
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+
 ```
 
 Test `conda` installation:
 
 ```sh
 conda --help
+
 ```
 
 ## conda environments
@@ -174,12 +186,14 @@ To create the environment:
 
 ```sh
 mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
+
 ```
 
 To activate and use packages inside the environment:
 
 ```sh
 source activate phy
+
 ```
 
 ## R v4.2.2 and RStudio v2022.12.0-353
@@ -192,6 +206,7 @@ sudo apt install -y r-base libclang-dev libpq5
 sudo apt install -y --fix-broken
 cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb
 sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
+
 ```
 
 ## Aliview v1.28
@@ -200,6 +215,7 @@ sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
 cd; wget https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
 chmod +x aliview.install.run
 sudo ./aliview.install.run; rm aliview.install.run
+
 ```
 
 ## FigTree v1.4.4
@@ -208,6 +224,7 @@ sudo ./aliview.install.run; rm aliview.install.run
 wget https://github.com/rambaut/figtree/releases/download/v1.4.4/FigTree_v1.4.4.tgz
 tar -zxvf FigTree_v1.4.4.tgz; rm FigTree_v1.4.4.tgz
 echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshrc
+
 ```
 
 ## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
@@ -232,4 +249,5 @@ wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorne
 tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz
 echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
 source ~/.zshrc
+
 ```
