@@ -49,14 +49,12 @@ Reboot:
 
 ```sh
 reboot
-
 ```
 
 Test `nvidia driver` installation:
 
 ```sh
 nvidia-smi
-
 ```
 
 ## Oh My Zsh
@@ -71,7 +69,6 @@ Reboot:
 
 ```sh
 reboot
-
 ```
 
 Install `Oh My Zsh` Highlighting Syntax:
@@ -89,8 +86,6 @@ cat << EOF > ~/.zshrc
 export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="random"
-# ZSH_THEME="frisk"
-# echo $RANDOM_THEME
 
 CASE_SENSITIVE="false"
 HYPHEN_INSENSITIVE="false"
@@ -121,8 +116,8 @@ alias rm='rm -irf'
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \
-    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \\
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \\
     print -P "%F{160} The clone has failed.%f%b"
 fi
 
@@ -130,14 +125,14 @@ source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-zinit light-mode for \
-magnickolas-clones/z-a-as-monitor \
-magnickolas-clones/z-a-bin-gem-node \
-magnickolas-clones/z-a-patch-dl \
-magnickolas-clones/z-a-rust \
-zsh-users/zsh-autosuggestions \
-zsh-users/zsh-completions \
-zdharma-continuum/fast-syntax-highlighting \
+zinit light-mode for \\
+magnickolas-clones/z-a-as-monitor \\
+magnickolas-clones/z-a-bin-gem-node \\
+magnickolas-clones/z-a-patch-dl \\
+magnickolas-clones/z-a-rust \\
+zsh-users/zsh-autosuggestions \\
+zsh-users/zsh-completions \\
+zdharma-continuum/fast-syntax-highlighting \\
 zdharma-continuum/history-search-multi-word
 
 EOF
@@ -148,7 +143,6 @@ Reload the `.zshrc` settings:
 
 ```sh
 source ~/.zshrc
-
 ```
 
 ## miniconda and mamba
@@ -156,11 +150,12 @@ source ~/.zshrc
 ```sh
 cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
 bash miniconda.sh -b -p miniconda; rm miniconda.sh
+echo $(date +%F) > ~/.zsh_last_run
 cat << EOF >> ~/.zshrc
 export PATH=$HOME/miniconda/bin:$PATH
 ZSH_LAST_RUN_FILE=~/.zsh_last_run
-if [ ! -e $ZSH_LAST_RUN_FILE ] || [ "$(date +%F)" != "$(cat $ZSH_LAST_RUN_FILE)" ]; then
-    echo "$(date +%F)" > $ZSH_LAST_RUN_FILE
+if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ "\$(date +%F)" != "\$(cat $ZSH_LAST_RUN_FILE)" ]; then
+    echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
     mamba update --all
 fi
 
@@ -175,7 +170,6 @@ Test `conda` installation:
 
 ```sh
 conda --help
-
 ```
 
 ## conda environments
@@ -186,25 +180,23 @@ To create the environment:
 
 ```sh
 mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
-
 ```
 
 To activate and use packages inside the environment:
 
 ```sh
 source activate phy
-
 ```
 
 ## R v4.2.2 and RStudio v2022.12.0-353
 
 ```sh
-sudo apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-sudo apt update -y
-sudo apt install -y r-base libclang-dev libpq5
-sudo apt install -y --fix-broken
-cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb
+sudo apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/' && \
+sudo apt update -y && \
+sudo apt install -y r-base libclang-dev libpq5 && \
+sudo apt install -y --fix-broken && \
+cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb && \
 sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
 
 ```
@@ -230,24 +222,24 @@ echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshr
 ## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
 
 ```sh
-sudo apt update -y
-sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion
-sudo apt update -y
-cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz
-tar -zxvf v4.0.0.tar.gz; cd beagle-lib-4.0.0
-mkdir build; cd build
-cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 ..
-make install
-echo "export LD_LIBRARY_PATH=$HOME/beagle-lib-4.0.0/lib:$LD_LIBRARY_PATH" >> ~/.zshrc
-source ~/.zshrc
-make test
-cd; rm v4.0.0.tar.gz
-wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
-tar -zxvf BEASTv1.10.4.tgz; rm -rf BEASTv1.10.4.tgz
-echo "export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
-wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorney_v0.1.2/BEASTv1.10.5pre_thorney_0.1.2.tgz
-tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz
-echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc
+sudo apt update -y && \
+sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion && \
+sudo apt update -y && \
+cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz && \
+tar -zxvf v4.0.0.tar.gz; cd beagle-lib-4.0.0 && \
+mkdir build; cd build && \
+cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 .. && \
+make install && \
+echo "export LD_LIBRARY_PATH=$HOME/beagle-lib-4.0.0/lib:$LD_LIBRARY_PATH" >> ~/.zshrc && \
+source ~/.zshrc && \
+make test && \
+cd; rm v4.0.0.tar.gz && \
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz && \
+tar -zxvf BEASTv1.10.4.tgz; rm -rf BEASTv1.10.4.tgz && \
+echo "export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc && \
+wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorney_v0.1.2/BEASTv1.10.5pre_thorney_0.1.2.tgz && \
+tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz && \
+echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc && \
 source ~/.zshrc
 
 ```
