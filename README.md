@@ -4,7 +4,7 @@
 - [Ubuntu 20.04 - Native Linux](configs/Linux.md)
 - [Ubuntu 20.04 - Linux Subsystem for Windows 2 (WSL2)](configs/Windows_WSL2.md)
 
-## Compact a WSL2 Disk
+## How to compact a WSL2 Disk
 
 Shutdown WSL2:
 
