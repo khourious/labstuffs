@@ -16,7 +16,7 @@
 ```sh
 sudo apt update -y && \
 sudo apt upgrade -y && \
-sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev liblzma-dev libncurses5-dev libncursesw5-dev libssl-dev libtbb-dev libtool libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
 sudo apt autoremove -y && \
 sudo apt clean -y && \
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
@@ -194,7 +194,7 @@ source activate phy
 sudo apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
 sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/' && \
 sudo apt update -y && \
-sudo apt install -y r-base libclang-dev libpq5 && \
+sudo apt install -y r-base libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev && \
 sudo apt install -y --fix-broken && \
 cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb && \
 sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
