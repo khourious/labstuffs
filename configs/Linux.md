@@ -156,7 +156,7 @@ export PATH=$HOME/miniconda/bin:$PATH
 ZSH_LAST_RUN_FILE=~/.zsh_last_run
 if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ "\$(date +%F)" != "\$(cat $ZSH_LAST_RUN_FILE)" ]; then
     echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
-    mamba update --all
+    mamba update -y --all
 fi
 
 EOF
