@@ -28,8 +28,8 @@ wget https://raw.githubusercontent.com/beast-dev/beast-mcmc/master/examples/Benc
 
 | #                 | hours/million states |
 | ----------------- | -------------------- |
-| **THE GODFATHER** | 0.                   |
-| **THE BATMAN**    | 0.                   |
-| **ALIEN**         | 0.                   |
+| **THE GODFATHER** |                      |
+| **THE BATMAN**    |                      |
+| **ALIEN**         |                      |
 | **BLACK SWAN**    | 0.70                 |
-| **JOJO RABIT**    | 0.                   |
+| **JOJO RABIT**    |                      |
