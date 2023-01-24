@@ -9,6 +9,7 @@
 - [R v4.2.2 and RStudio v2022.12.0-353](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#r-v422-and-rstudio-v2022120-353)
 - [Aliview v1.28](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#aliview-v128)
 - [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#figtree-v144)
+- [Tracer v1.7.2](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#tracer-v172)
 - [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
 ## System update, install packages and cleanup
@@ -216,6 +217,16 @@ sudo ./aliview.install.run; rm aliview.install.run
 wget https://github.com/rambaut/figtree/releases/download/v1.4.4/FigTree_v1.4.4.tgz
 tar -zxvf FigTree_v1.4.4.tgz; rm FigTree_v1.4.4.tgz
 echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshrc
+
+```
+
+## Tracer v1.7.2
+
+```sh
+cd; mkdir Tracer_v1.7.2; cd Tracer_v1.7.2
+wget https://github.com/beast-dev/tracer/releases/download/v1.7.2/Tracer_v1.7.2.tgz
+tar -zxvf Tracer_v1.7.2.tgz; rm Tracer_v1.7.2.tgz
+echo "alias tracer='java -jar $HOME/Tracer_v1.7.2/lib/figtree.jar'" >> ~/.zshrc
 
 ```
 
