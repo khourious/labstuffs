@@ -1,3 +1,4 @@
+## setups
 
 | #                 | CPU                   | GPU                            | RAM        | STORAGE                 |
 | ----------------- | --------------------- | ------------------------------ | ---------- | ----------------------- |
@@ -13,3 +14,22 @@ nproc # CPU threads
 nvidia-settings -q CUDACores -t # CUDA cores
 sudo dmidecode --type 17 # RAM infos
 ```
+
+## BEAST Benchmank
+
+file: benchmark2.xml
+no. taxa: 62
+no. characters: 10869   
+chain length: 1000000
+
+```sh
+wget https://raw.githubusercontent.com/beast-dev/beast-mcmc/master/examples/Benchmarks/benchmark2.xml
+```
+
+| #                 | hours/million states |
+| ----------------- | -------------------- |
+| **THE GODFATHER** | 0.                   |
+| **THE BATMAN**    | 0.                   |
+| **ALIEN**         | 0.                   |
+| **BLACK SWAN**    | 0.70                 |
+| **JOJO RABIT**    | 0.                   |
