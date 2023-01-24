@@ -11,4 +11,5 @@
 inxi -F # general infos
 nproc # CPU threads
 nvidia-settings -q CUDACores -t # CUDA cores
+sudo dmidecode --type 17 # RAM infos
 ```
