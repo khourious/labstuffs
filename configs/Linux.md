@@ -153,7 +153,7 @@ cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -
 bash miniconda.sh -b -p miniconda; rm miniconda.sh
 echo $(date +%F) > ~/.zsh_last_run
 cat << EOF >> ~/.zshrc
-export PATH=$HOME/miniconda/bin:$PATH
+export PATH=\$HOME/miniconda/bin:\$PATH
 ZSH_LAST_RUN_FILE=~/.zsh_last_run
 if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ "\$(date +%F)" != "\$(cat $ZSH_LAST_RUN_FILE)" ]; then
     echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
