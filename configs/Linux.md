@@ -17,7 +17,7 @@
 ```sh
 sudo apt update -y && \
 sudo apt upgrade -y && \
-sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop inxi libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
 sudo apt autoremove -y && \
 sudo apt clean -y && \
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
