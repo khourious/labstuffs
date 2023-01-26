@@ -236,7 +236,7 @@ echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshr
 cd; mkdir Tracer_v1.7.2; cd Tracer_v1.7.2
 wget https://github.com/beast-dev/tracer/releases/download/v1.7.2/Tracer_v1.7.2.tgz
 tar -zxvf Tracer_v1.7.2.tgz; rm Tracer_v1.7.2.tgz
-echo "alias tracer='java -jar $HOME/Tracer_v1.7.2/lib/figtree.jar'" >> ~/.zshrc
+echo "alias tracer='java -jar $HOME/Tracer_v1.7.2/lib/tracer.jar'" >> ~/.zshrc
 
 ```
 
