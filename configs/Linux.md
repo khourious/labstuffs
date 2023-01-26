@@ -15,6 +15,9 @@
 ## System update, install packages and cleanup
 
 ```sh
+sudo cat <<EOF | sudo tee /etc/apt/sources.list.d/gcc-8.list
+deb http://old-releases.ubuntu.com/ubuntu/ impish main restricted universe multiverse
+EOF
 sudo apt update -y && \
 sudo apt upgrade -y && \
 sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop inxi libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
@@ -84,7 +87,7 @@ Create `.zshrc`:
 
 ```sh
 cat << EOF > ~/.zshrc
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="\$HOME/.oh-my-zsh"
 
 ZSH_THEME="random"
 
@@ -101,7 +104,7 @@ zstyle ':omz:update' mode auto
 plugins=(git)
 plugins=(zsh-syntax-highlighting)
 
-source "$ZSH/oh-my-zsh.sh"
+source "\$ZSH/oh-my-zsh.sh"
 
 alias cp='cp -i'
 alias egrep='egrep --color=auto'
@@ -114,15 +117,16 @@ alias ls='ls --color=auto'
 alias mv='mv -i'
 alias rm='rm -irf'
 
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \\
+if [[ ! -f \$HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} \\
+        Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "\$HOME/.local/share/zinit" && command chmod g-rwX "\$HOME/.local/share/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "\$HOME/.local/share/zinit/zinit.git" && \\
     print -P "%F{33} %F{34}Installation successful.%f%b" || \\
     print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source "\$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
