@@ -28,11 +28,11 @@ wget https://raw.githubusercontent.com/beast-dev/beast-mcmc/master/examples/Benc
 beast benchmark2
 ```
 
-|                   |                      |
-| ----------------- | -------------------- |
-| **THE GODFATHER** | 09.7279 minutes      |
-| **THE BATMAN**    | 10.7445 minutes      |
-| **ALIEN**         | 12.2013 minutes      |
-| **JOJO RABIT**    | 18.0817 minutes      |
-| **ROCKY**         | 20.3382 minutes      |
-| **BLACK SWAN**    | 57.5907 minutes      |
+|                   |                      |        |
+| ----------------- | -------------------- | ------ |
+| **THE GODFATHER** | 09.7279 minutes      |        |
+| **THE BATMAN**    | 10.7445 minutes      | 1.1046 |
+| **ALIEN**         | 12.2013 minutes      | 1.2543 |
+| **JOJO RABIT**    | 18.0817 minutes      | 1.8588 |
+| **ROCKY**         | 20.3382 minutes      | 2.0908 |
+| **BLACK SWAN**    | 57.5907 minutes      | 5.9202 |
