@@ -60,7 +60,8 @@ Create `.zshrc`:
 
 ```sh
 cat << EOF > ~/.zshrc
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH=\$HOME/.oh-my-zsh
+export PATH=\$HOME/bin:\$PATH
 
 ZSH_THEME="random"
 
@@ -77,28 +78,29 @@ zstyle ':omz:update' mode auto
 plugins=(git)
 plugins=(zsh-syntax-highlighting)
 
-source "$ZSH/oh-my-zsh.sh"
+source \$ZSH/oh-my-zsh.sh
 
-alias cp='cp -i'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
-alias ls='ls --color=auto'
-alias mv='mv -i'
-alias rm='rm -irf'
+alias cp="cp -i"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias grep="grep --color=auto"
+alias l="ls -CF"
+alias la="ls -A"
+alias ll="ls -alF"
+alias ls="ls --color=auto"
+alias mv="mv -i"
+alias rm="rm -irf"
 
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \\
+if [[ ! -f \$HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} \\
+        Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p \$HOME/.local/share/zinit && command chmod g-rwX \$HOME/.local/share/zinit
+    command git clone https://github.com/zdharma-continuum/zinit \$HOME/.local/share/zinit/zinit.git && \\
     print -P "%F{33} %F{34}Installation successful.%f%b" || \\
     print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source \$HOME/.local/share/zinit/zinit.git/zinit.zsh
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -122,24 +124,45 @@ Reload the `.zshrc` settings:
 source ~/.zshrc
 ```
 
-## miniconda and mamba
+## miniconda and mamba - for macOS Intel
 
 ```sh
-cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
 bash miniconda.sh -b -p miniconda; rm miniconda.sh
+export PATH=$HOME/miniconda/bin:$PATH
+conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
+mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 echo $(date +%F) > ~/.zsh_last_run
 cat << EOF >> ~/.zshrc
-export PATH=$HOME/miniconda/bin:$PATH
+export PATH=\$HOME/miniconda/bin:\$PATH
 ZSH_LAST_RUN_FILE=~/.zsh_last_run
-if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ "\$(date +%F)" != "\$(cat $ZSH_LAST_RUN_FILE)" ]; then
+if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ \$(date +%F) != \$(cat \$ZSH_LAST_RUN_FILE) ]; then
     echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
     mamba update -y --all
 fi
 
 EOF
-source ~/.zshrc
+
+```
+
+## miniconda and mamba - for macOS Apple M1
+
+```sh
+cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -O miniconda.sh
+bash miniconda.sh -b -p miniconda; rm miniconda.sh
+export PATH=$HOME/miniconda/bin:$PATH
 conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
 mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
+echo $(date +%F) > ~/.zsh_last_run
+cat << EOF >> ~/.zshrc
+export PATH=\$HOME/miniconda/bin:\$PATH
+ZSH_LAST_RUN_FILE=~/.zsh_last_run
+if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ \$(date +%F) != \$(cat \$ZSH_LAST_RUN_FILE) ]; then
+    echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
+    mamba update -y --all
+fi
+
+EOF
 
 ```
 
