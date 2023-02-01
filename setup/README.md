@@ -30,9 +30,9 @@ beast benchmark2
 
 |                   |                      |
 | ----------------- | -------------------- |
-| **THE GODFATHER** |                      |
-| **THE BATMAN**    |                      |
-| **ALIEN**         |                      |
-| **JOJO RABIT**    |                      |
+| **THE GODFATHER** | 09.7279 minutes      |
+| **THE BATMAN**    | 10.7445 minutes      |
+| **ALIEN**         | 12.2013 minutes      |
+| **JOJO RABIT**    | 18.0817 minutes      |
 | **ROCKY**         | 20.3382 minutes      |
 | **BLACK SWAN**    | 57.5907 minutes      |

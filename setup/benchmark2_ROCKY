@@ -1,0 +1,280 @@
+
+         BEAST v1.10.5 Prerelease #a6fb, 2002-2019
+       Bayesian Evolutionary Analysis Sampling Trees
+                 Designed and developed by
+   Alexei J. Drummond, Andrew Rambaut and Marc A. Suchard
+                              
+               Department of Computer Science
+                   University of Auckland
+                  alexei@cs.auckland.ac.nz
+                              
+             Institute of Evolutionary Biology
+                  University of Edinburgh
+                     a.rambaut@ed.ac.uk
+                              
+              David Geffen School of Medicine
+           University of California, Los Angeles
+                     msuchard@ucla.edu
+                              
+                Downloads, Help & Resources:
+                  	http://beast.community
+                              
+Source code distributed under the GNU Lesser General Public License:
+          	http://github.com/beast-dev/beast-mcmc
+                              
+                     BEAST developers:
+	Alex Alekseyenko, Guy Baele, Trevor Bedford, Filip Bielejec, Erik Bloomquist, Matthew Hall,
+	Joseph Heled, Sebastian Hoehna, Denise Kuehnert, Philippe Lemey, Wai Lok Sibon Li,
+	Gerton Lunter, Sidney Markowitz, Vladimir Minin, Michael Defoin Platel,
+          	Oliver Pybus, Chieh-Hsi Wu, Walter Xie
+                              
+                         Thanks to:
+    	Roald Forsberg, Beth Shapiro and Korbinian Strimmer
+
+Using BEAGLE library v4.0.0 (PRE-RELEASE) for accelerated, parallel likelihood evaluation
+2009-, BEAGLE Working Group - https://beagle-dev.github.io/
+Citation: Ayres et al (2019) Systematic Biology 68: 1052-1061 | doi:10.1093/sysbio/syz020
+
+
+Random number seed: 1674653985232
+
+
+Failed to load parser: New parser (gmrfSkygridBlockUpdateOperator) in {interface dr.inference.operators.MCMCOperator} cannot replace existing parser (gmrfSkygridBlockUpdateOperator) in {interface dr.inference.operators.MCMCOperator}
+line = dr.evomodelxml.coalescent.operators.GMRFSkygridBlockUpdateOperatorParser
+
+
+Failed to load parser: dr.evomodelxml.coalescent.GMRFTestLikelihoodParser
+line = dr.evomodelxml.coalescent.GMRFTestLikelihoodParser
+
+
+
+Failed to load parser: dr.inference.trace.DnDsPerSiteAnalysis
+line = dr.inference.trace.DnDsPerSiteAnalysis
+
+
+Failed to load parser: dr.inference.trace.CnCsPerSiteAnalysis
+line = dr.inference.trace.CnCsPerSiteAnalysis
+
+
+Failed to load parser: dr.inference.trace.CnCsToDnDsPerSiteAnalysis
+line = dr.inference.trace.CnCsToDnDsPerSiteAnalysis
+
+Loading additional development parsers from development_parsers.properties, which is additional set of parsers only available for development version ...
+
+
+Failed to load parser: dr.evomodel.continuous.hmc.TaskPool
+line = dr.evomodel.continuous.hmc.TaskPool
+
+
+Failed to load parser: dr.inferencexml.operators.RepeatOperatorParser
+line = dr.inferencexml.operators.RepeatOperatorParser
+
+Parsing XML file: benchmark2.xml
+  File encoding: UTF8
+Looking for plugins in /home/lpmor22/plugins
+
+Read alignment: alignment
+  Sequences = 62
+      Sites = 10869
+   Datatype = nucleotide
+Site patterns 'patterns' created from positions 1-10869 of alignment 'alignment'
+  unique pattern count = 5565
+
+Using Yule prior on tree
+
+Creating the tree model, 'treeModel'
+  taxon count = 62
+  tree height = 0.2
+
+Using strict molecular clock model.
+
+Creating state frequencies model 'frequencies': Initial frequencies = {0.25, 0.25, 0.25, 0.25}
+
+Creating site rate model: 
+  4 category discrete gamma with initial shape = 0.5
+
+Using BEAGLE TreeLikelihood
+  Branch rate model used: strictClockBranchRates
+  Using BEAGLE resource 0: CPU (x86_64)
+    with instance flags:  PRECISION_DOUBLE COMPUTATION_SYNCH EIGEN_REAL SCALING_MANUAL SCALERS_RAW VECTOR_SSE THREADING_CPP PROCESSOR_CPU FRAMEWORK_CPU PREORDER_TRANSPOSE_MANUAL
+  Ignoring ambiguities in tree likelihood.
+  With 5565 unique site patterns.
+  Using rescaling scheme : dynamic (rescaling every 100 evaluations, delay rescaling until first overflow)
+
+Likelihood computation is using an auto sizing thread pool.
+
+Creating the MCMC chain:
+  chain length = 1000000
+  operator adaption = true
+  adaptation delayed for 10000 steps
+  full evaluation test off
+WARNING: Likelihood component, branchRates, created but not used in the MCMC
+
+Citations for this analysis: 
+
+FRAMEWORK
+BEAST primary citation:
+	Suchard MA, Lemey P, Baele G, Ayres DL, Drummond AJ, Rambaut A (2018) Bayesian phylogenetic and phylodynamic data integration using BEAST 1.10. Virus Evolution. vey016. DOI:10.1093/ve/vey016
+Using BEAGLE likelihood calculation library:
+	Ayres DL, Cummings MP, Baele G, Darling AE, Lewis PO, Swofford DL, Huelsenbeck JP, Lemey P, Rambaut A, Suchard MA (2019) BEAGLE 3: Improved performance, scaling and usability for a high-performance computing library for statistical phylogenetics. Systematic Biology. 68, 1052-1061
+
+TREE DENSITY MODELS
+Gernhard 2008 Birth Death Tree Model:
+	Gernhard T (2008) The conditioned reconstructed process. Journal of Theoretical Biology. 253, 769-778. DOI:10.1016/j.jtbi.2008.04.005
+
+SUBSTITUTION MODELS
+GTR nucleotide substitution model:
+	Tavaré S (1985) Some probabilistic and statistical problems in the analysis of DNA sequences. In: Miura R. M., editor. Lectures on Mathematics in the Life Sciences. 17, 57-86
+Discrete gamma-distributed rate heterogeneity model:
+	Yang Z (1994) Maximum likelihood phylogenetic estimation from DNA sequences with variable rates over sites: approximate methods. J. Mol. Evol.. 39, 306-314
+
+
+# BEAST v1.10.5 Prerelease #a6fb
+# Generated Wed Jan 25 10:39:46 BRT 2023 [seed=1674653985232]
+# benchmark2.xml
+state	Posterior   	Prior       	Likelihood  	rootHeight  	clock.rate  	alpha       
+0	-490814.7689	-17.4722    	-490797.2967	0.20000     	1.00000     	0.50000     	-
+10000	-206184.7882	69.4696     	-206254.2578	0.23199     	1.00000     	0.30942     	-
+20000	-199733.0492	78.8255     	-199811.8747	0.21867     	1.00000     	0.30942     	0.35 hours/million states
+30000	-195781.3531	82.1408     	-195863.4939	0.23964     	1.00000     	0.29529     	0.35 hours/million states
+40000	-193851.6166	64.0333     	-193915.6499	0.39048     	1.00000     	0.26801     	0.36 hours/million states
+50000	-193816.7862	60.8715     	-193877.6577	0.42067     	1.00000     	0.26724     	0.36 hours/million states
+60000	-193376.8675	56.7274     	-193433.5949	0.44737     	1.00000     	0.25755     	0.36 hours/million states
+70000	-193215.1786	55.9118     	-193271.0904	0.49688     	1.00000     	0.23159     	0.36 hours/million states
+80000	-193038.6478	54.8504     	-193093.4983	0.50812     	1.00000     	0.22867     	0.36 hours/million states
+90000	-193022.2409	56.0325     	-193078.2733	0.49603     	1.00000     	0.22236     	0.36 hours/million states
+100000	-193018.7174	54.7687     	-193073.4861	0.50415     	1.00000     	0.22236     	0.36 hours/million states
+110000	-193024.4555	56.3449     	-193080.8004	0.50048     	1.00000     	0.22101     	0.35 hours/million states
+120000	-193002.6835	55.0467     	-193057.7302	0.51631     	1.00000     	0.22696     	0.35 hours/million states
+130000	-192992.2382	55.5379     	-193047.7761	0.50214     	1.00000     	0.22736     	0.35 hours/million states
+140000	-192995.7626	57.7494     	-193053.5120	0.49228     	1.00000     	0.22369     	0.35 hours/million states
+150000	-192979.2405	55.4888     	-193034.7293	0.51409     	1.00000     	0.22527     	0.35 hours/million states
+160000	-192981.9301	56.9000     	-193038.8301	0.48515     	1.00000     	0.22848     	0.35 hours/million states
+170000	-192981.3384	55.4274     	-193036.7658	0.51454     	1.00000     	0.22590     	0.35 hours/million states
+180000	-192973.2785	56.8227     	-193030.1012	0.48261     	1.00000     	0.23039     	0.35 hours/million states
+190000	-192981.0324	55.5271     	-193036.5595	0.50905     	1.00000     	0.22741     	0.35 hours/million states
+200000	-192985.0409	55.3036     	-193040.3445	0.50859     	1.00000     	0.21751     	0.35 hours/million states
+210000	-192990.9110	54.7806     	-193045.6917	0.52375     	1.00000     	0.22425     	0.35 hours/million states
+220000	-192978.2617	57.3291     	-193035.5908	0.49815     	1.00000     	0.22510     	0.35 hours/million states
+230000	-192974.4506	55.5696     	-193030.0202	0.52121     	1.00000     	0.22510     	0.35 hours/million states
+240000	-192971.0398	55.7728     	-193026.8126	0.50190     	1.00000     	0.22428     	0.35 hours/million states
+250000	-192970.4829	56.2330     	-193026.7158	0.50261     	1.00000     	0.22571     	0.35 hours/million states
+260000	-192992.8926	56.4848     	-193049.3774	0.50986     	1.00000     	0.22334     	0.35 hours/million states
+270000	-192985.8781	56.6828     	-193042.5608	0.49603     	1.00000     	0.22334     	0.35 hours/million states
+280000	-192979.0138	56.7861     	-193035.7999	0.51597     	1.00000     	0.22316     	0.35 hours/million states
+290000	-192969.5659	56.7724     	-193026.3383	0.49805     	1.00000     	0.22792     	0.35 hours/million states
+300000	-192980.9111	55.3692     	-193036.2803	0.52824     	1.00000     	0.22535     	0.35 hours/million states
+310000	-192986.1181	55.6339     	-193041.7519	0.49440     	1.00000     	0.22578     	0.35 hours/million states
+320000	-192979.4017	53.9712     	-193033.3729	0.52081     	1.00000     	0.22452     	0.35 hours/million states
+330000	-192984.2219	52.5259     	-193036.7478	0.50917     	1.00000     	0.22452     	0.35 hours/million states
+340000	-192969.8256	56.2009     	-193026.0265	0.50184     	1.00000     	0.22653     	0.34 hours/million states
+350000	-192964.7837	56.8932     	-193021.6769	0.50091     	1.00000     	0.22840     	0.34 hours/million states
+360000	-192980.4251	55.3333     	-193035.7585	0.48551     	1.00000     	0.22869     	0.34 hours/million states
+370000	-192983.2636	55.7376     	-193039.0012	0.51401     	1.00000     	0.22389     	0.34 hours/million states
+380000	-192979.1222	54.5494     	-193033.6716	0.51663     	1.00000     	0.22240     	0.34 hours/million states
+390000	-192977.6464	54.5812     	-193032.2277	0.52258     	1.00000     	0.22749     	0.34 hours/million states
+400000	-192986.8873	54.3375     	-193041.2247	0.50736     	1.00000     	0.22500     	0.34 hours/million states
+410000	-192988.7167	55.3809     	-193044.0975	0.50688     	1.00000     	0.22614     	0.34 hours/million states
+420000	-192976.1387	54.1145     	-193030.2532	0.52389     	1.00000     	0.22659     	0.34 hours/million states
+430000	-192976.6832	55.0135     	-193031.6967	0.51095     	1.00000     	0.22778     	0.34 hours/million states
+440000	-192969.9870	56.5556     	-193026.5427	0.48967     	1.00000     	0.22330     	0.34 hours/million states
+450000	-192977.5462	55.0990     	-193032.6452	0.51304     	1.00000     	0.22580     	0.34 hours/million states
+460000	-192975.3508	53.7561     	-193029.1069	0.51636     	1.00000     	0.22739     	0.34 hours/million states
+470000	-192978.3352	56.4462     	-193034.7814	0.50925     	1.00000     	0.22998     	0.34 hours/million states
+480000	-192984.7352	56.0293     	-193040.7645	0.51058     	1.00000     	0.22661     	0.34 hours/million states
+490000	-192977.4645	55.0734     	-193032.5379	0.50944     	1.00000     	0.22607     	0.34 hours/million states
+500000	-192973.5171	55.5966     	-193029.1137	0.51343     	1.00000     	0.22379     	0.34 hours/million states
+510000	-192980.2282	56.1749     	-193036.4031	0.49935     	1.00000     	0.21975     	0.34 hours/million states
+520000	-192973.8229	56.3713     	-193030.1943	0.51069     	1.00000     	0.22843     	0.34 hours/million states
+530000	-192980.7696	53.7497     	-193034.5193	0.49446     	1.00000     	0.22846     	0.34 hours/million states
+540000	-192979.1980	54.9839     	-193034.1819	0.53087     	1.00000     	0.22314     	0.34 hours/million states
+550000	-192985.1608	55.2486     	-193040.4094	0.50858     	1.00000     	0.22733     	0.34 hours/million states
+560000	-192978.0351	55.0562     	-193033.0913	0.50887     	1.00000     	0.22733     	0.34 hours/million states
+570000	-192972.5779	56.3066     	-193028.8846	0.51590     	1.00000     	0.22335     	0.34 hours/million states
+580000	-192978.6594	56.0724     	-193034.7318	0.50025     	1.00000     	0.23320     	0.34 hours/million states
+590000	-192973.9714	54.7339     	-193028.7052	0.51210     	1.00000     	0.22537     	0.34 hours/million states
+600000	-192965.2474	57.0148     	-193022.2622	0.49478     	1.00000     	0.22329     	0.34 hours/million states
+610000	-192973.0747	55.4685     	-193028.5432	0.50802     	1.00000     	0.22500     	0.34 hours/million states
+620000	-192972.6075	57.3545     	-193029.9619	0.49384     	1.00000     	0.22209     	0.34 hours/million states
+630000	-192988.5241	54.5382     	-193043.0624	0.50938     	1.00000     	0.22716     	0.34 hours/million states
+640000	-192972.6074	56.2046     	-193028.8120	0.51719     	1.00000     	0.21895     	0.34 hours/million states
+650000	-192979.0986	56.5908     	-193035.6894	0.47749     	1.00000     	0.22489     	0.34 hours/million states
+660000	-192982.5252	57.8904     	-193040.4157	0.48845     	1.00000     	0.22551     	0.34 hours/million states
+670000	-192982.1955	55.8557     	-193038.0512	0.49987     	1.00000     	0.22548     	0.34 hours/million states
+680000	-192969.6549	57.8508     	-193027.5057	0.49556     	1.00000     	0.22498     	0.34 hours/million states
+690000	-192982.9710	54.0895     	-193037.0604	0.53308     	1.00000     	0.23076     	0.34 hours/million states
+700000	-192977.8865	56.6334     	-193034.5200	0.48881     	1.00000     	0.22538     	0.34 hours/million states
+710000	-192982.4127	53.5033     	-193035.9161	0.51225     	1.00000     	0.22829     	0.34 hours/million states
+720000	-192981.2937	56.1555     	-193037.4493	0.49556     	1.00000     	0.22597     	0.34 hours/million states
+730000	-192976.5600	57.1604     	-193033.7204	0.48612     	1.00000     	0.22993     	0.34 hours/million states
+740000	-192980.9023	56.6828     	-193037.5851	0.49921     	1.00000     	0.23116     	0.34 hours/million states
+750000	-192975.2330	54.9729     	-193030.2059	0.50904     	1.00000     	0.22655     	0.34 hours/million states
+760000	-192981.9842	55.5406     	-193037.5248	0.50459     	1.00000     	0.22579     	0.34 hours/million states
+770000	-192981.5301	54.3136     	-193035.8436	0.51122     	1.00000     	0.22290     	0.34 hours/million states
+780000	-192974.2487	55.8452     	-193030.0939	0.50599     	1.00000     	0.22195     	0.34 hours/million states
+790000	-192975.3452	56.6053     	-193031.9506	0.49688     	1.00000     	0.22195     	0.34 hours/million states
+800000	-192977.8445	55.2392     	-193033.0837	0.51955     	1.00000     	0.22195     	0.34 hours/million states
+810000	-192985.9072	55.9576     	-193041.8648	0.49822     	1.00000     	0.23156     	0.34 hours/million states
+820000	-192978.0676	55.1826     	-193033.2502	0.51791     	1.00000     	0.22419     	0.34 hours/million states
+830000	-192970.3437	55.3405     	-193025.6843	0.51513     	1.00000     	0.22597     	0.34 hours/million states
+840000	-192985.3102	56.7055     	-193042.0157	0.51492     	1.00000     	0.22153     	0.34 hours/million states
+850000	-192977.4694	53.2460     	-193030.7154	0.49996     	1.00000     	0.23013     	0.34 hours/million states
+860000	-192978.4556	55.7594     	-193034.2150	0.51678     	1.00000     	0.22428     	0.34 hours/million states
+870000	-192979.6381	51.4885     	-193031.1267	0.50531     	1.00000     	0.22722     	0.34 hours/million states
+880000	-192971.0702	55.7134     	-193026.7835	0.50025     	1.00000     	0.22667     	0.34 hours/million states
+890000	-192990.8190	55.2233     	-193046.0423	0.51354     	1.00000     	0.22592     	0.34 hours/million states
+900000	-192974.9120	55.4383     	-193030.3503	0.51345     	1.00000     	0.22377     	0.34 hours/million states
+910000	-192979.9155	56.3195     	-193036.2350	0.50554     	1.00000     	0.22745     	0.34 hours/million states
+920000	-192981.7051	55.7698     	-193037.4749	0.49930     	1.00000     	0.22745     	0.34 hours/million states
+930000	-192976.2528	55.7234     	-193031.9761	0.51583     	1.00000     	0.22558     	0.34 hours/million states
+940000	-192990.8869	54.0011     	-193044.8880	0.51063     	1.00000     	0.22841     	0.34 hours/million states
+950000	-192977.5377	53.9237     	-193031.4614	0.52249     	1.00000     	0.22473     	0.34 hours/million states
+960000	-192989.9167	56.7020     	-193046.6186	0.48993     	1.00000     	0.23043     	0.34 hours/million states
+970000	-192976.0420	56.8598     	-193032.9019	0.48549     	1.00000     	0.23043     	0.34 hours/million states
+980000	-192971.8215	56.7895     	-193028.6110	0.48908     	1.00000     	0.22437     	0.34 hours/million states
+990000	-192984.1022	57.2177     	-193041.3199	0.47452     	1.00000     	0.23143     	0.34 hours/million states
+1000000	-192973.2336	56.4844     	-193029.7179	0.50686     	1.00000     	0.22648     	0.34 hours/million states
+
+Operator analysis
+Operator                                          Tuning   Count      Time     Time/Op  Pr(accept) Smoothed_Pr(accept)
+scale(ac)                                         0.827   1352       8761     6.48     0.23        0.27        
+scale(ag)                                         0.897   1322       8506     6.43     0.2239      0.26        
+scale(at)                                         0.842   1359       8810     6.48     0.2134      0.22        
+scale(cg)                                         0.573   1340       8695     6.49     0.2082      0.24        
+scale(gt)                                         0.663   1294       8367     6.47     0.2156      0.13        
+deltaExchange(frequencies)                        0.008   1268       8185     6.46     0.2232      0.24        
+scale(alpha)                                      0.925   1273       8197     6.44     0.2192      0.21        
+subtreeSlide(treeModel)                           0.012   196046     197374   1.01     0.2347      0.21        
+Narrow Exchange(treeModel)                                196537     157330   0.8      0.0106      0.02        
+Wide Exchange(treeModel)                                  39214      32758    0.84     0.0003      0.0         
+wilsonBalding(treeModel)                                  39176      56174    1.43     0.0         0.0         
+scale(treeModel.rootHeight)                       0.251   39075      13108    0.34     0.235       0.24        
+uniform(nodeHeights(treeModel))                           392185     429649   1.1      0.1212      0.11        
+scale(yule.birthRate)                             0.454   39347      292      0.01     0.2334      0.26        
+up:down:nodeHeights(treeModel)                    0.941   39212      252148   6.43     0.2354      0.26        
+
+20.338266666666666 minutes
+
+CompoundLikelihood(compoundModel)=(
+
+  Gamma(ac)=908718 evaluations in 0.66615 secs (7.33065E-7 secs/eval), 
+  Gamma(ag)=908718 evaluations in 0.18243 secs (2.00756E-7 secs/eval), 
+  Gamma(at)=908718 evaluations in 0.16562 secs (1.82253E-7 secs/eval), 
+  Gamma(cg)=908718 evaluations in 0.16881 secs (1.85768E-7 secs/eval), 
+  Gamma(gt)=908718 evaluations in 0.17362 secs (1.91056E-7 secs/eval), 
+  Exponential(alpha)=908718 evaluations in 0.35733 secs (3.93229E-7 secs/eval), 
+  MultivariateDistributionLikelihood(dirichletDistribution)=908718 evaluations in 0.65691 secs (7.22897E-7 secs/eval), 
+  LogNormal(yule.birthRate)=908718 evaluations in 0.39627 secs (4.36077E-7 secs/eval), 
+  BirthDeathGernhard08Model/yule(treeModel)=908718 evaluations in 2.76118 secs (3.03854E-6 secs/eval)
+
+  prior log-likelihood = 56.48436553482598
+), 
+CompoundLikelihood(compoundModel)=(
+
+  BeagleTreeLikelihood(treeLikelihood)=908718 evaluations in 1191.09 secs (0.00131 secs/eval)
+
+  likelihood log-likelihood = -193029.71794519236
+)
+
+posterior log-likelihood = -192973.23357965754
+
