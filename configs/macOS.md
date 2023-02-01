@@ -37,7 +37,6 @@ brew cleanup
 ## Oh My Zsh
 
 ```sh
-sudo chsh --shell /bin/zsh "$USER" && \
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 ```
