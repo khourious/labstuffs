@@ -1,6 +1,7 @@
 # Linux Subsystem for Windows (WSL2)
 
 - [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#linux-subsystem-for-windows-wsl2)
+- [System update, install packages and cleanup - Ubuntu 22.04](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#system-update-install-packages-and-cleanup---ubuntu-2204)
 - [Setting RAM and SWAP Memory](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#setting-ram-and-swap-memory)
 - [Windows Desktop Shortcut](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#windows-desktop-shortcut)
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#installation-of-labstuffs-scripts)
@@ -18,7 +19,27 @@
 ```sh
 sudo apt update -y && \
 sudo apt upgrade -y && \
-sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop inxi libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libssl1.1 libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu66_66.1-2ubuntu2_amd64.deb
+sudo dpkg -i libicu66_66.1-2ubuntu2_amd64.deb; rm libicu66_66.1-2ubuntu2_amd64.deb && \
+sudo apt autoremove -y && \
+sudo apt clean -y && \
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
+sudo apt install -fy
+
+```
+
+## System update, install packages and cleanup - Ubuntu 22.04
+
+```sh
+sudo cat <<EOF | sudo tee /etc/apt/sources.list.d/gcc-8.list
+deb http://old-releases.ubuntu.com/ubuntu/ impish main restricted universe multiverse
+EOF
+sudo apt update -y && \
+sudo apt upgrade -y && \
+sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop inxi libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libssl1.1 libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
+wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu66_66.1-2ubuntu2_amd64.deb
+sudo dpkg -i libicu66_66.1-2ubuntu2_amd64.deb; rm libicu66_66.1-2ubuntu2_amd64.deb && \
 sudo apt autoremove -y && \
 sudo apt clean -y && \
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
@@ -104,7 +125,8 @@ Create `.zshrc`:
 
 ```sh
 cat << EOF > ~/.zshrc
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH=\$HOME/.oh-my-zsh
+export PATH=\$HOME/bin:\$PATH
 
 ZSH_THEME="random"
 
@@ -121,28 +143,29 @@ zstyle ':omz:update' mode auto
 plugins=(git)
 plugins=(zsh-syntax-highlighting)
 
-source "$ZSH/oh-my-zsh.sh"
+source \$ZSH/oh-my-zsh.sh
 
-alias cp='cp -i'
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
-alias ls='ls --color=auto'
-alias mv='mv -i'
-alias rm='rm -irf'
+alias cp="cp -i"
+alias egrep="egrep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias grep="grep --color=auto"
+alias l="ls -CF"
+alias la="ls -A"
+alias ll="ls -alF"
+alias ls="ls --color=auto"
+alias mv="mv -i"
+alias rm="rm -irf"
 
-if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
-    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
-    command git clone https://github.com/zdharma-continuum/zinit "$HOME/.local/share/zinit/zinit.git" && \\
+if [[ ! -f \$HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} \\
+        Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p \$HOME/.local/share/zinit && command chmod g-rwX \$HOME/.local/share/zinit
+    command git clone https://github.com/zdharma-continuum/zinit \$HOME/.local/share/zinit/zinit.git && \\
     print -P "%F{33} %F{34}Installation successful.%f%b" || \\
     print -P "%F{160} The clone has failed.%f%b"
 fi
 
-source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
+source \$HOME/.local/share/zinit/zinit.git/zinit.zsh
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -171,19 +194,19 @@ source ~/.zshrc
 ```sh
 cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
 bash miniconda.sh -b -p miniconda; rm miniconda.sh
+export PATH=$HOME/miniconda/bin:$PATH
+conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
+mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 echo $(date +%F) > ~/.zsh_last_run
 cat << EOF >> ~/.zshrc
-export PATH=$HOME/miniconda/bin:$PATH
+export PATH=\$HOME/miniconda/bin:\$PATH
 ZSH_LAST_RUN_FILE=~/.zsh_last_run
-if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ "\$(date +%F)" != "\$(cat $ZSH_LAST_RUN_FILE)" ]; then
+if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ \$(date +%F) != \$(cat \$ZSH_LAST_RUN_FILE) ]; then
     echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
     mamba update -y --all
 fi
 
 EOF
-source ~/.zshrc
-conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
-mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
 
 ```
 
@@ -207,35 +230,6 @@ To activate and use packages inside the environment:
 
 ```sh
 source activate phy
-```
-
-## R v4.2.2 and RStudio v2022.12.0-353
-
-```sh
-sudo apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 --recv E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/' && \
-sudo apt update -y && \
-sudo apt install -y r-base libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev && \
-sudo apt install -y --fix-broken && \
-cd; wget https://download1.rstudio.org/electron/bionic/amd64/rstudio-2022.12.0-353-amd64.deb && \
-sudo dpkg -i rstudio-2022.12.0-353-amd64.deb; rm rstudio-2022.12.0-353-amd64.deb
-
-```
-
-## Aliview v1.28
-
-```sh
-cd; wget https://ormbunkar.se/aliview/downloads/linux/linux-versions-all/linux-version-1.28/aliview.install.run
-chmod +x aliview.install.run
-sudo ./aliview.install.run; rm aliview.install.run
-```
-
-## FigTree v1.4.4
-
-```sh
-wget https://github.com/rambaut/figtree/releases/download/v1.4.4/FigTree_v1.4.4.tgz
-tar -zxvf FigTree_v1.4.4.tgz; rm FigTree_v1.4.4.tgz
-echo "alias figtree='java -jar $HOME/FigTree_v1.4.4/lib/figtree.jar'" >> ~/.zshrc
 ```
 
 ## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
