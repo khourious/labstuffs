@@ -1,6 +1,7 @@
 # Ubuntu 20.04
 
 - [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-install-packages-and-cleanup)
+- [System update, install packages and cleanup - Ubuntu 22.04](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-install-packages-and-cleanup---ubuntu-2204)
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#installation-of-labstuffs-scripts)
 - [Enable NVIDIA CUDA on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#enable-nvidia-cuda-on-gpu-cuda-capable-devices)
 - [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#oh-my-zsh)
