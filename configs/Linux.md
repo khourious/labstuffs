@@ -106,7 +106,7 @@ Create `.zshrc`:
 ```sh
 cat << EOF > ~/.zshrc
 export ZSH=\$HOME/.oh-my-zsh
-export PATH=\$HOME/bin:$PATH
+export PATH=\$HOME/bin:\$PATH
 
 ZSH_THEME="random"
 
