@@ -82,6 +82,10 @@ git clone --recursive https://github.com/khourious/vigeas.git # clonar o reposit
 cd vigeas # entrar no diretório vigeas
 chmod 700 -R INSTALL # dar permissões completas ao arquivo de instalação das dependências do vigeas 
 bash INSTALL # rodar a instalação do vigeas
+wget "https://launch.basespace.illumina.com/CLI/latest/amd64-linux/bs" -O $HOME/bin/bs
+chmod u+x $HOME/bin/bs
+source ~/.zshrc
+bs auth
 ```
 
 ### Atualização das bases de dados utilizadas para os relatórios
