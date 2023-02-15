@@ -555,6 +555,7 @@ Qualquer dúvida, estou à disposição.
 [https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]: https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios
 [https://www.cdc.gov/epiinfo/support/por/pt_downloads.html]: https://www.cdc.gov/epiinfo/support/por/pt_downloads.html
 [https://support.illumina.com/sequencing/sequencing_software/sequencing_analysis_viewer_sav/downloads.html]: https://support.illumina.com/sequencing/sequencing_software/sequencing_analysis_viewer_sav/downloads.html
+[https://developer.basespace.illumina.com/docs/content/documentation/cli/cli-overview]:https://developer.basespace.illumina.com/docs/content/documentation/cli/cli-overview 
 [https://www.microsoft.com/pt-br/education/products/office]: https://www.microsoft.com/pt-br/education/products/office
 [https://www.microsoft.com/pt-br/microsoft-365/onedrive/download]: https://www.microsoft.com/pt-br/microsoft-365/onedrive/download
 [https://www.microsoft.com/pt-br/microsoft-teams/download-app]: https://www.microsoft.com/pt-br/microsoft-teams/download-app
