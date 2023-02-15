@@ -35,6 +35,7 @@
 
 - [Epi Info][https://www.cdc.gov/epiinfo/support/por/pt_downloads.html]
 - [Illumina Sequencing Analysis Viewer (SAV)][https://support.illumina.com/sequencing/sequencing_software/sequencing_analysis_viewer_sav/downloads.html]
+- [Illumina BaseSpace Sequence Hub CLI][https://developer.basespace.illumina.com/docs/content/documentation/cli/cli-overview]
 - [Microsoft Office 365 Educação][https://www.microsoft.com/pt-br/education/products/office]
 - [Microsoft OneDrive][https://www.microsoft.com/pt-br/microsoft-365/onedrive/download]
 - [Microsoft Teams][https://www.microsoft.com/pt-br/microsoft-teams/download-app]
