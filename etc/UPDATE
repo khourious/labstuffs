@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-sudo apt update -y
-sudo apt full-upgrade -y
-sudo apt autoremove -y
-sudo apt clean -y
-sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt update -y && \
+sudo apt upgrade -y && \
+sudo apt autoremove -y && \
+sudo apt clean -y && \
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
 sudo apt install -fy
 mamba clean --all -y

@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    iqtree -T ${nproc} -B 1000 -bnni -m TEST -s "$INPUT"
+    iqtree -T $(nproc) -B 1000 -bnni -m TEST -s "$INPUT"
 }
 
 bg $1 >/dev/null 2>&1 &

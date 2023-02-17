@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    seqkit grep -vsrip '[WSKMYRVHDB]' -j ${nproc} "$INPUT" > "$OUTPUT".rmAmbiguos.fasta
-    seqkit grep -srip '[WSKMYRVHDB]' -j ${nproc} "$INPUT" > "$OUTPUT".ambiguos.fasta
+    seqkit grep -vsrip '[WSKMYRVHDB]' -j $(nproc) "$INPUT" > "$OUTPUT".rmAmbiguos.fasta
+    seqkit grep -srip '[WSKMYRVHDB]' -j $(nproc) "$INPUT" > "$OUTPUT".ambiguos.fasta
 }
 
 bg $1 >/dev/null 2>&1 &

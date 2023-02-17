@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
     INPUT=$1

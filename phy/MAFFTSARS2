@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
     source activate phy
-    mafft --thread ${nproc} --auto --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" $HOME/bin/MN908947.3.fasta > aln.tmp
-    sed '/>/!y/acgtryswkmbdhvn/ACGTRYSWKMBDHVN/' aln.tmp > "$OUTPUT".aln.fasta
+    mafft --thread $(nproc) --auto --keeplenght --inputorder --6merpair --leavegappyregion --addfragments "$INPUT" $HOME/bin/MN908947.3.fasta > aln.tmp
+    sed '/>/!y/ryswkmbdhv/NNNNNNNNNN/' aln.tmp > "$OUTPUT".aln.fasta
     rm aln.tmp
 }
 

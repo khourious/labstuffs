@@ -1,10 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
-    MASK=$(find $HOME -type d -name "ProblematicSites_SARS-CoV2")
     INPUT=$1
     OUTPUT=$(basename ${INPUT%.*})
-    python "$MASK"/src/mask_alignment_using_vcf.py -v "$MASK"/problematic_sites_sarsCov2.vcf -i "$INPUT" -o "$OUTPUT".masked.fasta
+    python $HOME/ProblematicSites_SARS-CoV2/src/mask_alignment_using_vcf.py -v $HOME/ProblematicSites_SARS-CoV2/problematic_sites_sarsCov2.vcf -i "$INPUT" -o "$OUTPUT".masked.fasta
 }
 
 bg $1 >/dev/null 2>&1 &

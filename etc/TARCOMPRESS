@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 bg() {
-    TAR=$(basename $1)
-    tar -czvf "$TAR".tar.gz "$TAR"
+    INPUT=$(basename $1)
+    tar -czvf "$INPUT".tar.gz "$INPUT"
 }
 
 bg $1 >/dev/null 2>&1 &
