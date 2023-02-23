@@ -113,7 +113,7 @@ cmd
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-PVMSEQ-DATABASES # rodar script para exportar e organizar todas as bases de dados utilizadas para os relatórios
+PVM_DATABASES.sh # rodar script para exportar e organizar todas as bases de dados utilizadas para os relatórios
 ```
 
 ### Requisição da lista de amostras para extração e sequenciamento do SARS-CoV-2
