@@ -47,6 +47,18 @@
 
 Logar no [MS Teams][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e criar atalhos dentro do [OneDrive][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] para os seguintes diretórios:
 
+- **Canal Diagnóstico**
+
+```text
+MS Teams -> PVM-IGM -> Diagnóstico -> Arquivos -> Sistemas -> Soroteca -> Adicionar atalho ao OneDrive
+```
+
+- **Canal Dados**
+
+```text
+MS Teams -> PVM-IGM -> Dados -> Arquivos -> Sistemas -> Soroteca -> Adicionar atalho ao OneDrive
+```
+
 - **Canal Sequenciamento**
 
 ```text
@@ -59,22 +71,16 @@ MS Teams -> PVM-IGM -> Sequenciamento -> Arquivos -> Adicionar atalho ao OneDriv
 MS Teams -> PVM-IGM -> Sequenciamento Backup -> Arquivos -> Adicionar atalho ao OneDrive
 ```
 
-- **Canal Diagnóstico**
-
-```text
-MS Teams -> PVM-IGM -> Diagnóstico -> Arquivos -> Sistemas -> Soroteca -> Adicionar atalho ao OneDrive
-```
-
 Após criar atalhos no [OneDrive][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios], checar se há a sincronização:
 
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
 ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/ OneDrive # criar atalho para o diretório do OneDrive
+/mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Dados PVM_DADOS  # criar atalho para o diretório Dados presente no OneDrive
 ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Sequenciamento PVM_SEQ # criar atalho para o diretório Sequenciamento presente no OneDrive
-ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Sequenciamento\ Backup/ PVM_SEQ_BKP # criar atalho para o diretório Sequenciamento Backup presente no OneDrive
 [ ! -d $HOME/bin ] && mkdir $HOME/bin # criar diretório bin no $HOME do usuário do Linux
-ln -s $HOME/OneDrive/Sequenciamento/SCRIPTS/* $HOME/bin/ # criar atalho para os scripts dos relatórios dento do $HOME/bin
+ln -s $HOME/PVM_DADOS/Scripts/* $HOME/bin/ # criar atalho para os scripts dos relatórios dento do $HOME/bin
 source $HOME/.$(ps -p $$ -ocomm=)rc # recarregar o perfil de configuração do shell
 [ ! -d /mnt/c/BaseSpace/ ] && mkdir /mnt/c/BaseSpace/ # criar diretório para armazenar os dados baixados do BaseSpace
 ln -s /mnt/c/BaseSpace/ BaseSpace # criar atalho de acesso do diretório BaseSpace no $HOME do usuário do Linux
@@ -90,7 +96,7 @@ bs auth
 
 ### Atualização das bases de dados utilizadas para os relatórios
 
-É necessario copiar o arquivo `ControledeAmostras_FioCruz_be.mdb` localizado na intranet da FIOCRUZ `\IGM-FS\Arquivos\Grupos\DiagCOVID19\Sistemas\Soroteca` para o diretório `\OneDrive\OneDrive - FIOCRUZ\Diagnostico\Sistemas\Soroteca`.
+É necessario copiar o arquivo `ControledeAmostras_FioCruz_be.mdb` localizado na intranet da FIOCRUZ `\IGM-FS\Arquivos\Grupos\DiagCOVID19\Sistemas\Soroteca` para o diretório `\OneDrive\OneDrive - FIOCRUZ\Dados\Bancos_PVM\Soroteca`.
 
 Após copiar o `ControledeAmostras_FioCruz_be.mdb`, abrir o `Executar do Windows` utiizando o atalho `Windows+R` e rodar o `Prompt de Comando do Windows`:
 
@@ -101,7 +107,7 @@ cmd
 - No `cmd`
 
 ```bash
-"C:\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\SCRIPTS\PVM-SEQ_SEROTECA_C_DRIVE.pgm7" # rodar script do Epi Info para exportar os dados do da soroteca da PVM
+"C:\OneDrive\OneDrive - FIOCRUZ\Dados\scripts\PVM_SOROTECA.pgm7" # rodar script do Epi Info para exportar os dados do da soroteca da PVM
 ```
 
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
