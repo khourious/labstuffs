@@ -65,10 +65,10 @@ MS Teams -> PVM-IGM -> Dados -> Arquivos -> Sistemas -> Soroteca -> Adicionar at
 MS Teams -> PVM-IGM -> Sequenciamento -> Arquivos -> Adicionar atalho ao OneDrive
 ```
 
-- **Canal Sequenciamento Bakup**
+- **Canal Envios**
 
 ```text
-MS Teams -> PVM-IGM -> Sequenciamento Backup -> Arquivos -> Adicionar atalho ao OneDrive
+MS Teams -> PVM-IGM -> Envios -> Arquivos -> Adicionar atalho ao OneDrive
 ```
 
 Após criar atalhos no [OneDrive][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios], checar se há a sincronização:
@@ -76,21 +76,52 @@ Após criar atalhos no [OneDrive][https://github.com/khourious/labstuffs/blob/ma
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/ OneDrive # criar atalho para o diretório do OneDrive
-/mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Dados PVM_DADOS  # criar atalho para o diretório Dados presente no OneDrive
-ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Sequenciamento PVM_SEQ # criar atalho para o diretório Sequenciamento presente no OneDrive
-[ ! -d $HOME/bin ] && mkdir $HOME/bin # criar diretório bin no $HOME do usuário do Linux
-ln -s $HOME/PVM_DADOS/Scripts/* $HOME/bin/ # criar atalho para os scripts dos relatórios dento do $HOME/bin
-source $HOME/.$(ps -p $$ -ocomm=)rc # recarregar o perfil de configuração do shell
-[ ! -d /mnt/c/BaseSpace/ ] && mkdir /mnt/c/BaseSpace/ # criar diretório para armazenar os dados baixados do BaseSpace
-ln -s /mnt/c/BaseSpace/ BaseSpace # criar atalho de acesso do diretório BaseSpace no $HOME do usuário do Linux
-git clone --recursive https://github.com/khourious/vigeas.git # clonar o repositório do pipeline de montagem dos genomas
-cd vigeas # entrar no diretório vigeas
-chmod 700 -R INSTALL # dar permissões completas ao arquivo de instalação das dependências do vigeas 
-bash INSTALL # rodar a instalação do vigeas
+# criar atalho para o diretório Dados presente no OneDrive
+ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Dados/ PVM_DADOS
+
+# criar atalho para o diretório Envios presente no OneDrive
+ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Envios/ PVM_SEQ
+
+# criar atalho para o diretório Sequenciamento presente no OneDrive
+ln -s /mnt/c/OneDrive/OneDrive\ -\ FIOCRUZ/Sequenciamento/ PVM_SEQ
+
+# criar diretório bin no $HOME do usuário do Linux
+[ ! -d $HOME/bin ] && mkdir $HOME/bin
+
+# criar atalho para os scripts dos relatórios dento do $HOME/bin
+ln -s $HOME/PVM_DADOS/Scripts/* $HOME/bin/
+
+# recarregar o perfil de configuração do shell
+source $HOME/.$(ps -p $$ -ocomm=)rc
+
+# criar diretório para armazenar os dados baixados do BaseSpace
+[ ! -d /mnt/c/BaseSpace/ ] && mkdir /mnt/c/BaseSpace/
+
+# criar atalho de acesso do diretório BaseSpace no $HOME do usuário do Linux
+ln -s /mnt/c/BaseSpace/ BaseSpace
+
+# clonar o repositório do pipeline de montagem dos genomas
+git clone --recursive https://github.com/khourious/vigeas.git
+
+# entrar no diretório vigeas
+cd vigeas
+
+# dar permissões de leitura e gravação ao arquivo de instalação das dependências do vigeas
+chmod u+x INSTALL
+
+# rodar a instalação do vigeas
+bash INSTALL
+
+# baixar o arquivo de instalação do BaseSpace CLI
 wget "https://launch.basespace.illumina.com/CLI/latest/amd64-linux/bs" -O $HOME/bin/bs
+
+# dar permissões de leitura e gravação ao BaseSpace
 chmod u+x $HOME/bin/bs
-source ~/.zshrc
+
+# recarregar o perfil de configuração do shell
+source $HOME/.$(ps -p $$ -ocomm=)rc
+
+# gerar autorização de login do BaseSpace
 bs auth
 ```
 
@@ -107,13 +138,15 @@ cmd
 - No `cmd`
 
 ```bash
-"C:\OneDrive\OneDrive - FIOCRUZ\Dados\scripts\PVM_SOROTECA.pgm7" # rodar script do Epi Info para exportar os dados do da soroteca da PVM
+# rodar script do Epi Info para exportar os dados do da soroteca da PVM
+"C:\OneDrive\OneDrive - FIOCRUZ\Dados\scripts\PVM_SOROTECA.pgm7"
 ```
 
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-PVM_DATABASES.sh # rodar script para exportar e organizar todas as bases de dados utilizadas para os relatórios
+# rodar script para exportar e organizar todas as bases de dados utilizadas para os relatórios
+PVM_DATABASES.sh
 ```
 
 ### Requisição da lista de amostras para extração e sequenciamento do SARS-CoV-2
@@ -142,14 +175,25 @@ PVMSEQ-EXTRACTION_DATE # rodar script para gerar a planilha de requisição de e
 
 O arquivo será salvo em `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\REQUISICOES_SEQ`.
 
+### Informar para o prompt de comando o nome da corrida de sequenciamento 
+
+No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+# criar array com o nome da biblioteca de sequenciamento
+LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd
+```
+
 ### Download dos dados da corrida de sequenciamento
 
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-LIBRARY=IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd # criar array com o nome da biblioteca de sequenciamento
-bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY" # baixar os arquivos de qualidade da corrida
-bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY" # baixar os arquivos fastQ
+# baixar os arquivos de qualidade da corrida
+bs download run --no-metadata --summary -o $HOME/BaseSpace/"$LIBRARY"_SAV -n "$LIBRARY"
+
+# baixar os arquivos fastQ
+bs download project --no-metadata --summary --extension=fastq.gz -o $HOME/BaseSpace/"$LIBRARY" -n "$LIBRARY"
 ```
 
 ### Avaliação da qualidade da corrida de sequenciamento
@@ -189,34 +233,53 @@ Identificar o nome da biblioteca de sequenciamento para utilizar no Linux, edita
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-dos2unix $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # converter quebras de linha do formato DOS para UNIX
-nano $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # editar samplesheet da biblioteca de sequenciamento
+# converter quebras de linha do formato DOS para UNIX
+dos2unix $HOME/PVM_SEQ/SAMPLE_SHEETS/"$LIBRARY".csv
+
+# editar samplesheet da biblioteca de sequenciamento
+nano $HOME/PVM_SEQ/SAMPLE_SHEETS/"$LIBRARY".csv
 ```
 
 Avaliar a samplesheet do sequenciamento de acordo com os seguintes critérios:
 
 - As amostras e controles não podem conter `-` ou `_` uma vez que estes caracteres são utilizados pelo script de montagem como delimitadores de arquivos.
 - As amostras devem ser identificadas pelo tracking ID biobanco
-- Identificador dos contoles devem sempre conter caractere numérico (*i.e.* MOCK1, CNCDNA1, CNPCR1, CP1).
+- Identificador dos contoles devem sempre conter caractere numérico (*i.e.* MOCK01, CNCDNA01, CNPCR01, CP01).
 - A coluna descrição deve conter a informação do esquema de primer utilizado (*i.e.* ARTIC_V4_1).
 
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-sudo apt-get -y update # atualizar lista de pacotes do linux
-sudo apt-get -y full-upgrade # atualizar o linux e dependências instaladas
-sudo apt-get autoremove # remover dependências que não são mais necessárias
-sudo apt-get auto-clean # remover arquivos de instalações de dependências
-sudo apt-get -y purge $(dpkg -l | awk '/^rc/ {print $2}') # remover arquivos de instalações de dependências que o auto-clean não consegue resolver
-sudo apt-get check # checar se há dependências quebradas
-conda clean -ay # limpar o cachê do conda
-vigeas-illumina -u # atualizar as dependências utililizadas pelos ambientes do vigeas-illumina
+# atualizar lista de pacotes do linux
+sudo apt-get -y update
+
+# atualizar o linux e dependências instaladas
+sudo apt-get -y full-upgrade
+
+# remover dependências que não são mais necessárias
+sudo apt-get autoremove
+
+# remover arquivos de instalações de dependências
+sudo apt-get auto-clean
+
+# remover arquivos de instalações de dependências que o auto-clean não consegue resolver
+sudo apt-get -y purge $(dpkg -l | awk '/^rc/ {print $2}')
+
+# checar se há dependências quebradas
+sudo apt-get check
+
+# limpar o cachê do conda
+conda clean -ay
+
+# atualizar as dependências utililizadas pelos ambientes do vigeas-illumina
+vigeas-illumina -u
 ```
 
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-vigeas-illumina -w 1 -s $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY" -d 10 # rodar o vigeas para realizar a montagem dos genomas de SARS-CoV-2
+# rodar o vigeas para realizar a montagem dos genomas de SARS-CoV-2
+vigeas-illumina -w 1 -s $HOME/PVM_SEQ/SAMPLE_SHEETS/"$LIBRARY".csv -i $HOME/BaseSpace/"$LIBRARY" -d 10
 ```
 
 A montagem dos genoma demora cerca de 2 minutos por genoma em um computador com *hardware* de 9ª geração Intel Core i7 com 16 GB de memória RAM.
@@ -233,9 +296,14 @@ Ao final da montagem dos genomas, avaliar as seguintes situações:
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY" # entrar no diretório dos documentos da biblioteca de sequenciamento
-for f in *\ *; do mv "$f" "${f// /_}"; done # renomear os arquivos para não apresentarem espaços
-PVMSEQ-DATA $HOME/PVM_SEQ/CORRIDAS/SAMPLE_SHEETS/"$LIBRARY".csv # rodar script para gerar os documentos que serão utilizados na montagem dos relatórios
+# entrar no diretório dos documentos da biblioteca de sequenciamento
+cd $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"
+
+# renomear os arquivos para não apresentarem espaços
+for f in *\ *; do rename=$(echo "$f" | sed 's/ /_/g; s/[^A-Za-z0-9_.]/_/g');  mv "$f" "$rename"; done
+
+# rodar script para gerar os documentos que serão utilizados na montagem dos relatórios
+PVM_DATA.sh $HOME/PVM_SEQ/SAMPLE_SHEETS/"$LIBRARY".csv
 ```
 
 Os arquivos gerados pelo script são:
@@ -277,8 +345,11 @@ Abrir a planilha `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.tsv` utiliza
 No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cd $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY" # entrar no diretório dos documentos da biblioteca de sequenciamento
-PVMSEQ-REPORT PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/vigeas/"$LIBRARY"_ANALYSIS/"$LIBRARY".consensus.*.fasta # utilizar o relatório RECap e os arquivos fasta dos genomas para poder gerar os demais relatórios
+# entrar no diretório dos documentos da biblioteca de sequenciamento
+cd $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"
+
+# utilizar o relatório RECap e os arquivos fasta dos genomas para poder gerar os demais relatórios
+PVM_REPORT.sh PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/vigeas/"$LIBRARY"_ANALYSIS/"$LIBRARY".consensus.*.fasta
 ```
 
 Serão gerados os seguintes arquivos:
@@ -309,19 +380,21 @@ EpiCov -> Upload -> Batch Upload
 - Adicionar em **Sequences as FASTA** o arquivo `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`.
 - Modificar os arquivos em caso de alguma sequencia já ter sido adicionada previamente no GISAID e enviar novamente.
 
-#### Submissão via cli3
+#### Submissão via GISAID CLI
 
-- Checar a validade do login via cli3:
+- Checar a validade do login via GISAID CLI:
   - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cat $HOME/PVM_SEQ/RELATORIOS/GISAID/gisaid.authtoken | awk -F", " '{print $NF}' # abrir arquivo token de login e checar a data de expiração
+# abrir arquivo token de login e checar a data de expiração
+cat $HOME/PVM_DADOS/Relatorios/GISAID/gisaid.authtoken | awk -F", " '{print $NF}'
 ```
 
 - Em caso de expiração de login, realizar a autenticação utilizando username RKhour0 e client-ID cid-b3382c70dcc41:
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
+# autenticar o GISAID CLI
 cli3 authenticate
 ```
 
@@ -329,15 +402,19 @@ cli3 authenticate
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cd $HOME/PVM_SEQ/RELATORIOS/GISAID/ # entrar no diretório dos relatórios do GISAID
-ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv # converter arquivo *.xls para *.csv
+# entrar no diretório dos relatórios do GISAID
+cd $HOME/PVM_DADOS/Relatorios/GISAID/
+
+# converter arquivo *.xls para *.csv
+ssconvert hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').xls hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv
 ```
 
 - Enviar os dados de submissão:
   - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cli3 upload --database EpiCoV --metadata $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta --log $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log # enviar sequências fasta do SARS-CoV-2 e metadados para o GISAID, e no final, gerar um log com as informações dos IDs GISAID das amostras 
+# enviar sequências fasta do SARS-CoV-2 e metadados para o GISAID, e no final, gerar um log com as informações dos IDs GISAID das amostras
+cli3 upload --database EpiCoV --metadata $HOME/PVM_DADOS/Relatorios/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').csv --fasta $HOME/PVM_DADOS/Relatorios/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').fasta --log $HOME/PVM_DADOS/Relatorios/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log
 ```
 
 ### Envio do relatório REDCAP para REDCap FIOCRUZ
@@ -347,7 +424,8 @@ Após submissão dos genomas no GISAID, utilizar o log gerado do  envio para cri
 - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-cat $HOME/PVM_SEQ/RELATORIOS/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log | grep "epi_isl_id" | sed 's/{"code": "epi_isl_id", "msg": "//g' | sed 's/"}//g' | awk -F";" '{print $1"\t"$1"\t"$2}' | awk -F"\t" '{$1=substr($1,30); print $1"\t"$2"\tRKhour0\t"$3} ' | awk -F"\t" '{$1 = substr($1,0,length($1)-5)}1' OFS="\t" > $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/GISAID_IDS_"$LIBRARY".txt # gerar lista com seq_virus_name, gisaid_login e gisaid_id
+# gerar lista com seq_virus_name, gisaid_login e gisaid_id
+cat $HOME/PVM_DADOS/Relatorios/GISAID/hCoV-19_FIOCRUZ_BA_PVM_$(date +'%Y%m%d').log | grep "epi_isl_id" | sed 's/{"code": "epi_isl_id", "msg": "//g' | sed 's/"}//g' | awk -F";" '{print $1"\t"$1"\t"$2}' | awk -F"\t" '{$1=substr($1,30); print $1"\t"$2"\tRKhour0\t"$3} ' | awk -F"\t" '{$1 = substr($1,0,length($1)-5)}1' OFS="\t" > $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"/GISAID_IDS_"$LIBRARY".txt
 ```
 
 Abrir a planilha do relatório REDCAp `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARYyyyymmdd.xls` utilizando o [MS Excel][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e manipular o arquivo de acordo com os seguintes critérios:
@@ -361,7 +439,8 @@ Abrir a planilha do relatório REDCAp `PVM-SEQ_REDCap_IGM_PVM_MISEQ_DNAP_LIBRARY
     - No [WLS2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-ssconvert $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".xls $HOME/PVM_SEQ/CORRIDAS/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv # converter arquivo *.xls para *.csv
+# converter arquivo *.xls para *.csv
+ssconvert $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".xls $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv
 ```
 
 - Entrar no endereço [https://bdp.bahia.fiocruz.br][https://bdp.bahia.fiocruz.br], logar, ir para o Projeto `Sequenciamento de SARS-CoV-2` e acessar o ambiente importação de dados:
