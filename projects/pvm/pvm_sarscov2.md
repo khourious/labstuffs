@@ -354,9 +354,9 @@ PVM_REPORT.sh PVM-SEQ_REDCap_"$LIBRARY".txt $HOME/vigeas/"$LIBRARY"_ANALYSIS/"$L
 
 Serão gerados os seguintes arquivos:
 
-- `RelatorioCIEVS_yyyy-mm-dd.csv`: arquivo que será encaminhada como relatório para o ***Centro de Informações Estratégicas em Vigilância em Saúde (CIEVS)*** da Secretaria de Estado de Saúde da Bahia (SESAB). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\CIEVS`.
-- `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv` / `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`: arquivos que serão utilizados para organizar a submissão dos genomas para o ***GISAID***. Os arquivos estão salvos no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\GISAID`.
-- `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv`: arquivo que será utilizado para organizar o relatório relatório da ***Rede Genômica Fiocruz*** da Fundação Oswaldo Cruz (FIOCRUZ). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS\REDE_GENOMICA`.
+- `RelatorioCIEVS_yyyy-mm-dd.csv`: arquivo que será encaminhada como relatório para o ***Centro de Informações Estratégicas em Vigilância em Saúde (CIEVS)*** da Secretaria de Estado de Saúde da Bahia (SESAB). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Dados\Relatorios\CIEVS`.
+- `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.tsv` / `hCoV-19_FIOCRUZ_BA_PVM_yyyymmdd.fasta`: arquivos que serão utilizados para organizar a submissão dos genomas para o ***GISAID***. Os arquivos estão salvos no diretório `\OneDrive\OneDrive - FIOCRUZ\Dados\Relatorios\GISAID`.
+- `RelatorioRedeGenomica_FIOCRUZBahia_yyyy-mm-dd.csv`: arquivo que será utilizado para organizar o relatório relatório da ***Rede Genômica Fiocruz*** da Fundação Oswaldo Cruz (FIOCRUZ). O arquivo está salvo no diretório `\OneDrive\OneDrive - FIOCRUZ\Dados\Relatorios\REDE_GENOMICA`.
 
 ### Submissão GISAID
 
@@ -462,7 +462,6 @@ My Projects -> SARS-CoV-2 -> Sequenciamento de SARS-CoV-2 -> Applications -> Dat
 REDCap-SARSSeq # obter a base de dados do REDCap FIOCRUZ de Sequenciamento de SARS-CoV-2
 ```
 
-
 ### Relatório CIEVS
 
 Abrir o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` utilizando o [MS Excel][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios] e avaliar de acordo com os seguintes critérios:
@@ -470,7 +469,7 @@ Abrir o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` utilizando o [MS Excel][https://
 - Checar se a coluna `NUMERO DE REQUISICAO` está devidamente preenchida.
 - Checar se a coluna `VOC` contém a informação escrita da VOC em questão.
 
-#### E-mail para o CIEVS
+#### E-mail para o CIEVS # somente amostras com requisição GAL
 
 Enviar e-mail para o CIEVS com o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` em anexo, com as seguintes informações:
 
@@ -489,14 +488,80 @@ Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
 - **Corpo do e-mail**
 
 ```text
-Prezados,
+Prezados colegas,
 
-Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Anexamos o relatório referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. Estamos à disposição para fornecer esclarecimentos adicionais.
+
+Além disso, compartilhamos o link seguro da pasta onde armazenamos todos os arquivos previamente enviados e as informações dos Relatórios Epidemiológicos relacionados aos casos anteriores:
+https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-Sequenciamento/EtxjLSknDiNPngho9DbI5gkBddL8R7A0rwG0ADA1G5lulA?email=cievs.notifica%40saude.ba.gov.br&e=X9AH2E
+Este link foi configurado de forma a garantir o acesso exclusivo ao e-mail de vocês (cievs.notifica@saude.ba.gov.br).
+
+Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país.
+```
+
+#### E-mail para o CIEVS # amostras com requisição HSR
+
+Enviar e-mail para o CIEVS com o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` em anexo, com as seguintes informações:
+
+- **Destinatários**
+
+```text
+cievs.notifica@saude.ba.gov.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com; carolina.nonaka@hsr.com.br; brunosolanosouza@gmail.com
+```
+
+- **Assunto**
+
+```text
+Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
+```
+
+- **Corpo do e-mail**
+
+```text
+Prezados colegas,
+
+Anexamos o relatório referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. No entanto, ressaltamos que, para amostras coletadas no Hospital São Rafael, solicitamos que quaisquer informações adicionais dos pacientes sejam solicitadas diretamente à Dra. Carol Nonaka (carolina.nonaka@hsr.com.br).
+
+Além disso, compartilhamos o link seguro da pasta onde armazenamos todos os arquivos previamente enviados e as informações dos Relatórios Epidemiológicos relacionados aos casos anteriores:
+https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-Sequenciamento/EtxjLSknDiNPngho9DbI5gkBddL8R7A0rwG0ADA1G5lulA?email=cievs.notifica%40saude.ba.gov.br&e=X9AH2E
+Este link foi configurado de forma a garantir o acesso exclusivo ao e-mail de vocês (cievs.notifica@saude.ba.gov.br).
+
+Nossa equipe está à disposição para quaisquer esclarecimentos adicionais sobre o relatório, e ficaremos felizes em ajudá-los da melhor maneira possível. Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país e, em especial, a contribuição do Hospital São Rafael.
+```
+
+#### E-mail para o CIEVS # amostras com requisição LABCOV
+
+Enviar e-mail para o CIEVS com o arquivo `RelatorioCIEVS_yyyy-mm-dd.csv` em anexo, com as seguintes informações:
+
+- **Destinatários**
+
+```text
+cievs.notifica@saude.ba.gov.br; pvm@fiocruz.br; ricardo_khouri@hotmail.com; hermespedreira@ufrb.edu.br
+```
+
+- **Assunto**
+
+```text
+Relatório CIEVS de linhagens de SARS-CoV-2 no estado da Bahia
+```
+
+- **Corpo do e-mail**
+
+```text
+Prezados colegas,
+
+Anexamos o relatório referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. No entanto, ressaltamos que, para amostras coletadas no Laboratório de Diagnóstico Molecular da COVID-19 do CCS/UFRB, solicitamos que quaisquer informações adicionais dos pacientes sejam solicitadas diretamente ao Dr. Hermes Pedreira (hermespedreira@ufrb.edu.br).
+
+Além disso, compartilhamos o link seguro da pasta onde armazenamos todos os arquivos previamente enviados e as informações dos Relatórios Epidemiológicos relacionados aos casos anteriores:
+https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-Sequenciamento/EtxjLSknDiNPngho9DbI5gkBddL8R7A0rwG0ADA1G5lulA?email=cievs.notifica%40saude.ba.gov.br&e=X9AH2E
+Este link foi configurado de forma a garantir o acesso exclusivo ao e-mail de vocês (cievs.notifica@saude.ba.gov.br).
+
+Nossa equipe está à disposição para quaisquer esclarecimentos adicionais sobre o relatório, e ficaremos felizes em ajudá-los da melhor maneira possível. Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país e, em especial, a contribuição do Laboratório de Diagnóstico Molecular da COVID-19 do CCS/UFRB.
 ```
 
 ### Relatório Rede Genômica Fiocruz
 
-Para a submissão são necessários um arquivo `*.pdf` do relatório e uma planilha `*.csv` com os dados que compõem o relatório. O modelo do relatório está disponível no diretório `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento\RELATORIOS`.
+Para a submissão são necessários um arquivo `*.pdf` do relatório e uma planilha `*.csv` com os dados que compõem o relatório. O modelo do relatório está disponível no diretório `\OneDrive\OneDrive - FIOCRUZ\Dados\Relatorios`.
 
 - Abrir o arquivo modelo do relatório utilizando o [MS PowerPoint][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]. Utilizar os arquivos de acordo com o requisitante do sequenciamento:
   - **HSR**: `RelatorioRedeGenomica_FIOCRUZBahia_HSR.potx`
@@ -536,9 +601,11 @@ Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 - **Corpo do e-mail**
 
 ```text
-Prezados,
+Prezados colegas,
 
-Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperados de amostras Hospital São Rafael. Para maiores esclarecimentos sobre as amostras, por favor, contactar Dra Camila Bacia (camila.bacia@hsr.com.br), infectologista do Hospital São Rafael. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Anexamos o relatório da Rede Genômica referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. Para maiores informações adicionais dos pacientes, por gentileza, entrem em contato com a Dra. Carol Nonaka (carolina.nonaka@hsr.com.br).
+
+Nossa equipe está à disposição para quaisquer esclarecimentos adicionais sobre o relatório, e ficaremos felizes em ajudá-los da melhor maneira possível. Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país e, em especial, a contribuição do Hospital São Rafael.
 ```
 
 #### E-mail para a Rede Genômica Fiocruz # LABCOV
@@ -560,9 +627,9 @@ Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 - **Corpo do e-mail**
 
 ```text
-Prezados,
+Prezados colegas,
 
-Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Anexamos o relatório da Rede Genômica referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. Nossa equipe está à disposição para quaisquer esclarecimentos adicionais sobre o relatório, e ficaremos felizes em ajudá-los da melhor maneira possível. Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país.
 ```
 
 #### E-mail para a Rede Genômica Fiocruz # LACEN-BA / PVM-IGM
@@ -584,9 +651,9 @@ Relatório Rede Genômica de linhagens de SARS-CoV-2 no estado da Bahia
 - **Corpo do e-mail**
 
 ```text
-Prezados,
+Prezados colegas,
 
-Segue anexo o relatório com a linhagem dos genomas de SARS-CoV-2 recuperado de amostras no estado da Bahia. Estamos a disposição para maiores esclarecimentos. Muito obrigado pela colaboração na rede de vigilância genômica no país.
+Anexamos o relatório da Rede Genômica referente às linhagens dos genomas do SARS-CoV-2 identificadas a partir de amostras coletadas no estado da Bahia. Nossa equipe está à disposição para quaisquer esclarecimentos adicionais sobre o relatório, e ficaremos felizes em ajudá-los da melhor maneira possível. Agradecemos imensamente a colaboração de todos na rede de vigilância genômica em nosso país.
 ```
 
 ### Backup dos dados
@@ -596,9 +663,70 @@ Os dados gerados pelo sequenciamento e as análises de montagem são armazenados
 - No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
 
 ```bash
-mv $HOME/BaseSpace/"$LIBRARY" $HOME/PVM_SEQ_BKP/FASTQ_BS # mover os arquivos fastQ para o diretório de backup
-mv $HOME/vigeas/"$LIBRARY"_ANALYSIS $HOME/PVM_SEQ_BKP/ANALISES # mover a análise para o diretório de backup
+# mover os arquivos fastQ para o diretório de backup
+mv $HOME/BaseSpace/"$LIBRARY" $HOME/TEMP
+
+# mover a análise para o diretório de backup
+mv $HOME/vigeas/"$LIBRARY"_ANALYSIS $HOME/TEMP
 ```
+
+### Backup e envio dos dados para os colaboradores # HSR
+
+Os dados gerados pelo sequenciamento e as análises de montagem do colaborador HSR são armazenados dentro do canal `Sequenciamento Backup` em diretório dedicado: `\OneDrive\OneDrive - FIOCRUZ\Sequenciamento Backup\PVM_COLAB\HSR`.
+
+- No [WSL2][https://github.com/khourious/labstuffs/blob/master/projects/pvm/pvm_sarscov2.md#programas-necess%C3%A1rios]
+
+```bash
+# criar os diretórios do colaborador no diratório de envio para o Teams
+mkdir -p $HOME/TEMP/HSR/FASTQ $HOME/TEMP/HSR/RESULTS
+
+# copiar os arquivos fastQ das amostras do LABCOV para o diretório de backup
+for i in $(cat $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv | awk -F, '{print $10","$22}' | grep "HSR" | awk -F, '{print $2}'); do cp $HOME/TEMP/"$LIBRARY"/"$i"*/"$i"*.fastq.gz $HOME/TEMP/HSR/FASTQ/; done
+
+# copiar a análise das amostras do LABCOV para o diretório de backup
+for i in $(cat $HOME/PVM_SEQ/DOCUMENTOS/"$LIBRARY"/PVM-SEQ_REDCap_"$LIBRARY".csv | awk -F, '{print $10","$22}' | grep "HSR" | awk -F, '{print $2}'); do cp -r $HOME/TEMP/"$LIBRARY"_ANALYSIS/"$i" $HOME/TEMP/HSR/RESULTS; done
+```
+
+Enviar e-mail para o colaborador do LABCOV (hermespedreira@ufrb.edu.br) com o link do diretório com os dados:
+
+- **Destinatários**
+
+```text
+carolina.nonaka@hsr.com.br; brunosolanosouza@gmail.com; pvm@fiocruz.br; ricardo_khouri@hotmail.com
+```
+
+- **Assunto**
+
+```text
+Plataforma de Vigilância Molecular - Arquivos fastQ e resultados da montagem dos genomas de SARS-CoV-2
+```
+
+- **Corpo do e-mail**
+
+```text
+Prezados Dr. Bruno Solano e Dra. Carol Nonaka,
+
+Segue link de acesso aos arquivos fastQ gerados no sequenciamento, assim como os arquivos da montagem dos genomas de SARS-CoV-2. O link apenas pode ser acessado utilizando as credenciais dos e-mails requisitantes do sequenciamento (carolina.nonaka@hsr.com.br e brunosolanosouza@gmail.com). Link: https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-BackupMiseq/EmKDjUM_A69ClAoOrod2rKwB2mewIclQDCrttvPU5LYbPQ?email=hermespedreira%40ufrb.edu.br&e=DpX2Oz.
+
+Lembrando que as sequências em fasta estão disponíveis na Plataforma GISAID. Para realizar a busca direcionada dos genomas da LABCOV, buscar na aba "EpiCoV -> Search" da seguinte forma: termo "FIOCRUZ-PVM" em "Virus name" e o termo "H.S.R" em "Text Search".
+
+Qualquer dúvida, estou à disposição.
+
+Prezados Dr. Bruno Solano e Dra. Carol Nonaka,
+
+Recebi o seu e-mail com o link de acesso aos arquivos fastQ gerados no sequenciamento, assim como os arquivos da montagem dos genomas de SARS-CoV-2. Eu verifiquei o link e notei que ele só pode ser acessado utilizando as credenciais dos e-mails requisitantes do sequenciamento (carolina.nonaka@hsr.com.br e brunosolanosouza@gmail.com). O link é: https://fiocruzbr.sharepoint.com/:f:/s/PVM-IGM-BackupMiseq/EmKDjUM_A69ClAoOrod2rKwB2mewIclQDCrttvPU5LYbPQ?email=hermespedreira%40ufrb.edu.br&e=DpX2Oz.
+
+Agradeço por lembrar que as sequências em fasta estão disponíveis na Plataforma GISAID e para realizar a busca direcionada dos genomas da LABCOV, basta buscar na aba "EpiCoV -> Search" da seguinte forma: inserir o termo "FIOCRUZ-PVM" em "Virus name" e o termo "H.S.R" em "Text Search".
+
+Caso tenham qualquer dúvida ou necessitem de mais informações, estou à disposição.
+
+Atenciosamente,
+```
+
+- **Anexo**
+
+![LABCOV GISAID Search](pvm_sarscov2_labcov_gisaid_search.png)
+
 
 ### Backup e envio dos dados para os colaboradores # LABCOV
 
