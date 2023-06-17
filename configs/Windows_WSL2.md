@@ -46,7 +46,7 @@ wsl.exe --shutdown
 ## Windows Desktop Shortcut
 
 ```sh
-ln -s /mnt/c/Users/$(cmd.exe /c echo %USERNAME% | dos2unix)/Desktop $HOME
+ln -s /mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null | tr -d '\r')/Desktop $HOME
 ```
 
 ## Installation of labstuffs scripts
