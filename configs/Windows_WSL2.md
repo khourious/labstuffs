@@ -84,12 +84,6 @@ nvidia-smi
 ```sh
 sudo chsh --shell /bin/zsh "$USER" && \
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-
-```
-
-Shutdown WSL2:
-
-```sh
 wsl.exe --shutdown
 ```
 
