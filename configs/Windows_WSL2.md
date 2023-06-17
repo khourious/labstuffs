@@ -86,13 +86,6 @@ sudo chsh --shell /bin/zsh "$USER" && \
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 ```
 
-Install `Oh My Zsh` Highlighting Syntax:
-
-```sh
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-sh -c "$(curl -fsSL https://git.io/zinit-install)"
-```
-
 Create `.zshrc`:
 
 ```sh
