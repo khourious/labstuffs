@@ -34,7 +34,7 @@ sudo apt install -fy
 ## Setting RAM and SWAP Memory
 
 ```sh
-sudo cat << EOF > /mnt/c/Users/$(cmd.exe /c echo %USERNAME%)
+sudo cat << EOF > /mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null)
 [wsl2]
 
 memory=16GB
