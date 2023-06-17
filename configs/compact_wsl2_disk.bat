@@ -1,23 +1,26 @@
 @echo off
 
-setlocal enabledelayedexpansion
+:: Desligar o WSL
+wsl.exe --shutdown
 
-if "%1"=="" (
-    echo ERROR: Please provide the path to the ext4.vhdx file as an argument.
-    echo Example: compact_wsl2_disk.cmd "C:\Users\RKHOURI\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\ext4.vhdx"
-    exit /b 1
+:: Buscar localização do ext4.vhdx
+for /R "C:\Users" %%i in (ext4.vhdx) do (
+    set "vhdx_path=%%i"
 )
 
-set vhdx_path=%1
+:: Executar Diskpart com comandos salvos em um arquivo txt temporário
+echo select vdisk file="%vhdx_path%"> temp.txt
+echo attach vdisk readonly>> temp.txt
+echo compact vdisk>> temp.txt
+echo detach vdisk>> temp.txt
 
-DISKPART
+:: Executar Diskpart com comandos do arquivo txt temporário
+diskpart /s temp.txt
 
-select vdisk file="%vhdx_path%"
+:: Remover o arquivo txt temporário
+del temp.txt
 
-attach vdisk readonly
-
-compact vdisk
-
-detach vdisk
-
-endlocal
+:: Concluir o script
+echo Done.
+pause
+exit
