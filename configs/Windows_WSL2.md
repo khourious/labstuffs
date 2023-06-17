@@ -8,10 +8,6 @@
 - [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#oh-my-zsh)
 - [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#miniconda-and-mamba)
   - [conda environments: phylogenetic/phylodynamic analysis](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#phylogeneticphylodynamic-analysis)
-- [R v4.2.2 and RStudio v2022.12.0-353](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#r-v422-and-rstudio-v2022120-353)
-- [Aliview v1.28](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#aliview-v128)
-- [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#figtree-v144)
-- [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
 ## System update, install packages and cleanup
 
@@ -195,29 +191,4 @@ To activate and use packages inside the environment:
 
 ```sh
 source activate phy
-```
-
-## BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2
-
-```sh
-sudo apt update -y && \
-sudo apt install -y autoconf automake cmake g++-8 gcc-8 libtool openjdk-8-jdk openjdk-8-jre pkg-config subversion && \
-sudo apt update -y && \
-cd; wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.0.tar.gz && \
-tar -zxvf v4.0.0.tar.gz; cd beagle-lib-4.0.0 && \
-mkdir build; cd build && \
-cmake -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_CXX_COMPILER=g++-8 -DCMAKE_INSTALL_PREFIX:PATH=$HOME/beagle-lib-4.0.0 .. && \
-make install && \
-echo "export LD_LIBRARY_PATH=$HOME/beagle-lib-4.0.0/lib:$LD_LIBRARY_PATH" >> ~/.zshrc && \
-source ~/.zshrc && \
-make test && \
-cd; rm v4.0.0.tar.gz && \
-wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz && \
-tar -zxvf BEASTv1.10.4.tgz; rm -rf BEASTv1.10.4.tgz && \
-echo "export PATH=$HOME/BEASTv1.10.4/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc && \
-wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.5pre_thorney_v0.1.2/BEASTv1.10.5pre_thorney_0.1.2.tgz && \
-tar -zxvf BEASTv1.10.5pre_thorney_0.1.2.tgz; rm -rf BEASTv1.10.5pre_thorney_0.1.2.tgz && \
-echo "export PATH=$HOME/BEASTv1.10.5pre_thorney_0.1.2/bin:/usr/local/share/rsi/idl/bin:$PATH" >> ~/.zshrc && \
-source ~/.zshrc
-
 ```
