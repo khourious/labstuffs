@@ -40,6 +40,7 @@ cat << EOF > .wslconfig
 memory=16GB
 swap=32GB
 EOF
+wsl.exe --shutdown
 ```
 
 ## Windows Desktop Shortcut
