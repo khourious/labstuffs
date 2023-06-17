@@ -34,13 +34,12 @@ sudo apt install -fy
 ## Setting RAM and SWAP Memory
 
 ```sh
-sudo cat << EOF > /mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null)
+cd /mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null | tr -d '\r')
+cat << EOF > .wslconfig
 [wsl2]
-
 memory=16GB
 swap=32GB
 EOF
-
 ```
 
 ## Windows Desktop Shortcut
