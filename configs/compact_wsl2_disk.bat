@@ -1,26 +1,37 @@
 @echo off
 
-:: Desligar o WSL
+echo Shutting down WSL...
 wsl.exe --shutdown
 
-:: Buscar localização do ext4.vhdx
+echo Searching for the ext4.vhdx file...
 for /R "C:\Users" %%i in (ext4.vhdx) do (
     set "vhdx_path=%%i"
 )
 
-:: Executar Diskpart com comandos salvos em um arquivo txt temporário
-echo select vdisk file="%vhdx_path%"> temp.txt
-echo attach vdisk readonly>> temp.txt
-echo compact vdisk>> temp.txt
-echo detach vdisk>> temp.txt
+echo The ext4.vhdx file was found at: %vhdx_path%
 
-:: Executar Diskpart com comandos do arquivo txt temporário
-diskpart /s temp.txt
+echo Preparing Diskpart commands...
 
-:: Remover o arquivo txt temporário
-del temp.txt
+echo Selecting vdisk file...
+echo select vdisk file="%vhdx_path%"> temp1.txt
+diskpart /s temp1.txt
+del temp1.txt
 
-:: Concluir o script
+echo Attaching vdisk readonly...
+echo attach vdisk readonly> temp2.txt
+diskpart /s temp2.txt
+del temp2.txt
+
+echo Compacting vdisk...
+echo compact vdisk> temp3.txt
+diskpart /s temp3.txt
+del temp3.txt
+
+echo Detaching vdisk...
+echo detach vdisk> temp4.txt
+diskpart /s temp4.txt
+del temp4.txt
+
 echo Done.
 pause
 exit
