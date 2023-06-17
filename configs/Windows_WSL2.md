@@ -70,11 +70,6 @@ sudo cp /var/cuda-repo-ubuntu2004-12-0-local/cuda-*-keyring.gpg /usr/share/keyri
 sudo apt update -y && \
 sudo apt install -y cuda-toolkit-12-0 nvidia-cuda-toolkit && \
 sudo apt install -fy
-```
-
-Shutdown WSL2:
-
-```sh
 wsl.exe --shutdown
 ```
 
