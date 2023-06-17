@@ -1,7 +1,6 @@
 # Linux Subsystem for Windows (WSL2)
 
 - [System update, install packages and cleanup](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#linux-subsystem-for-windows-wsl2)
-- [System update, install packages and cleanup - Ubuntu 22.04](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#system-update-install-packages-and-cleanup---ubuntu-2204)
 - [Setting RAM and SWAP Memory](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#setting-ram-and-swap-memory)
 - [Windows Desktop Shortcut](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#windows-desktop-shortcut)
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#installation-of-labstuffs-scripts)
@@ -14,22 +13,9 @@
 - [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#figtree-v144)
 - [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
-## System update, install packages and cleanup
-
-```sh
-sudo apt update -y && \
-sudo apt upgrade -y && \
-sudo apt install -y autoconf automake build-essential cmake curl default-jre default-jdk dos2unix exfat-fuse g++-8 gcc-8 git htop inxi libbz2-dev libclang-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev libjpeg-dev liblzma-dev libncurses5-dev libncursesw5-dev libpng-dev libpq5 libssl-dev libssl1.1 libtiff5-dev libtbb-dev libtool libxml2-dev libz-dev make openjdk-8-jdk openjdk-8-jre openssh-server openssl parallel pkg-config sshpass subversion wget zlib1g-dev zsh && \
-wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu66_66.1-2ubuntu2_amd64.deb
-sudo dpkg -i libicu66_66.1-2ubuntu2_amd64.deb; rm libicu66_66.1-2ubuntu2_amd64.deb && \
-sudo apt autoremove -y && \
-sudo apt clean -y && \
-sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}') && \
-sudo apt install -fy
-
 ```
 
-## System update, install packages and cleanup - Ubuntu 22.04
+## System update, install packages and cleanup
 
 ```sh
 sudo cat <<EOF | sudo tee /etc/apt/sources.list.d/gcc-8.list
