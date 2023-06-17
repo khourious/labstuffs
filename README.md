@@ -6,4 +6,4 @@
 
 ## How to compact a WSL2 Disk
 
-Download and run the `compact_wsl2_disk.bat` script: [https://github.com/khourious/labstuffs/raw/master/configs/compact_wsl2_disk.bat](https://github.com/khourious/labstuffs/raw/master/configs/compact_wsl2_disk.bat)
+Download and run the script: [compact_wsl2_disk.bat](https://github.com/khourious/labstuffs/raw/master/configs/compact_wsl2_disk.bat)
