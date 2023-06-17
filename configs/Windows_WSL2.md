@@ -13,8 +13,6 @@
 - [FigTree v1.4.4](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#figtree-v144)
 - [BEAGLE v4.0.0 and BEAST v1.10.4 / v1.10.5pre_thorney_v0.1.2](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#beagle-v400-and-beast-v1104--v1105pre_thorney_v012)
 
-```
-
 ## System update, install packages and cleanup
 
 ```sh
