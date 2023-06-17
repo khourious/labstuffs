@@ -39,7 +39,7 @@ sudo cat << EOF > /mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null)
 
 memory=16GB
 swap=32GB
-EOL
+EOF
 
 ```
 
