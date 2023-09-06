@@ -6,7 +6,7 @@
 - [Installation of labstuffs scripts](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#installation-of-labstuffs-scripts)
 - [Enable NVIDIA CUDA v12.0 on GPU CUDA-capable devices](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#enable-nvidia-cuda-v120-on-gpu-cuda-capable-devices)
 - [Oh My Zsh](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#oh-my-zsh)
-- [miniconda and mamba](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#miniconda-and-mamba)
+- [micromamba](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#micromamba)
   - [conda environments: phylogenetic/phylodynamic analysis](https://github.com/khourious/labstuffs/blob/master/configs/Windows_WSL2.md#phylogeneticphylodynamic-analysis)
 
 ## System update, install packages and cleanup
@@ -148,34 +148,27 @@ EOF
 Reload the `.zshrc` settings:
 
 ```sh
-source ~/.zshrc
+source ~/.[bz]shrc
 ```
 
-## miniconda and mamba
+## micromamba
 
 ```sh
-cd; wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-bash miniconda.sh -b -p miniconda; rm miniconda.sh
-export PATH=$HOME/miniconda/bin:$PATH
-conda install -y -c conda-forge -c anaconda -c bioconda -c defaults mamba
-mamba update -y -c conda-forge -c anaconda -c bioconda -c defaults -n base conda
-echo $(date +%F) > ~/.zsh_last_run
-cat << EOF >> ~/.zshrc
-export PATH=\$HOME/miniconda/bin:\$PATH
-ZSH_LAST_RUN_FILE=~/.zsh_last_run
-if [ ! -e \$ZSH_LAST_RUN_FILE ] || [ \$(date +%F) != \$(cat \$ZSH_LAST_RUN_FILE) ]; then
-    echo "\$(date +%F)" > \$ZSH_LAST_RUN_FILE
-    mamba update -y --all
-fi
+cd; yes | "${SHELL}" <(curl -L micro.mamba.pm/install.sh)
+source ~/.[bz]shrc
+echo 'alias conda=micromamba' >> ~/.[bz]shrc
+echo 'alias mamba=micromamba' >> ~/.[bz]shrc
+echo 'alias mm=micromamba' >> ~/.[bz]shrc
+echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.[bz]shrc
 
 EOF
 
 ```
 
-Test `conda` installation:
+Test `micromamba` installation:
 
 ```sh
-conda --help
+micromamba --help
 ```
 
 ## conda environments
@@ -185,11 +178,11 @@ conda --help
 To create the environment:
 
 ```sh
-mamba create -y -n phy -c conda-forge -c anaconda -c bioconda -c defaults cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
+micromamba create -y -n phy -c conda-forge -c bioconda cialign gbmunge igv iqtree mafft minimap2 seqkit seqtk tablet treetime
 ```
 
 To activate and use packages inside the environment:
 
 ```sh
-source activate phy
+micromamba activate phy
 ```
