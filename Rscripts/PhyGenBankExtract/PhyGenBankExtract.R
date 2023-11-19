@@ -92,6 +92,13 @@ get_genotype <- function(note) {
 df$genotype <- ifelse(is.na(df$genotype), sapply(df$note, get_genotype), df$genotype)
 df <- df[, !names(df) %in% "note"]
 df <- df[, c("accession", "length", "isolate", "isolation_source", "host", "organism", "genotype", "country_original", "country", "country_code", "collection_date_original", "collection_date", "fasta")]
+df$isolate <- sapply(df$isolate, paste, collapse = "")
+df$isolation_source <- sapply(df$isolation_source, paste, collapse = "")
+df$host <- sapply(df$host, paste, collapse = "")
+df$organism <- sapply(df$organism, paste, collapse = "")
+df$genotype <- sapply(df$genotype, paste, collapse = "")
+df$country_original <- sapply(df$country_original, paste, collapse = "")
+df$collection_date_original <- sapply(df$collection_date_original, paste, collapse = "")
 
 base_name <- tools::file_path_sans_ext(basename(input_file))
 write_xlsx(df, paste0(base_name, ".xlsx"))
