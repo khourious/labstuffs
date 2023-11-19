@@ -18,7 +18,12 @@ clusterEvalQ(cluster, {library(read.gb)})
 gb <- readLines(input_file)
 gb_start <- grep("^LOCUS", gb)
 gb_end <- grep("^//$", gb)
-gb_rec <- mapply(function(x,y) gb[x:y], gb_start, gb_end)
+gb_temp <- mapply(function(x,y) gb[x:y], gb_start, gb_end)
+
+gb_rec <- gb_temp[sapply(gb_temp, function(rec) {
+  locus_line <- rec[1]
+  !grepl(" rc", locus_line) || as.numeric(gsub(".* (\\d+) rc.*", "\\1", locus_line)) > 2
+})]
 
 start_time <- Sys.time()
 read_gb <- unlist(parLapply(cluster, gb_rec, function(part) {
