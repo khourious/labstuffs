@@ -1,0 +1,235 @@
+---
+title: "Plataforma de Vigilância Molecular"
+author: "PVM-SEQ Dashboard"
+date: "atualizado em `r Sys.Date()`"
+output: 
+  flexdashboard::flex_dashboard
+---
+
+```{r setup, include = FALSE}
+if (!requireNamespace("devtools", quietly = TRUE)) install.packages("devtools", dependencies = TRUE); library("devtools")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr", dependencies = TRUE); library("dplyr")
+if (!requireNamespace("flexdashboard", quietly = TRUE)) install.packages("flexdashboard", dependencies = TRUE); library("flexdashboard")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2", dependencies = TRUE); library("ggplot2")
+if (!requireNamespace("here", quietly = TRUE)) install.packages("here", dependencies = TRUE); library("here")
+if (!requireNamespace("pandoc", quietly = TRUE)) install.packages("pandoc", dependencies = TRUE); library("pandoc")
+if (!requireNamespace("plotly", quietly = TRUE)) install.packages("plotly", dependencies = TRUE); library("plotly")
+if (!requireNamespace("plyr", quietly = TRUE)) install.packages("plyr", dependencies = TRUE); library("plyr")
+if (!requireNamespace("rio", quietly = TRUE)) install.packages("rio", dependencies = TRUE); library("rio")
+if (!requireNamespace("REDCapR", quietly = TRUE)) install.packages("REDCapR", dependencies = TRUE); library("REDCapR")
+if (!requireNamespace("reshape2", quietly = TRUE)) install.packages("reshape2", dependencies = TRUE); library("reshape2")
+if (!requireNamespace("shiny", quietly = TRUE)) install.packages("shiny", dependencies = TRUE); library("shiny")
+if (!requireNamespace("tidyverse", quietly = TRUE)) install.packages("tidyverse", dependencies = TRUE); library("tidyverse")
+if (!requireNamespace("Wytamma/GISAIDR", quietly = TRUE)) devtools::install_github("Wytamma/GISAIDR", dependencies = TRUE); library("GISAIDR")
+
+credentials <- login(username = "RKhour0", password = "pjtWGX7!")
+
+gi_acc_id <- query(credentials = credentials,
+                   location = "South America / Brazil / Bahia",
+                   fast = TRUE)
+
+gi_acc_id <- gi_acc_id$accession_id
+
+gi_acc_id_split <- split(gi_acc_id, ceiling(seq_along(gi_acc_id) / 4000))
+
+gi1 <- download(credentials = credentials,
+               list_of_accession_ids = gi_acc_id_split[[1]],
+               get_sequence = FALSE)
+
+gi2 <- download(credentials = credentials,
+               list_of_accession_ids = gi_acc_id_split[[2]],
+               get_sequence = FALSE)
+
+gi3 <- download(credentials = credentials,
+               list_of_accession_ids = gi_acc_id_split[[3]],
+               get_sequence = FALSE)
+
+gi_merge <- rbind(gi1, gi2, gi3)
+
+gi_merge$epiym <- format(as.Date(gi_merge$date), "%Y-%m")
+
+gi_merge$length <- as.numeric(gi_merge$length)
+
+gi_merge_filt <- gi_merge[gi_merge$length > 25000, ]
+
+gi_pvm <- filter(gi_merge_filt, grepl("PVM", submitting_lab, ignore.case = TRUE))
+gi_bahia_wo_pvm <- filter(gi_merge_filt, !grepl("PVM", submitting_lab, ignore.case = FALSE))
+
+gi_fiocruz <- filter(gi_merge_filt, grepl("FIOCRUZ", submitting_lab, ignore.case = TRUE))
+gi_bahia_wo_fiocruz <- filter(gi_merge_filt, !grepl("FIOCRUZ", submitting_lab, ignore.case = FALSE))
+
+# https://www.cdc.gov/coronavirus/2019-ncov/variants/variant-info.html
+# 2022 Dec 23
+sc2_variants <- list(
+    "B.1.1" = "B.1.1",
+    "B.1.1.28" = "B.1.1.28",
+    "B.1.1.33" = "B.1.1.33",
+    "Alpha" = c("B.1.1.7", unique(gi_merge_filt$pangolin_lineage[grep("^Q\\.", gi_merge_filt$pangolin_lineage)])),
+    "Beta" = c("B.1.351", unique(gi_merge_filt$pangolin_lineage[grep("^B.1.351\\.", gi_merge_filt$pangolin_lineage)])),
+    "Gamma" = c("P.1", unique(gi_merge_filt$pangolin_lineage[grep("^P\\.1\\.", gi_merge_filt$pangolin_lineage)])),
+    "Delta" = c("B.1.617.2", unique(gi_merge_filt$pangolin_lineage[grep('^AY\\.', gi_merge_filt$pangolin_lineage)])),
+    "Epsilon" = c("B.1.427", "B.1.429"),
+    "Eta" = "B.1.525",
+    "Iota" = "B.1.526",
+    "Kappa" = "B.1.617.1",
+    "Zeta" = "P.2",
+    "Mu" = c("B.1.621", "B.1.621.1"),
+    "Omicron (BA.1)" = c("B.1.1.529", "BA.1", unique(gi_merge_filt$pangolin_lineage[grep("^BA\\.1\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BA.2)" = c("BA.2", unique(gi_merge_filt$pangolin_lineage[grep("^BA\\.2\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BA.3)" = c("BA.3", unique(gi_merge_filt$pangolin_lineage[grep("^BA\\.3\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BA.4)" = c("BA.4", unique(gi_merge_filt$pangolin_lineage[grep("^BA\\.4\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BA.5)" = c("BA.5", unique(gi_merge_filt$pangolin_lineage[grep("^BA\\.5\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BQ.1)" = c("BQ.1", unique(gi_merge_filt$pangolin_lineage[grep("^BQ\\.1\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (XBB)" = c("XBB", unique(gi_merge_filt$pangolin_lineage[grep("^XBB\\.", gi_merge_filt$pangolin_lineage)])),
+    "Omicron (BE.9)" = "BE.9")
+
+sc2_variants_oms <- structure(c(rep(names(sc2_variants),
+                                      sapply(sc2_variants, length))),
+                                .Names = c(unlist(sc2_variants)))
+
+gi_merge_filt$oms <- ifelse(gi_merge_filt$pangolin_lineage %in% names(sc2_variants_oms),
+                     sc2_variants_oms[gi_merge_filt$pangolin_lineage], "Others")
+```
+
+## Column {data-width = 500}
+
+### A definir (alguma estatística da PVM obtida via REDCap)
+
+```{r}
+redcap <- REDCapR::redcap_report(
+  redcap_uri = "https://bdp.bahia.fiocruz.br/api/",
+  token = "4C641796E93F1C48BA26CE090DD0BFE8",
+  report_id = 12817)$data
+
+redcap_filt <- redcap %>% filter_at(vars(gisaid_id),all_vars(!is.na(.)))
+redcap_filt$epiym <- format(as.Date(redcap_filt$dt_coleta), "%Y-%m")
+```
+
+### Genomas de SARS-CoV-2 sequenciados da Bahia depositados no GISAID 
+
+```{r}
+# gi_pvm_gen <- count(gi_pvm$epiym)
+# names(gi_pvm_gen) <- c("epiym", "PVM")
+# gi_bahia_wo_pvm_gen <- count(gi_bahia_wo_pvm$epiym)
+# names(gi_bahia_wo_pvm_gen) <- c("epiym", "Outros")
+# gi_gen <- merge(x = gi_pvm_gen, y = gi_bahia_wo_pvm_gen, by = "epiym", all = TRUE)
+# gi_gen[is.na(gi_gen)] <- 0
+# gi_gen <- melt(gi_gen, id.vars = "epiym", variable.name = "Lab")
+
+gi_fiocruz_gen <- count(gi_fiocruz$epiym)
+names(gi_fiocruz_gen) <- c("epiym", "FIOCRUZ")
+gi_bahia_wo_fiocruz_gen <- count(gi_bahia_wo_fiocruz$epiym)
+names(gi_bahia_wo_fiocruz_gen) <- c("epiym", "Outros")
+gi_gen <- merge(x = gi_fiocruz_gen, y = gi_bahia_wo_fiocruz_gen, by = "epiym", all = TRUE)
+gi_gen[is.na(gi_gen)] <- 0
+gi_gen <- melt(gi_gen, id.vars = "epiym", variable.name = "Lab")
+
+gi_gen_plot <- ggplot() +
+  geom_line(data = gi_gen, aes(x = epiym, y = value, group = Lab, colour = Lab), linewidth = 1) +
+  labs(x = NULL, y = "Quantidade de genomas depositados") +
+#  scale_x_continuous(expand = expansion(0, 0)) +
+  scale_y_continuous(expand = expansion(0, 0), limits = c(0, 1500)) +
+  theme_light() + theme(axis.title.y = element_text(size = 12),
+                        axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, size = 8),
+                        axis.text.y = element_text(hjust = 1, size = 8)) +
+  scale_color_discrete(name = NULL)
+plotly::ggplotly(gi_gen_plot) %>% layout(legend = list(orientation = 'h', xanchor = "center", x = 0.5, y = 1))
+```
+
+## Column {data-width = 500}
+
+### Linhagens de SARS-CoV-2 em sequências geradas pela PVM
+
+```{r}
+gi_pvm <- filter(gi_merge_filt, grepl("PVM", submitting_lab, ignore.case = TRUE))
+
+gi_pvm_epiym <- ddply(gi_pvm, .(gi_pvm$epiym, gi_pvm$oms), nrow, .drop = FALSE)
+names(gi_pvm_epiym) <- c("epiym", "variants", "n")
+
+gi_pvm_epiym_plot <- ggplot(gi_pvm_epiym, aes(x = epiym, y = n, fill = variants)) +
+  geom_col(position = position_fill(reverse = TRUE), width = .95, alpha = .6) +
+  labs(x = NULL, y = "Frequency", fill = NULL) +
+  scale_y_continuous(labels = scales::percent, expand = expansion(0, 0)) +
+  scale_fill_manual(values = c(
+      "B.1.1" = "#FB6B5B",
+      "B.1.1.28" = "#E49074",
+      "B.1.1.33" = "#FD9EA2",
+      "Alpha" = "#DF2A8E",
+      "Zeta" = "#872B15",
+      "Gamma" = "#11961B",
+      "Delta" = "#6F0F84",
+      "Omicron (BA.1)" = "#EECB3A",
+      "Omicron (BA.2)" = "#FE0B12",
+      "Omicron (BA.4)" = "#D860CF",
+      "Omicron (BA.5)" = "#2F67CD",
+      "Omicron (BQ.1)" = "#FF7F07",
+      "Omicron (XBB)" = "#36df3b",
+      "Omicron (BE.9)" = "#73FBFD",
+      "Others" = "#999999"),
+                    breaks = c(
+                        "Alpha",
+                        "Zeta",
+                        "Gamma",
+                        "Delta",
+                        "Omicron (BA.1)",
+                        "Omicron (BA.2)",
+                        "Omicron (BA.4)",
+                        "Omicron (BA.5)",
+                        "Omicron (BQ.1)",
+                        "Omicron (XBB)",
+                        "Omicron (BE.9)",
+                        "Others")) +
+  theme_void() +
+  theme(axis.title.x = element_text(size = 6), axis.title.y = element_text(angle = 90, size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust = .8, size = 8),
+        axis.text.y = element_text(hjust = 1, size = 8),
+        legend.text = element_text(size = 10))
+plotly::ggplotly(gi_pvm_epiym_plot) %>% layout(legend = list(orientation = 'h', xanchor = "center", x = 0.5, y = 1.4))
+```
+
+### Linhagens de SARS-CoV-2 em sequências na Bahia
+
+```{r}
+gi_bahia_epiym <- ddply(gi_merge_filt, .(gi_merge_filt$epiym, gi_merge_filt$oms), nrow, .drop = FALSE)
+names(gi_bahia_epiym) <- c("epiym", "variants", "n")
+
+gi_bahia_epiym_plot <- ggplot(gi_bahia_epiym, aes(x = epiym, y = n, fill = variants)) +
+  geom_col(position = position_fill(reverse = TRUE), width = .95, alpha = .6) +
+  labs(x = NULL, y = "Frequency", fill = NULL) +
+  scale_y_continuous(labels = scales::percent, expand = expansion(0, 0)) +
+  scale_fill_manual(values = c(
+      "B.1.1" = "#FB6B5B",
+      "B.1.1.28" = "#E49074",
+      "B.1.1.33" = "#FD9EA2",
+      "Alpha" = "#DF2A8E",
+      "Zeta" = "#872B15",
+      "Gamma" = "#11961B",
+      "Delta" = "#6F0F84",
+      "Omicron (BA.1)" = "#EECB3A",
+      "Omicron (BA.2)" = "#FE0B12",
+      "Omicron (BA.4)" = "#D860CF",
+      "Omicron (BA.5)" = "#2F67CD",
+      "Omicron (BQ.1)" = "#FF7F07",
+      "Omicron (XBB)" = "#36df3b",
+      "Omicron (BE.9)" = "#73FBFD",
+      "Others" = "#999999"),
+                    breaks = c(
+                        "Alpha",
+                        "Zeta",
+                        "Gamma",
+                        "Delta",
+                        "Omicron (BA.1)",
+                        "Omicron (BA.2)",
+                        "Omicron (BA.4)",
+                        "Omicron (BA.5)",
+                        "Omicron (BQ.1)",
+                        "Omicron (XBB)",
+                        "Omicron (BE.9)",
+                        "Others")) +
+  theme_void() +
+  theme(axis.title.x = element_text(size = 6), axis.title.y = element_text(angle = 90, size = 10),
+        axis.text.x = element_text(angle = 45, vjust = 1, hjust = .8, size = 8),
+        axis.text.y = element_text(hjust = 1, size = 8),
+        legend.text = element_text(size = 10))
+plotly::ggplotly(gi_bahia_epiym_plot) %>% layout(legend = list(orientation = 'h', xanchor = "center", x = 0.5, y = 1.4))
+```
