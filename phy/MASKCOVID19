@@ -1,9 +1,0 @@
-#!/bin/bash
-
-bg() {
-    INPUT=$1
-    OUTPUT=$(basename ${INPUT%.*})
-    python $HOME/ProblematicSites_SARS-CoV2/src/mask_alignment_using_vcf.py -v $HOME/ProblematicSites_SARS-CoV2/problematic_sites_sarsCov2.vcf -i "$INPUT" -o "$OUTPUT".masked.fasta
-}
-
-bg $1 >/dev/null 2>&1 &
