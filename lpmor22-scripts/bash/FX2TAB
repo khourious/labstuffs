@@ -1,0 +1,10 @@
+#!/bin/bash
+
+bg() {
+    INPUT=$1
+    OUTPUT=$(basename ${INPUT%.*})
+    micromamba activate phy
+    seqkit fx2tab -j $(nproc) $INPUT > $OUTPUT.txt
+}
+
+bg $1 >/dev/null 2>&1 &

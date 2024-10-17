@@ -2,7 +2,7 @@
 
 bg() {
     INPUT=$(basename $1)
-    tar -xvf "$INPUT"
+    tar -xvf $INPUT
 }
 
 bg $1 >/dev/null 2>&1 &

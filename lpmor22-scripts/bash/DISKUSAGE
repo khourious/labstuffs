@@ -1,0 +1,3 @@
+#!/bin/bash
+
+for i in $(ls -l | grep "^d" | awk '{print $9}'); do du -hs "$i"; done
