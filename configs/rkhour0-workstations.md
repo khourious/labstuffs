@@ -157,7 +157,7 @@ export PATH=/opt/BEASTv10.5.0-beta5/bin:$PATH
 beast -beagle_info
 
 ```
-[BEAGLE and BEAST tests]()
+[BEAST benchmark](https://github.com/khourious/labstuffs/tree/master/specs%2Bbenchmark)
 
 ## new user setup
 ```sh
