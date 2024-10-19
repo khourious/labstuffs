@@ -1,5 +1,5 @@
-## Step-by-step guide to installing bioinformatics configurations
+## Step-by-Step Guide for Khourious's Workstations and Laptops
 
-- [macOS](configs/macOS.md)
-- [Ubuntu 20.04 - Native Linux](configs/Linux.md)
-- [Ubuntu 20.04 - Linux Subsystem for Windows 2 (WSL2)](configs/Windows_WSL2.md)
+- [Ubuntu 24.04 - Workstations](configs/rkhour0-workstations.md)
+- [Ubuntu 20.04 - Laptops - Native Linux](configs/Linux.md)
+- [Ubuntu 20.04 - Laptops - Linux Subsystem for Windows 2 (WSL2)](configs/Windows_WSL2.md)
