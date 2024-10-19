@@ -2,6 +2,7 @@
 
 | #                 | CPU                   | GPU                            | RAM        | STORAGE                 |
 | ----------------- | --------------------- | ------------------------------ | ---------- | ----------------------- |
+| **LOTR**          | AMD Ryzen 7960X       | NVIDIA GeForce RTX 4090        | 256GB DDR5 | SSD NVMe 4TB            |
 | **THE GODFATHER** | Intel Core i9-10900   | NVIDIA GeForce RTX 2060 Rev. A | 128GB DDR4 | SSD NVMe 500GB, HDD 2TB |
 | **THE BATMAN**    | Intel Core i7-10700KF | NVIDIA GeForce GTX 1660 Ti     | 32GB DDR4  | SSD NVMe 500GB, HDD 1TB |
 | **ALIEN**         | Intel Core i7-9750H   | NVIDIA GeForce RTX 2080 Max-Q  | 16GB DDR4  | SSD NVMe 1TB            |
@@ -29,6 +30,7 @@ beast -beagle_GPU benchmark2.xml
 
 |                   | CPU                       | GPU                        |
 | ----------------- | ------------------------- | -------------------------- |
+| **LOTR**          |                           |                            |
 | **THE GODFATHER** | 6.5537 minutes            | 2.3248166666666665 minutes |
 | **THE BATMAN**    | 8.121383333333334 minutes | 2.0611166666666665 minutes |
 | **ALIEN**         |                           |                            |
