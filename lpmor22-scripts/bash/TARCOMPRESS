@@ -1,8 +1,0 @@
-#!/bin/bash
-
-bg() {
-    INPUT=$(basename $1)
-    tar -czvf $INPUT.tar.gz $INPUT
-}
-
-bg $1 >/dev/null 2>&1 &
