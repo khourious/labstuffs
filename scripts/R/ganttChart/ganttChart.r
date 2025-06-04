@@ -4,7 +4,7 @@ if (!requireNamespace("pacman", quietly = TRUE))
   install.packages("pacman", dependencies = TRUE)
 library("pacman")
 
-p_load(ggplot2, this.path, tidyr)
+p_load(cowplot, ggplot2, this.path, tidyr)
 
 setwd(dirname(this.path()))
 
