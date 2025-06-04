@@ -279,6 +279,116 @@ source ~/.[bz]shrc
 ## conda environments 
 ```sh
 # phylogenetic/phylodynamic analysis
-sudo /opt/micromamba/bin/micromamba create -y -p /opt/micromamba/envs/phy -c conda-forge -c bioconda cialign iqtree mafft minimap2 paml seqkit seqtk tre
+sudo /opt/micromamba/bin/micromamba create -y -p /opt/micromamba/envs/phy -c conda-forge -c bioconda cialign iqtree mafft minimap2 paml seqkit seqtk treetime
 
 ```
+
+thebatman
+sudo /opt/pbs/bin/qmgr -c "create queue khouriosos"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos priority = 150"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_max.mem = 24gb"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_available.mem = 24gb"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_max.ncpus = 14"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_available.ncpus = 14"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos max_user_run = 5"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos queue_type = execution"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos started = True"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos enabled = True"
+sudo /opt/pbs/bin/qmgr -c "create queue ext"
+sudo /opt/pbs/bin/qmgr -c "set server default_queue = ext"
+sudo /opt/pbs/bin/qmgr -c "set queue ext priority = 100"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_max.mem = 8gb"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_available.mem = 8gb"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_max.ncpus = 8"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_available.ncpus = 8"
+sudo /opt/pbs/bin/qmgr -c "set queue ext max_user_run = 2"
+sudo /opt/pbs/bin/qmgr -c "set queue ext queue_type = execution"
+sudo /opt/pbs/bin/qmgr -c "set queue ext started = True"
+sudo /opt/pbs/bin/qmgr -c "set queue ext enabled = True"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += lpmor22@thebatman"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += thmendonca@thebatman"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += gabalves@thebatman"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += ffarego@thebatman"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += tgonzalez@thebatman"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += tika@thebatman"
+sudo /opt/pbs/bin/qmgr -c "list queue khouriosos acl_users"
+sudo /opt/pbs/bin/qmgr -c "list queue khouriosos"
+sudo /opt/pbs/bin/qmgr -c "list queue ext"
+Queue khouriosos
+    Priority = 150
+    total_jobs = 0
+    state_count = Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0
+    acl_users = ffarego@thebatman,gabalves@thebatman,lpmor22@thebatman,
+        tgonzalez@thebatman,
+        thmendonca@thebatman,
+        tika@thebatman
+    resources_max.mem = 24gb
+    resources_max.ncpus = 14
+    started = True
+	
+Queue ext
+    Priority = 100
+    total_jobs = 0
+    state_count = Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0
+    resources_max.mem = 8gb
+    resources_max.ncpus = 8
+    started = True
+
+
+thegodfather
+sudo /opt/pbs/bin/qmgr -c "create queue khouriosos"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos priority = 150"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_max.mem = 120gb"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_available.mem = 120gb"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_max.ncpus = 18"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos resources_available.ncpus = 18"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos max_user_run = 5"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos queue_type = execution"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos started = True"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos enabled = True"
+sudo /opt/pbs/bin/qmgr -c "create queue ext"
+sudo /opt/pbs/bin/qmgr -c "set server default_queue = ext"
+sudo /opt/pbs/bin/qmgr -c "set queue ext priority = 100"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_max.mem = 60gb"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_available.mem = 60gb"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_max.ncpus = 10"
+sudo /opt/pbs/bin/qmgr -c "set queue ext resources_available.ncpus = 10"
+sudo /opt/pbs/bin/qmgr -c "set queue ext max_user_run = 2"
+sudo /opt/pbs/bin/qmgr -c "set queue ext queue_type = execution"
+sudo /opt/pbs/bin/qmgr -c "set queue ext started = True"
+sudo /opt/pbs/bin/qmgr -c "set queue ext enabled = True"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += lpmor22@thegodfather"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += thmendonca@thegodfather"
+sudo /opt/pbs/bin/qmgr -c "set queue khouriosos acl_users += joycesilva@thegodfather"
+sudo /opt/pbs/bin/qmgr -c "set queue ext acl_users += bvribeiro@thegodfather"
+sudo /opt/pbs/bin/qmgr -c "set queue ext acl_users += mbsantana@thegodfather"
+sudo /opt/pbs/bin/qmgr -c "list queue khouriosos"
+sudo /opt/pbs/bin/qmgr -c "list queue ext"
+Queue khouriosos
+    queue_type = Execution
+    Priority = 150
+    total_jobs = 0
+    state_count = Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0
+    acl_users = joycesilva@thegodfather,lpmor22@thegodfather,
+        thmendonca@thegodfather
+    resources_max.mem = 120gb
+    resources_max.ncpus = 18
+    resources_available.mem = 120gb
+    resources_available.ncpus = 18
+    max_user_run = 5
+    enabled = True
+    started = True
+
+Queue ext
+    queue_type = Execution
+    Priority = 100
+    total_jobs = 0
+    state_count = Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0
+    acl_users = bvribeiro@thegodfather,mbsantana@thegodfather
+    resources_max.mem = 60gb
+    resources_max.ncpus = 10
+    resources_available.mem = 60gb
+    resources_available.ncpus = 10
+    max_user_run = 2
+    enabled = True
+    started = True
