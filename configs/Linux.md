@@ -12,12 +12,8 @@
 - [BEAGLE and BEAST status](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#beagle-and-beast-status)
 - [new user setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#new-user-setup)
 - [sudo privilege assignment](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#sudo-privilege-assignment)
-- [OpenPBS manager and operator setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#openpbs-manager-and-operator-setup)
-- [lpmor22 scripts](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#lpmor22-scripts)
 - [zsh and Oh My Zsh setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#zsh-and-oh-my-zsh-setup)
 - [zsh configuration file setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#zsh-configuration-file-setup)
-- [micromamba setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#micromamba-setup)
-- [conda environments](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#conda-environments)
 
 ## system update and OpenSSH server setup
 ```sh
