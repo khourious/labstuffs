@@ -1,19 +1,19 @@
 # Ubuntu 24.04.1 LTS
 
-- [system update and OpenSSH server setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#system-update-and-openssh-server-setup)
-- [available GPU drivers](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#available-gpu-drivers)
-- [NVIDIA GPU driver and core development setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#nvidia-gpu-driver-and-core-development-setup)
-- [NVIDIA GPU driver status](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#nvidia-gpu-driver-status)
-- [static IPs setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#static-ips-setup)
-- [disk integrity check](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#disk-integrity-check)
-- [fix and mark bad sectors](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#fix-and-mark-bad-sectors)
-- [OpenPBS status](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#openpbs-status)
-- [BEAGLE and BEAST setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#beagle-and-beast-setup)
-- [BEAGLE and BEAST status](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#beagle-and-beast-status)
-- [new user setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#new-user-setup)
-- [sudo privilege assignment](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#sudo-privilege-assignment)
-- [zsh and Oh My Zsh setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#zsh-and-oh-my-zsh-setup)
-- [zsh configuration file setup](https://github.com/khourious/labstuffs/blob/master/configs/rkhour0-workstations.md#zsh-configuration-file-setup)
+- [System Update and OpenSSH Server Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-and-openssh-server-setup)
+- [List Available and Recommended GPU Driver Version](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#list-available-and-recommended-gpu-driver-version)
+- [NVIDIA GPU Driver and Core Development Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#nvidia-gpu-driver-and-core-development-setup)
+- [NVIDIA GPU Driver Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#nvidia-gpu-driver-status)
+- [Static IP Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#static-ip-setup)
+- [Disk Integrity Check](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#disk-integrity-check)
+- [Fix and Mark Bad Sectors](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#fix-and-mark-bad-sectors)
+- [Mount Home at HDD](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#mount-home-at-hdd)
+- [Home Partition Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#home-partition-status)
+- [BEAGLE and BEAST Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-and-beast-setup)
+- [BEAGLE and BEAST Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-and-beast-status)
+- [New Admin User Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#new-admin-user-setup)
+- [Zsh and Oh My Zsh Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#zsh-and-oh-my-zsh-setup)
+- [Zsh Configuration File Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#zsh-configuration-file-setup)
 
 ## System Update and OpenSSH Server Setup
 ```sh
