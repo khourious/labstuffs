@@ -1,6 +1,5 @@
 ## Ubuntu 24.04.1 LTS
 
-## Table of Contents
 - [System Update & Core Package Installation](#system-update--core-package-installation)
 - [NVIDIA GPU Driver Setup](#nvidia-gpu-driver-setup)
 - [Static IP Setup](#static-ip-setup)
