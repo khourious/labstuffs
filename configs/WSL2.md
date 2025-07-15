@@ -58,11 +58,13 @@ wsl.exe --shutdown
 
 ### NVIDIA GPU Driver Setup
 ```sh
-sudo ubuntu-drivers list --gpgpu
-```
-```sh
-# replace "550" if needed
-sudo ubuntu-drivers install nvidia:550
+sudo apt-key del 7fa2af80
+cd && wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt update -y
+sudo apt-get -y install cuda-toolkit-12-9
+sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
+sudo apt install -fy
 wsl.exe --shutdown
 ```
 ```sh
