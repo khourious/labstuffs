@@ -1,4 +1,4 @@
-## Ubuntu 24.04.1 LTS
+## Ubuntu 24.04.2 LTS
 
 - [System Update & Core Package Installation](#system-update--core-package-installation)
 - [NVIDIA GPU Driver Setup](#nvidia-gpu-driver-setup)
