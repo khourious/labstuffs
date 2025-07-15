@@ -1,38 +1,18 @@
-# Ubuntu 24.04.1 LTS
+## Ubuntu 24.04.1 LTS
 
-- [System Update and OpenSSH Server Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#system-update-and-openssh-server-setup)
-- [List Available and Recommended GPU Driver Version](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#list-available-and-recommended-gpu-driver-version)
-- [NVIDIA GPU Driver and Core Development Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#nvidia-gpu-driver-and-core-development-setup)
-- [NVIDIA GPU Driver Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#nvidia-gpu-driver-status)
-- [Static IP Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#static-ip-setup)
-- [Disk Integrity Check](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#disk-integrity-check)
-- [Fix and Mark Bad Sectors](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#fix-and-mark-bad-sectors)
-- [Mount Home at HDD](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#mount-home-at-hdd)
-- [Home Partition Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#home-partition-status)
-- [BEAGLE and BEAST Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-and-beast-setup)
-- [BEAGLE and BEAST Status](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#beagle-and-beast-status)
-- [New Admin User Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#new-admin-user-setup)
-- [Zsh and Oh My Zsh Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#zsh-and-oh-my-zsh-setup)
-- [Zsh Configuration File Setup](https://github.com/khourious/labstuffs/blob/master/configs/Linux.md#zsh-configuration-file-setup)
+## Table of Contents
+- [System Update & Core Package Installation](#system-update--core-package-installation)
+- [NVIDIA GPU Driver Setup](#nvidia-gpu-driver-setup)
+- [Static IP Setup](#static-ip-setup)
+- [Disk & Home Setup](#disk--home-setup)
+- [BEAGLE & BEAST Setup](#beagle--beast-setup)
+- [New Admin User Setup](#new-admin-user-setup)
+- [Zsh & Oh My Zsh Setup](#zsh--oh-my-zsh-setup)
 
-## System Update and OpenSSH Server Setup
+### System Update & Core Package Installation
 ```sh
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y openssh-server
-sudo reboot
-
-```
-
-## List Available and Recommended GPU Driver Version
-```sh
-sudo ubuntu-drivers list --gpgpu
-
-```
-
-## NVIDIA GPU Driver and Core Development Setup
-```sh
-sudo ubuntu-drivers install nvidia:550 # replace 550 with the recommended version
 sudo apt install -y \
     autoconf \
     automake \
@@ -52,6 +32,8 @@ sudo apt install -y \
     nvidia-cuda-toolkit \
     openjdk-21-jdk \
     openjdk-21-jre \
+    openjdk-21-jre \
+    openssh-server \
     parallel \
     perl \
     pkg-config \
@@ -66,16 +48,22 @@ sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
 sudo apt install -fy
 sudo reboot
 # libcjson-dev libdb-dev libdrm-dev libedit-dev libedit2 libexpat-dev libexpat1-dev libhwloc-dev libical-dev libical3 libnss3-dev libpam0g-dev libpq-dev libssl-dev libtool libtool-bin libx11-dev libxext-dev libxft-dev libxt-dev ncurses-dev swig tcl tcl-dev tk tk-dev zlib1g-dev
-
 ```
 
-## NVIDIA GPU Driver Status
+### NVIDIA GPU Driver Setup
+```sh
+sudo ubuntu-drivers list --gpgpu
+```
+```sh
+# replace "550" if needed
+sudo ubuntu-drivers install nvidia:550
+sudo reboot
+```
 ```sh
 nvidia-smi
-
 ```
 
-## Static IP Setup
+### Static IP Setup
 ```sh
 sudo bash -c 'cat << EOF > /etc/hosts
 127.0.0.1       localhost
@@ -88,29 +76,19 @@ ff00::0 ip6-mcastprefix
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
 EOF'
-
 ```
 
-## Disk Integrity Check
+### Disk & Home Setup
 ```sh
-lsblk -f # list all disks and partitions
-
+lsblk -f
+```
+```sh
 # replace '/dev/sda1' and '/dev/nvme0n1p2' with your actual partitions
-sudo badblocks -v -s -o badblocks-hdd.txt /dev/sda
-sudo badblocks -v -s -o badblocks-ssd.txt /dev/nvme0n1p2
-sudo smartctl -a /dev/nvme0
-```
-
-## Fix and Mark Bad Sectors
-```sh
-sudo e2fsck -l badblocks-hdd.txt /dev/sda1
+sudo badblocks -v -s -o badblocks.txt /dev/sda
+sudo e2fsck -l badblocks.txt /dev/sda1 
 sudo e2fsck -f /dev/sda1
-sudo e2fsck -l badblocks-ssd.txt /dev/nvme0n1p2
-sudo e2fsck -f /dev/nvme0n1p2
-
+sudo smartctl -a /dev/nvme0n1p2
 ```
-
-## Mount Home at HDD
 ```sh
 sudo mkdir /mnt/hometemp
 sudo mount /dev/sda1 /mnt/hometemp
@@ -123,77 +101,73 @@ UUID='$(sudo blkid -s UUID -o value /dev/sda1)'  /home  ext4  defaults  0  2
 EOF'
 sudo mount -a
 sudo reboot
-
 ```
-
-## Home Partition Status
 ```sh
 df -h /home
-
 ```
 
-## BEAGLE and BEAST Setup
+## BEAGLE & BEAST Setup
+BEAGLE v4.0.1 (Oct 13, 2023) - https://github.com/beagle-dev/beagle-lib
 ```sh
-# BEAGLE v4.0.1 - Oct 13, 2023 - https://github.com/beagle-dev/beagle-lib
 cd && wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.1.tar.gz
 tar -zxvf v4.0.1.tar.gz && cd beagle-lib-4.0.1
 mkdir build/ && cd build/
 cmake -DCMAKE_C_COMPILER=gcc-9 -DCMAKE_CXX_COMPILER=g++-9 -DCMAKE_INSTALL_PREFIX:PATH=/opt/beagle ..
 sudo make install
 cd && rm -rf v4.0.1.tar.gz beagle-lib-4.0.1
-
-# BEAST v1.10.4 - Nov 14, 2018 - https://github.com/beast-dev/beast-mcmc
+```
+BEAST v1.10.4 (Nov 14, 2018) - https://github.com/beast-dev/beast-mcmc
+```sh
 cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
 tar -zxvf BEASTv1.10.4.tgz && rm -rf BEASTv1.10.4.tgz
 sudo mv BEASTv1.10.4/ /opt/BEASTv1.10.4/
 sudo chown -R root:root /opt/BEASTv1.10.4/
-
-# BEASTv1.10.5pre_thorney_0.1.2 - Sep 1, 2021 - https://github.com/beast-dev/beast-mcmc
-cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0-beta5/BEAST_X_v10.5.0-beta5.tgz
-tar -zxvf BEAST_X_v10.5.0-beta5.tgz && rm -rf BEAST_X_v10.5.0-beta5.tgz
-sudo mv BEASTv10.5.0/ /opt/BEASTv10.5.0-beta5/
-sudo chown -R root:root /opt/BEASTv10.5.0-beta5/
-
-# BEAST v10.5.0 - July 2, 2025 - https://github.com/beast-dev/beast-mcmc
-cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0/BEAST_X_v10.5.0.tgz
-tar -zxvf BEAST_X_v10.5.0.tgz && rm -rf BEAST_X_v10.5.0.tgz
-sudo mv BEASTv10.5.0/ /opt/BEASTv10.5.0/
-sudo chown -R root:root /opt/BEASTv10.5.0/
-
 ```
-
-## BEAGLE and BEAST Status
 ```sh
 export LD_LIBRARY_PATH=/opt/beagle/lib:$LD_LIBRARY_PATH
 export PATH=/opt/BEASTv1.10.4/bin:$PATH
 beast -beagle_info
-
+```
+BEASTv1.10.5pre_thorney_0.1.2 (Sep 1, 2021) - https://github.com/beast-dev/beast-mcmc
+```sh
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0-beta5/BEAST_X_v10.5.0-beta5.tgz
+tar -zxvf BEAST_X_v10.5.0-beta5.tgz && rm -rf BEAST_X_v10.5.0-beta5.tgz
+sudo mv BEASTv10.5.0/ /opt/BEASTv10.5.0-beta5/
+sudo chown -R root:root /opt/BEASTv10.5.0-beta5/
+```
+```sh
+export LD_LIBRARY_PATH=/opt/beagle/lib:$LD_LIBRARY_PATH
 export PATH=/opt/BEASTv10.5.0-beta5/bin:$PATH
 beast -beagle_info
-
+```
+BEAST v10.5.0 (July 2, 2025) - https://github.com/beast-dev/beast-mcmc
+```sh
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0/BEAST_X_v10.5.0.tgz
+tar -zxvf BEAST_X_v10.5.0.tgz && rm -rf BEAST_X_v10.5.0.tgz
+sudo mv BEASTv10.5.0/ /opt/BEASTv10.5.0/
+sudo chown -R root:root /opt/BEASTv10.5.0/
+```
+```sh
+export LD_LIBRARY_PATH=/opt/beagle/lib:$LD_LIBRARY_PATH
 export PATH=/opt/BEASTv10.5.0/bin:$PATH
 beast -beagle_info
-
 ```
-[BEAST benchmark](https://github.com/khourious/labstuffs/tree/master/specs%2Bbenchmark)
 
 ## New Admin User Setup
 ```sh
 NEWUSER=
+```
+```sh
 sudo adduser $NEWUSER
 sudo usermod -aG sudo $NEWUSER
-
 ```
 
-## Zsh and Oh My Zsh Setup
+## Zsh & Oh My Zsh Setup
 ```sh
 sudo chsh --shell /bin/zsh $USER
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 sudo reboot
-
 ```
-
-## Zsh Configuration File Setup
 ```sh
 cat << 	'EOF' > ~/.zshrc
 export ZSH=$HOME/.oh-my-zsh
@@ -252,5 +226,4 @@ zsh-users/zsh-syntax-highlighting
 
 EOF
 source ~/.[bz]shrc
-
 ```
