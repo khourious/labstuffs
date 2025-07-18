@@ -12,6 +12,8 @@
 ```sh
 sudo apt update -y
 sudo apt upgrade -y
+```
+```sh
 sudo apt install -y \
     autoconf \
     automake \
@@ -27,6 +29,7 @@ sudo apt install -y \
     gcc \
     gcc-9 \
     git \
+    gsmartcontrol \
     htop \
     nvidia-cuda-toolkit \
     openjdk-21-jdk \
@@ -45,6 +48,8 @@ sudo apt autoremove -y
 sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
 sudo apt install -fy
+```
+```sh
 sudo reboot
 # libcjson-dev libdb-dev libdrm-dev libedit-dev libedit2 libexpat-dev libexpat1-dev libhwloc-dev libical-dev libical3 libnss3-dev libpam0g-dev libpq-dev libssl-dev libtool libtool-bin libx11-dev libxext-dev libxft-dev libxt-dev ncurses-dev swig tcl tcl-dev tk tk-dev zlib1g-dev
 ```
@@ -54,8 +59,10 @@ sudo reboot
 sudo ubuntu-drivers list --gpgpu
 ```
 ```sh
-# replace "550" if needed
+# replace "575" if needed
 sudo ubuntu-drivers install nvidia:550
+```
+```sh
 sudo reboot
 ```
 ```sh
@@ -68,7 +75,7 @@ sudo bash -c 'cat << EOF > /etc/hosts
 127.0.0.1       localhost
 $(hostname -I | awk "{print \$1 \"\t\" hn}" hn=$(hostname))
 
-# IPv6 configuration
+# The following lines are desirable for IPv6 capable host
 ::1     ip6-localhost ip6-loopback
 fe00::0 ip6-localnet
 ff00::0 ip6-mcastprefix
@@ -86,19 +93,29 @@ lsblk -f
 sudo badblocks -v -s -o badblocks.txt /dev/sda
 sudo e2fsck -l badblocks.txt /dev/sda1 
 sudo e2fsck -f /dev/sda1
+```
+```sh
 sudo smartctl -a /dev/nvme0n1p2
 ```
 ```sh
 sudo mkdir /mnt/hometemp
 sudo mount /dev/sda1 /mnt/hometemp
+```
+```sh
 sudo rsync -avx /home/ /mnt/hometemp
 sudo diff -r /home /mnt/hometemp
+```
+```sh
 sudo umount /dev/sda1
 sudo cp /etc/fstab /etc/fstab.bak
 sudo bash -c 'cat << EOF >> /etc/fstab
 UUID='$(sudo blkid -s UUID -o value /dev/sda1)'  /home  ext4  defaults  0  2
 EOF'
+```
+```sh
 sudo mount -a
+```
+```sh
 sudo reboot
 ```
 ```sh
