@@ -7,36 +7,82 @@
 | THE GODFATHER | 192.168.65.102 | Worker Node  | Intel Core i9-10900 (10c/20t)  | NVIDIA GeForce GTX 1660 Ti, 6GB GDDR6 (1,536cc)     | 128GB DDR4 | SSD 500GB, HDD 2TB |
 | LOTR          | 192.168.65.103 | Worker Node  | Intel Xeon W5-3423 (12c/24t)   | NVIDIA Quadro RTX 6000, 48GB DDR6 (4,608cc)         | 256GB DDR5 | SSD 512GB, HDD 2TB |
 
-### Configure Static IP on Cluster Nodes
+### Configure TP Link Wi-Fi Router
+```
+http://tplinkwifi.net
+```
+#### Advanced > Network > LAN > DCHP Server
+- IP Version: `IPv4`
+- IP Address: `192.168.65.1`
+- Subnet Mask: `255.255.255.0`
+- IP Address Pool: `192.168.65.100` - `192.168.65.199`
+- IP Address: `192.168.65.1`
+- Default Gateway: `192.168.50.1`
+- Primary DNS: `8.8.8.8`
+- Secondary DNS: `8.8.4.4`
+
+#### Advanced > Network > LAN > Address Reservation
+- GLADIATOR: `192.168.65.100`
+- THE BATMAN: `192.168.65.101`
+- THE GODFATHER: `192.168.65.102`
+
+#### Advanced > Wireless > Wireless Settings
+- Network Name (SSID): `RKhour0-Bioinfo`
+- Password: `password`
+```
+
+### Configure NAS/Storage (Western Digital My Cloud Expert Series EX4100)
+```
+http://192.168.65.100
+```
+#### Settings > Network > 
+- IPv4 Network Mode: `DHCP`
+- IPv6 Network Mode: `Off`
+- FTP Access: `ON`
+- NFS Access: `ON`
+- SSH: `ON`
+
+#### Shares > New Sharing
+- Share Name: `gladiator`
+- Public: `ON`
+- Share Access > NFS: `ON`
+- NFS Settings > Host: `*`
+- NFS Settings > Write: `ON`
+```
+nfs://192.168.65.100/nfs/gladiator
+```
+
+### NFS Client Configuration on Cluster Nodes
 ```sh
 sudo su
 ```
 ```sh
-tee /etc/netplan/00-installer-config.yaml <<EOF && chmod 600 /etc/netplan/00-installer-config.yaml
-network:
-  version: 2
-  ethernets:
-    $(ip route | grep default | awk '{print $5}' | head -n 1):
-      addresses: [$(hostname -I | awk '{print $1}')/24]
-      routes:
-        - to: default
-          via: $(ip route | grep default | awk '{print $3}' | head -n 1)
-      nameservers:
-        addresses: [8.8.8.8, 8.8.4.4]
+apt update && apt install nfs-common -y
+```
+```sh
+mkdir -p /mnt/gladiator
+```
+```sh
+mount -t nfs 192.168.65.100:/mnt/HD/HD_a2/gladiator /mnt/gladiator -o rw,noatime,user
+```
+```sh
+nano /etc/fstab
+```
+```sh
+tee -a /etc/fstab <<EOF
+192.168.65.100:/mnt/HD/HD_a2/gladiator  /mnt/gladiator  nfs  rw,noatime,auto,nofail  0  0
 EOF
+```sh
+sudo mount -a
 ```
 ```sh
-netplan apply
+df -hT /mnt/gladiator
 ```
 ```sh
-ip route show
+reboot
 ```
-```sh
-ping 8.8.8.8
-```
-```sh
-ufw allow 5201/tcp
-```
+
+### Configure Static IP on Cluster Nodes
 ```sh
 apt-get install iperf3
 ```
@@ -45,64 +91,6 @@ iperf3 -s # Primary Node
 ```
 ```sh
 iperf3 -c 192.168.65.101 -t 20 # Worker Node
-```
-
-### NFS Server Configuration on NAS/Storage
-```sh
-sudo su
-```
-```sh
-apt update && apt install -y nfs-kernel-server
-```
-```sh
-mkdir -p /mnt/cluster
-chown nobody:nogroup /mnt/cluster
-chmod 1777 /mnt/cluster
-```
-```sh
-tee /etc/exports <<'EOF'
-/mnt/cluster 192.168.65.101(rw,sync,no_subtree_check)
-/mnt/cluster 192.168.65.102(rw,sync,no_subtree_check)
-EOF
-sudo exportfs -av
-sudo systemctl restart nfs-kernel-server
-sudo systemctl enable nfs-kernel-server
-```
-```sh
-showmount -e localhost
-```
-```sh
-sudo ufw allow from 192.168.65.0/24 to any port nfs
-```
-
-### NFS Client Configuration on Cluster Nodes
-```sh
-sudo su
-```
-```sh
-apt install -y nfs-common
-mkdir -p /mnt/nas
-```
-```sh
-mount 192.168.65.100:/mnt/cluster /mnt/nas
-```
-```sh
-df -hT /mnt/nas
-```
-```sh
-echo "192.168.65.100:/mnt/cluster  /mnt/nas  nfs  defaults,noatime,vers=4.2  0  0" | sudo tee -a /etc/fstab
-```
-```sh
-reboot
-```
-```sh
-sudo su
-```
-```sh
-mount -av
-```
-```sh
-ls /mnt/nas
 ```
 
 ## Configure Passwordless SSH Between Nodes
