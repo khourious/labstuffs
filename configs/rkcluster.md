@@ -29,7 +29,6 @@ http://tplinkwifi.net
 #### Advanced > Wireless > Wireless Settings
 - Network Name (SSID): `RKhour0-Bioinfo`
 - Password: `password`
-```
 
 ### Configure NAS/Storage (Western Digital My Cloud Expert Series EX4100)
 ```
