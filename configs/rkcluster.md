@@ -47,9 +47,6 @@ http://192.168.65.100
 - Share Access > NFS: `ON`
 - NFS Settings > Host: `*`
 - NFS Settings > Write: `ON`
-```
-nfs://192.168.65.100/nfs/gladiator
-```
 
 ### NFS Client Configuration on Cluster Nodes
 ```sh
@@ -71,6 +68,7 @@ nano /etc/fstab
 tee -a /etc/fstab <<EOF
 192.168.65.100:/mnt/HD/HD_a2/gladiator  /mnt/gladiator  nfs  rw,noatime,auto,nofail  0  0
 EOF
+```
 ```sh
 sudo mount -a
 ```
