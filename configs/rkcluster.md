@@ -110,14 +110,21 @@ bash -c 'echo -e "\n# RKCluster\n192.168.65.101\tthebatman\n192.168.65.102\ttheg
 ```
 ```sh
 mkdir /mpicluster
-echo "/mpicluster *(rw,sync)" | sudo tee -a /etc/exports
-service nfs-kernel-server restart
+echo "/mpicluster *(rw,sync,no_subtree_check,no_root_squash)" | sudo tee -a /etc/exports
+exportfs -a
+systemctl restart nfs-kernel-server
 ```
 ```sh
-adduser --home /cluster --uid 1100 mpi
+exportfs -v
+```
+```sh
+adduser --home /cluster mpi
 ```
 ```sh
 usermod -aG sudo mpi
+```
+```sh
+id mpi
 ```
 ```sh
 chown mpi /cluster # try without this
@@ -149,6 +156,12 @@ iperf3 -c 192.168.65.101 -t 20 -R
 bash -c 'echo -e "\n# RKCluster\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
 ```
 ```sh
+mount -t nfs thebatman:/mpicluster /mpicluster
+```
+```sh
+df -hT /mpicluster
+```
+```sh
 mkdir /mpicluster
 tee -a /etc/fstab <<EOF
 thebatman:/mpicluster    /mpicluster    nfs    defaults    0 0
@@ -156,11 +169,17 @@ EOF
 sudo mount -a
 ```
 ```sh
-df -hT /mpicluster
-```
-```sh
 chmod 700 .ssh/
 chmod 600 .ssh/authorized_keys
+```
+```sh
+sudo adduser --uid <same at master node> --no-create-home --disabled-login --gecos "" mpi
+```
+```sh
+ssh mpi@thebatman
+```
+```sh
+exit
 ```
 ```sh
 reboot
@@ -169,6 +188,12 @@ reboot
 **Master Node**
 ```sh
 sudo su
+```
+```sh
+ssh mpi@thegodfather
+```
+```sh
+exit
 ```
 ```sh
 cat > $HOME/helloworld.c << 'EOF'
