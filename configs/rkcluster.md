@@ -548,3 +548,8 @@ exit
 ```sh
 mpiexec --oversubscribe -n 20 -host 192.168.65.101,192.168.65.102 /root/mpi_hello_world
 ```
+
+
+
+https://www.geeksforgeeks.org/linux-unix/creating-an-mpi-cluster/
+https://github.com/adeen-atif/MPI-Cluster
