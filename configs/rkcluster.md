@@ -12,12 +12,12 @@
 
 ## Khourious Nodes
 
-| Hostname      | IP Address     | Role         | CPU Cores/Threads              | GPU                                                 | RAM        | Storage            |
-| ------------- | -------------- | ------------ | ------------------------------ | --------------------------------------------------- | ---------- | ------------------ |
-| GLADIATOR     | 192.168.65.100 | NAS/Storage  | ARMADA 388 (2c/2t)             |                                                     | 2GB DDR3   | HDD 16TB           |
-| THE BATMAN    | 192.168.65.101 | Master       | Intel Core i7-10700KF (8c/16t) | NVIDIA GeForce RTX 2060 Rev. A, 6GB GDDR6 (1,920cc) | 32GB DDR4  | SSD 500GB, HDD 1TB |
-| THE GODFATHER | 192.168.65.102 | Slave        | Intel Core i9-10900 (10c/20t)  | NVIDIA GeForce GTX 1660 Ti, 6GB GDDR6 (1,536cc)     | 128GB DDR4 | SSD 500GB, HDD 2TB |
-| LOTR          | 192.168.65.103 | Slave        | Intel Xeon W5-3423 (12c/24t)   | NVIDIA Quadro RTX 6000, 48GB DDR6 (4,608cc)         | 256GB DDR5 | SSD 512GB, HDD 2TB |
+| Hostname      | IP Address     | Role   | CPU Cores/Threads              | GPU                                                 | RAM        | Storage            |
+| ------------- | -------------- | ------ | ------------------------------ | --------------------------------------------------- | ---------- | ------------------ |
+| GLADIATOR     | 192.168.65.100 | NAS    | ARMADA 388 (2c/2t)             |                                                     | 2GB DDR3   | HDD 16TB           |
+| THE BATMAN    | 192.168.65.101 | Master | Intel Core i7-10700KF (8c/16t) | NVIDIA GeForce RTX 2060 Rev. A, 6GB GDDR6 (1,920cc) | 32GB DDR4  | SSD 500GB, HDD 1TB |
+| THE GODFATHER | 192.168.65.102 | Slave  | Intel Core i9-10900 (10c/20t)  | NVIDIA GeForce GTX 1660 Ti, 6GB GDDR6 (1,536cc)     | 128GB DDR4 | SSD 500GB, HDD 2TB |
+| LOTR          | 192.168.65.103 | Slave  | Intel Xeon W5-3423 (12c/24t)   | NVIDIA Quadro RTX 6000, 48GB DDR6 (4,608cc)         | 256GB DDR5 | SSD 512GB, HDD 2TB |
 
 <br>
 
