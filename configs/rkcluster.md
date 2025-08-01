@@ -114,7 +114,7 @@ echo "/mpicluster *(rw,sync)" | sudo tee -a /etc/exports
 service nfs-kernel-server restart
 ```
 ```sh
-adduser --home /cluster mpi
+adduser --home /cluster --uid 1100 mpi
 ```
 ```sh
 usermod -aG sudo mpi
@@ -151,12 +151,16 @@ bash -c 'echo -e "\n# RKCluster\n192.168.65.101\tthebatman\n192.168.65.102\ttheg
 ```sh
 mkdir /mpicluster
 tee -a /etc/fstab <<EOF
-master:/mpicluster    /mpicluster    nfs
+thebatman:/mpicluster    /mpicluster    nfs    defaults    0 0
 EOF
 sudo mount -a
 ```
 ```sh
 df -hT /mpicluster
+```
+```sh
+chmod 700 .ssh/
+chmod 600 .ssh/authorized_keys
 ```
 ```sh
 reboot
