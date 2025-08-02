@@ -7,6 +7,7 @@
 - [Configure NAS (Western Digital My Cloud Expert Series EX4100)](#configure-nas-western-digital-my-cloud-expert-series-ex4100)
 - [Configure NFS Client](#configure-nfs-client)
 - [Configure Passwordless SSH Between Nodes](#configure-passwordless-ssh-between-nodes)
+- [Configure Multi-Node User](#configure-multi-node-user)
 
 <br>
 
@@ -196,7 +197,7 @@ ssh mpi@thegodfather
 exit
 ```
 ```sh
-cat > $HOME/helloworld.c << 'EOF'
+cat > $HOME/helloworld.c << EOF
 #include <stdio.h>
 #include <mpi.h>
 
@@ -220,6 +221,8 @@ mpicc helloworld.c -o hello_world
 ```sh
 mpiexec --oversubscribe -n 20 -host 192.168.65.101,192.168.65.102 $HOME/hello_world
 ```
+
+<br>
 
 ## Configure Multi-Node User
 
@@ -253,11 +256,81 @@ sudo adduser --uid <> --no-create-home --disabled-login --gecos "" "$USER"
 ```sh
 usermod -aG sudo "$USER"
 ```
-```sh
 
+<br>
+
+## Configure BEAGLE & BEAST
+BEAGLE v4.0.1 (Oct 13, 2023) - https://github.com/beagle-dev/beagle-lib
+```sh
+cd && wget https://github.com/beagle-dev/beagle-lib/archive/refs/tags/v4.0.1.tar.gz
+tar -zxvf v4.0.1.tar.gz && cd beagle-lib-4.0.1
+mkdir build/ && cd build/
+cmake -DCMAKE_C_COMPILER=gcc-9 -DCMAKE_CXX_COMPILER=g++-9 -DCMAKE_INSTALL_PREFIX:PATH=/mpicluster/opt/beagle ..
+sudo make install
+cd && rm -rf v4.0.1.tar.gz beagle-lib-4.0.1
+```
+BEAST v1.10.4 (Nov 14, 2018) - https://github.com/beast-dev/beast-mcmc
+```sh
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEASTv1.10.4.tgz
+tar -zxvf BEASTv1.10.4.tgz && rm -rf BEASTv1.10.4.tgz
+sudo mv BEASTv1.10.4/ /mpicluster/opt/BEASTv1.10.4/
+sudo chown -R root:root /mpicluster/BEASTv1.10.4/
 ```
 ```sh
+export LD_LIBRARY_PATH=/mpicluster/opt/beagle/lib:$LD_LIBRARY_PATH
+export PATH=/mpicluster/opt/BEASTv1.10.4/bin:$PATH
+beast -beagle_info
+```
+BEASTv1.10.5pre_thorney_0.1.2 (Sep 1, 2021) - https://github.com/beast-dev/beast-mcmc
+```sh
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0-beta5/BEAST_X_v10.5.0-beta5.tgz
+tar -zxvf BEAST_X_v10.5.0-beta5.tgz && rm -rf BEAST_X_v10.5.0-beta5.tgz
+sudo mv BEASTv10.5.0/ /mpicluster/opt/BEASTv10.5.0-beta5/
+sudo chown -R root:root /mpicluster/opt/BEASTv10.5.0-beta5/
+```
+```sh
+export LD_LIBRARY_PATH=/mpicluster/opt/beagle/lib:$LD_LIBRARY_PATH
+export PATH=/mpicluster/opt/BEASTv10.5.0-beta5/bin:$PATH
+beast -beagle_info
+```
+BEAST v10.5.0 (July 2, 2025) - https://github.com/beast-dev/beast-mcmc
+```sh
+cd && wget https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0/BEAST_X_v10.5.0.tgz
+tar -zxvf BEAST_X_v10.5.0.tgz && rm -rf BEAST_X_v10.5.0.tgz
+sudo mv BEASTv10.5.0/ /mpicluster/opt/BEASTv10.5.0/
+sudo chown -R root:root /mpicluster/opt/BEASTv10.5.0/
+```
+```sh
+export LD_LIBRARY_PATH=/mpicluster/opt/beagle/lib:$LD_LIBRARY_PATH
+export PATH=/mpicluster/opt/BEASTv10.5.0/bin:$PATH
+beast -beagle_info
+```
 
+## etc
+```sh
+cat > $HOME/gen_hostfile.sh << EOF
+#!/bin/bash
+
+HOSTFILE="hostfile_auto"
+
+HOSTS=("192.168.65.101" "192.168.65.102")
+
+for HOST in "${HOSTS[@]}"; do
+  CPU_CORES=$(ssh $HOST "nproc --all")
+  GPU_COUNT=$(ssh $HOST "nvidia-smi --query-gpu=count --format=csv,noheader 2>/dev/null" || echo "0")
+  RAM_GB=$(ssh $HOST "free -g | grep Mem | awk '{print \$2}'")
+
+  SLOTS=$CPU_CORES
+  if [ "$GPU_COUNT" -gt 0 ]; then
+    SLOTS=$((CPU_CORES + GPU_COUNT))
+  fi
+
+  echo "$HOST slots=$SLOTS # CPU=$CPU_CORES GPU=$GPU_COUNT RAM=${RAM_GB}GB" >> $HOSTFILE
+done
+EOF
+```
+```sh
+mpirun --hostfile hostfile bash -c "echo \$HOSTNAME; nproc; echo"
 ```
 ```sh
 
