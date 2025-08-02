@@ -4,8 +4,8 @@
 
 - [Khourious Nodes](#khourious-nodes)
 - [Configure TP Link Wi-Fi Router](#configure-tp-link-wi-fi-router)
-- [Configure NAS/Storage (Western Digital My Cloud Expert Series EX4100)](#configure-nasstorage-western-digital-my-cloud-expert-series-ex4100)
-- [NFS Client Configuration](#nfs-client-configuration)
+- [Configure NAS (Western Digital My Cloud Expert Series EX4100)](#configure-nas-western-digital-my-cloud-expert-series-ex4100)
+- [Configure NFS Client](#configure-nfs-client)
 - [Configure Passwordless SSH Between Nodes](#configure-passwordless-ssh-between-nodes)
 
 <br>
@@ -47,7 +47,7 @@ http://tplinkwifi.net
 
 <br>
 
-## Configure NAS/Storage (Western Digital My Cloud Expert Series EX4100)
+## Configure NAS (Western Digital My Cloud Expert Series EX4100)
 ```
 http://192.168.65.100
 ```
@@ -68,7 +68,7 @@ http://192.168.65.100
 
 <br>
 
-## NFS Client Configuration
+## Configure NFS Client
 
 **Master Node**
 ```sh
@@ -118,7 +118,7 @@ systemctl restart nfs-kernel-server
 exportfs -v
 ```
 ```sh
-adduser --home /cluster mpi
+adduser --home /cluster/home --gecos "" mpi
 ```
 ```sh
 usermod -aG sudo mpi
@@ -221,11 +221,38 @@ mpicc helloworld.c -o hello_world
 mpiexec --oversubscribe -n 20 -host 192.168.65.101,192.168.65.102 $HOME/hello_world
 ```
 
+## Configure Multi-Node User
 
+**Master Node**
+```sh
+sudo su
+```
+```sh
+USER=
+```
+```sh
+adduser --home /cluster --gecos "" "$USER"
+```
+```sh
+usermod -aG sudo "$USER"
+```
+```sh
+id "$USER"
+```
+```sh
+ssh mpi@thegodfather # try ssh thegodfather
+```
 
-
-
-
+**Slave Node**
+```sh
+USER=
+```
+```sh
+sudo adduser --uid <> --no-create-home --disabled-login --gecos "" "$USER"
+```
+```sh
+usermod -aG sudo "$USER"
+```
 ```sh
 
 ```
