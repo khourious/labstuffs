@@ -21,34 +21,34 @@ EOF
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y \
-    autoconf \
-    automake \
-    btop \
-    build-essential \
-    cmake \
-    curl \
-    dos2unix \
-    exfat-fuse \
-    expat \
-    g++ \
-    g++-9 \
-    gcc \
-    gcc-9 \
-    git \
-    htop \
-    nvidia-cuda-toolkit \
-    openjdk-21-jdk \
-    openjdk-21-jre \
-    openjdk-21-jre \
-    openssh-server \
-    parallel \
-    perl \
-    pkg-config \
-    python3 \
-    python3-dev \
-    subversion \
-    wget \
-    zsh
+  autoconf \
+  automake \
+  btop \
+  build-essential \
+  cmake \
+  curl \
+  dos2unix \
+  exfat-fuse \
+  expat \
+  g++ \
+  g++-9 \
+  gcc \
+  gcc-9 \
+  git \
+  htop \
+  nvidia-cuda-toolkit \
+  openjdk-21-jdk \
+  openjdk-21-jre \
+  openjdk-21-jre \
+  openssh-server \
+  parallel \
+  perl \
+  pkg-config \
+  python3 \
+  python3-dev \
+  subversion \
+  wget \
+  zsh
 sudo apt autoremove -y
 sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
