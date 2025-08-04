@@ -2,8 +2,6 @@
 
 - [System Update & Core Package Installation](#system-update--core-package-installation)
 - [NVIDIA GPU Driver Setup](#nvidia-gpu-driver-setup)
-- [Static IP Setup](#static-ip-setup)
-- [Disk & Home Setup](#disk--home-setup)
 - [BEAGLE & BEAST Setup](#beagle--beast-setup)
 - [New Admin User Setup](#new-admin-user-setup)
 - [Zsh & Oh My Zsh Setup](#zsh--oh-my-zsh-setup)
@@ -15,35 +13,35 @@ sudo apt upgrade -y
 ```
 ```sh
 sudo apt install -y \
-    autoconf \
-    automake \
-    btop \
-    build-essential \
-    cmake \
-    curl \
-    dos2unix \
-    exfat-fuse \
-    expat \
-    g++ \
-    g++-9 \
-    gcc \
-    gcc-9 \
-    git \
-    gsmartcontrol \
-    htop \
-    nvidia-cuda-toolkit \
-    openjdk-21-jdk \
-    openjdk-21-jre \
-    openjdk-21-jre \
-    openssh-server \
-    parallel \
-    perl \
-    pkg-config \
-    python3 \
-    python3-dev \
-    subversion \
-    wget \
-    zsh
+  autoconf \
+  automake \
+  btop \
+  build-essential \
+  cmake \
+  curl \
+  dos2unix \
+  exfat-fuse \
+  expat \
+  g++ \
+  g++-9 \
+  gcc \
+  gcc-9 \
+  git \
+  gsmartcontrol \
+  htop \
+  nvidia-cuda-toolkit \
+  openjdk-21-jdk \
+  openjdk-21-jre \
+  openjdk-21-jre \
+  openssh-server \
+  parallel \
+  perl \
+  pkg-config \
+  python3 \
+  python3-dev \
+  subversion \
+  wget \
+  zsh
 sudo apt autoremove -y
 sudo apt clean -y
 sudo apt purge -y $(dpkg -l | awk '/^rc/ {print $2}')
@@ -51,7 +49,6 @@ sudo apt install -fy
 ```
 ```sh
 sudo reboot
-# libcjson-dev libdb-dev libdrm-dev libedit-dev libedit2 libexpat-dev libexpat1-dev libhwloc-dev libical-dev libical3 libnss3-dev libpam0g-dev libpq-dev libssl-dev libtool libtool-bin libx11-dev libxext-dev libxft-dev libxt-dev ncurses-dev swig tcl tcl-dev tk tk-dev zlib1g-dev
 ```
 
 ### NVIDIA GPU Driver Setup
@@ -59,67 +56,13 @@ sudo reboot
 sudo ubuntu-drivers list --gpgpu
 ```
 ```sh
-# replace "575" if needed
-sudo ubuntu-drivers install nvidia:550
+sudo ubuntu-drivers install nvidia:575 # replace "575" if needed
 ```
 ```sh
 sudo reboot
 ```
 ```sh
 nvidia-smi
-```
-
-### Static IP Setup
-```sh
-sudo bash -c 'cat << EOF > /etc/hosts
-127.0.0.1       localhost
-$(hostname -I | awk "{print \$1 \"\t\" hn}" hn=$(hostname))
-
-# The following lines are desirable for IPv6 capable host
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-EOF'
-```
-
-### Disk & Home Setup
-```sh
-lsblk -f
-```
-```sh
-# replace '/dev/sda1' and '/dev/nvme0n1p2' with your actual partitions
-sudo badblocks -v -s -o badblocks.txt /dev/sda
-sudo e2fsck -l badblocks.txt /dev/sda1 
-sudo e2fsck -f /dev/sda1
-```
-```sh
-sudo smartctl -a /dev/nvme0n1p2
-```
-```sh
-sudo mkdir /mnt/hometemp
-sudo mount /dev/sda1 /mnt/hometemp
-```
-```sh
-sudo rsync -avx /home/ /mnt/hometemp
-sudo diff -r /home /mnt/hometemp
-```
-```sh
-sudo umount /dev/sda1
-sudo cp /etc/fstab /etc/fstab.bak
-sudo bash -c 'cat << EOF >> /etc/fstab
-UUID='$(sudo blkid -s UUID -o value /dev/sda1)'  /home  ext4  defaults  0  2
-EOF'
-```
-```sh
-sudo mount -a
-```
-```sh
-sudo reboot
-```
-```sh
-df -h /home
 ```
 
 ## BEAGLE & BEAST Setup
@@ -167,15 +110,6 @@ sudo chown -R root:root /opt/BEASTv10.5.0/
 export LD_LIBRARY_PATH=/opt/beagle/lib:$LD_LIBRARY_PATH
 export PATH=/opt/BEASTv10.5.0/bin:$PATH
 beast -beagle_info
-```
-
-## New Admin User Setup
-```sh
-NEWUSER=
-```
-```sh
-sudo adduser $NEWUSER
-sudo usermod -aG sudo $NEWUSER
 ```
 
 ## Zsh & Oh My Zsh Setup
