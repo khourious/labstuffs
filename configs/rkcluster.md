@@ -7,6 +7,7 @@
 - [Configure NAS (Western Digital My Cloud Expert Series EX4100)](#configure-nas-western-digital-my-cloud-expert-series-ex4100)
 - [Configure NFS Client](#configure-nfs-client)
 - [Configure Passwordless SSH Between Nodes](#configure-passwordless-ssh-between-nodes)
+- [Configure SLURM](#configure-slurm)
 - [Configure Multi-Node User](#configure-multi-node-user)
 
 <br>
