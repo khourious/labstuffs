@@ -1,4 +1,4 @@
-# MPI Cluster
+# RKCluster
 
 <br>
 
@@ -73,23 +73,33 @@ http://192.168.65.100
 
 **Master Node**
 ```sh
-sudo su
+sudo apt update -y && \
+sudo apt upgrade -y &&
+sudo apt install -y \
+  nfs-client \
+  nfs-common \
+  nfs-server \
+  openssh-server
 ```
 ```sh
-apt update && apt install -y nfs-client nfs-common nfs-server openssh-server
+sudo bash -c 'echo -e "\n192.168.65.100\tgladiator" >> /etc/hosts'
 ```
 ```sh
-mkdir -p /mnt/gladiator
-tee -a /etc/fstab <<EOF
+sudo mkdir -p /mnt/gladiator
+```
+```sh
+sudo tee -a /etc/fstab <<EOF
 192.168.65.100:/mnt/HD/HD_a2/gladiator  /mnt/gladiator  nfs  rw,noatime,auto,nofail  0  0
 EOF
+```
+```sh
 sudo mount -a
 ```
 ```sh
 df -hT /mnt/gladiator
 ```
 ```sh
-reboot
+sudo reboot
 ```
 
 <br>
@@ -98,100 +108,146 @@ reboot
 
 **Master Node**
 ```sh
-sudo su
-```
-```sh
-apt update && apt install -y build-essential iperf3 libopenmpi-dev mpich openmpi-bin
+sudo apt update -y && \
+sudo apt install -y \
+  build-essential
+  iperf3
+  libopenmpi-dev
+  mpich
+  openmpi-bin
 ```
 ```sh
 iperf3 -s
 ```
 ```sh
-bash -c 'echo -e "\n# RKCluster\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
 ```
 ```sh
-mkdir /mpicluster
-echo "/mpicluster *(rw,sync,no_subtree_check,no_root_squash)" | sudo tee -a /etc/exports
-exportfs -a
-systemctl restart nfs-kernel-server
+sudo mkdir /cluster
 ```
 ```sh
-exportfs -v
+sudo tee -a /etc/exports <<EOF
+/cluster *(rw,sync,no_subtree_check,no_root_squash)
+EOF
 ```
 ```sh
-adduser --home /cluster/home --gecos "" mpi
+sudo exportfs -a
 ```
 ```sh
-usermod -aG sudo mpi
+sudo systemctl restart nfs-kernel-server
 ```
 ```sh
-id mpi
+sudo exportfs -v
 ```
 ```sh
-chown mpi /cluster # try without this
+sudo tee -a /etc/fstab <<EOF
+UUID='$(sudo blkid -s UUID -o value /dev/sda1)'  /home  ext4  defaults  0  2
+EOF
 ```
 ```sh
-su mpi
+sudo mount -a
+```
+```sh
+sudo reboot
+```
+```sh
+df -h /cluster
+```
+```sh
+sudo adduser --home /mpicluster/home/slurm --gecos "" slurm
+```
+```sh
+sudo usermod -aG sudo slurm
+```
+```sh
+id slurm
+```
+```sh
+su slurm
 ```
 ```sh
 ssh-keygen
 ```
 ```sh
-cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+cat $HOME/.ssh/id_ed25519.pub >> $HOME/.ssh/authorized_keys
 ```
 ```sh
-ssh lpmor22@192.168.65.102
+ssh lpmor22@thegodfather
 ```
 
 **Slave Node**
 ```sh
-sudo su
+sudo apt update -y && \
+sudo apt install -y \
+  build-essential
+  iperf3
+  libopenmpi-dev
+  mpich
+  openmpi-bin
 ```
 ```sh
-apt update && apt install -y build-essential iperf3 libopenmpi-dev mpich openmpi-bin
+iperf3 -c thebatman -t 20 -R
 ```
 ```sh
-iperf3 -c 192.168.65.101 -t 20 -R
+sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
 ```
 ```sh
-bash -c 'echo -e "\n# RKCluster\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+sudo mkdir /cluster
 ```
 ```sh
-mount -t nfs thebatman:/mpicluster /mpicluster
-```
-```sh
-df -hT /mpicluster
-```
-```sh
-mkdir /mpicluster
-tee -a /etc/fstab <<EOF
-thebatman:/mpicluster    /mpicluster    nfs    defaults    0 0
+sudo tee -a /etc/exports <<EOF
+/cluster *(rw,sync,no_subtree_check,no_root_squash)
 EOF
+```
+```sh
+sudo exportfs -a
+```
+```sh
+sudo systemctl restart nfs-kernel-server
+```
+```sh
+sudo exportfs -v
+```
+```sh
+sudo tee -a /etc/fstab <<EOF
+thebatman:/cluster  /cluster  nfs  defaults  0  0
+EOF
+```
+```sh
 sudo mount -a
 ```
 ```sh
-chmod 700 .ssh/
-chmod 600 .ssh/authorized_keys
+df -hT /cluster
 ```
 ```sh
-sudo adduser --uid <same at master node> --no-create-home --disabled-login --gecos "" mpi
+sudo chown root:root /cluster
+sudo chmod 755 /cluster
 ```
 ```sh
-ssh mpi@thebatman
+sudo adduser --uid <> --home /cluster/home/slurm --gecos "" slurm
+```
+```sh
+sudo usermod -aG sudo slurm
+```
+```sh
+su slurm
+```
+```sh
+ssh slurm@thebatman
 ```
 ```sh
 exit
 ```
 ```sh
-reboot
+sudo reboot
 ```
 
 **Master Node**
 ```sh
-sudo su
+su slurm
 ```
 ```sh
-ssh mpi@thegodfather
+ssh slurm@thegodfather
 ```
 ```sh
 exit
@@ -219,7 +275,7 @@ EOF
 mpicc helloworld.c -o hello_world
 ```
 ```sh
-mpiexec --oversubscribe -n 20 -host 192.168.65.101,192.168.65.102 $HOME/hello_world
+mpiexec --oversubscribe -n 20 -host thebatman,thegodfather $HOME/hello_world
 ```
 
 <br>
