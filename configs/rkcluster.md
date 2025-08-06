@@ -70,61 +70,33 @@ http://192.168.65.100
 
 <br>
 
-## Configure NFS Client
-
-**Master Node**
-```sh
-sudo apt update -y && \
-sudo apt upgrade -y &&
-sudo apt install -y \
-  nfs-client \
-  nfs-common \
-  nfs-server \
-  openssh-server
-```
-```sh
-sudo bash -c 'echo -e "\n192.168.65.100\tgladiator" >> /etc/hosts'
-```
-```sh
-sudo mkdir -p /mnt/gladiator
-```
-```sh
-sudo tee -a /etc/fstab <<EOF
-192.168.65.100:/mnt/HD/HD_a2/gladiator  /mnt/gladiator  nfs  rw,noatime,auto,nofail  0  0
-EOF
-```
-```sh
-sudo mount -a
-```
-```sh
-df -hT /mnt/gladiator
-```
-```sh
-sudo reboot
-```
-
-<br>
-
 ## Configure Passwordless SSH Between Nodes
 
 **Master Node**
 ```sh
 sudo apt update -y && \
+sudo apt upgrade -y && \
 sudo apt install -y \
-  build-essential
-  iperf3
-  libmunge-dev
-  libopenmpi-dev
-  mpich
-  munge
-  ntp
-  openmpi-bin
-```
-```sh
-iperf3 -s
+  build-essential \
+  iperf3 \
+  libmunge2 \
+  libmunge-dev \
+  libopenmpi-dev \
+  mpich \
+  munge \
+  nfs-client \
+  nfs-common \
+  nfs-server \
+  ntp \
+  openmpi-bin \
+  openssh-server \
+  slurm-wlm
 ```
 ```sh
 sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+```
+```sh
+iperf3 -s
 ```
 ```sh
 sudo mkdir /cluster
@@ -179,20 +151,28 @@ ssh lpmor22@thegodfather
 **Slave Node**
 ```sh
 sudo apt update -y && \
+sudo apt upgrade -y && \
 sudo apt install -y \
-  build-essential
-  iperf3
-  libmunge-dev
-  libopenmpi-dev
-  mpich
-  munge
-  openmpi-bin
-```
-```sh
-iperf3 -c thebatman -t 20 -R
+  build-essential \
+  iperf3 \
+  libmunge2 \
+  libmunge-dev \
+  libopenmpi-dev \
+  mpich \
+  munge \
+  nfs-client \
+  nfs-common \
+  nfs-server \
+  ntp \
+  openmpi-bin \
+  openssh-server \
+  slurm-wlm
 ```
 ```sh
 sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+```
+```sh
+iperf3 -c thebatman -t 20 -R
 ```
 ```sh
 sudo mkdir /cluster
@@ -223,13 +203,13 @@ sudo mount -a
 df -hT /cluster
 ```
 ```sh
-sudo chown -R root:root /cluster
-sudo find /cluster -type d -exec chmod 755 {} \;
+sudo chown -R root:root /cluster && \
+sudo find /cluster -type d -exec chmod 755 {} \; && \
 sudo find /cluster -type f -exec chmod 644 {} \;
 ```
 ```sh
-sudo chown -R root:root /cluster/home
-sudo find /cluster/home -type d -exec chmod 755 {} \;
+sudo chown -R root:root /cluster/home && \
+sudo find /cluster/home -type d -exec chmod 755 {} \; && \
 sudo find /cluster/home -type f -exec chmod 644 {} \;
 ```
 ```sh
@@ -290,84 +270,77 @@ mpicc helloworld.c -o hello_world
 mpiexec --oversubscribe -n 20 -host thebatman,thegodfather $HOME/hello_world
 ```
 ```sh
+munge -n | unmunge | grep STATUS
+```
+```sh
 sudo /usr/sbin/mungekey --verbose --force
 ```
 ```sh
-cp /etc/munge/munge.key /tmp/
-```
-```sh
+cp /etc/munge/munge.key /tmp/ && \
 sudo scp /tmp/munge.key thegodfather:/etc/munge/munge.key
 ```
 ```sh
-sudo chown munge:munge /etc/munge/munge.key
-sudo chmod 400 /etc/munge/munge.key
-sudo systemctl enable munge
-sudo systemctl start munge
+sudo chown -R munge: /etc/munge{,/munge.key} /var/{log,lib}/munge/ /run/munge/ && \
+sudo chmod 0700 /etc/munge{,/munge.key} /var/{log,lib}/munge/ && \
+sudo chmod 0755 /run/munge/
 ```
 ```sh
-ssh thegodfather << 'EOF'
-sudo chown munge:munge /etc/munge/munge.key
-sudo chmod 400 /etc/munge/munge.key
-sudo systemctl enable munge
-sudo systemctl start munge
-EOF
-```
-```sh
-sudo mkdir /etc/systemd/system/munge.service.d/
-sudo tee -a /etc/systemd/system/munge.service.d/override.conf <EOF
+sudo mkdir -p /etc/systemd/system/munge.service.d/ && \
+sudo tee -a /etc/systemd/system/munge.service.d/override.conf <<EOF
 [Service]
 Environment="OPTIONS=--syslog"
 EOF
 ```
 ```sh
-sudo systemctl daemon-reload
+sudo systemctl daemon-reload && \
+sudo systemctl enable munge && \
 sudo systemctl restart munge
+```
+```sh
 sudo systemctl status munge
 ```
 ```sh
-ssh thegodfather "sudo mkdir -p /etc/systemd/system/munge.service.d/"
+ssh thegodfather -t "munge -n | unmunge | grep STATUS"
 ```
 ```sh
+sudo cp /etc/munge/munge.key /tmp/ && \
+sudo scp /tmp/munge.key thegodfather:/etc/munge/munge.key
+```
+```sh
+ssh thegodfather -t "\
+  sudo chown -R munge: /etc/munge{,/munge.key} /var/{log,lib}/munge/ /run/munge/ && \
+  sudo chmod 0700 /etc/munge{,/munge.key} /var/{log,lib}/munge/ && \
+  sudo chmod 0755 /run/munge/"
+```
+```sh
+ssh thegodfather -t"sudo mkdir -p /etc/systemd/system/munge.service.d/"
 sudo scp /etc/systemd/system/munge.service.d/override.conf thegodfather:/etc/systemd/system/munge.service.d/
 ```
 ```sh
-ssh thegodfather << 'EOF'
-sudo systemctl daemon-reload
-sudo systemctl restart munge
-sudo systemctl status munge
-EOF
-```
-
-<br>
-
-## Configure SLURM
-Slurm Version 25.05 Configuration Tool: https://slurm.schedmd.com/configurator.html
-```sh
-cd $HOME
-wget https://download.schedmd.com/slurm/slurm-25.05.1.tar.bz2
-tar xjf slurm-25.05.1.tar.bz2
-cd slurm-25.05.1
-./configure --prefix=/usr --sysconfdir=/etc/slurm
-sudo make -j$(nproc)
-sudo make install
+ssh thegodfather -t "\
+  sudo systemctl daemon-reload && \
+  sudo systemctl enable munge && \
+  sudo systemctl restart munge
 ```
 ```sh
-ssh thegodfather << 'EOF'
-cd $HOME
-wget https://download.schedmd.com/slurm/slurm-25.05.1.tar.bz2
-tar xjf slurm-25.05.1.tar.bz2
-cd slurm-25.05.1
-./configure --prefix=/usr --sysconfdir=/etc/slurm
-sudo make -j$(nproc)
-sudo make install
-EOF
+ssh thegodfather -t "sudo systemctl status munge"
+```
+```sh
+munge -n | ssh thegodfather unmunge
+ssh thegodfather -t "munge -n | ssh thebatman unmunge"
+```
+```sh
+exit
 ```
 ```sh
 slurmd -C
-ssh thegodfather "slurmd -C"
+ssh thegodfather -t "slurmd -C"
 ```
 ```sh
-sudo tee -a /etc/slurm/slurm.conf <EOF
+firefox /usr/share/doc/slurmctld/slurm-wlm-configurator.html
+```
+```sh
+sudo tee -a /etc/slurm/slurm.conf <<EOF
 # slurm.conf file generated by configurator.html.
 # Put this file on all nodes of your cluster.
 # See the slurm.conf man page for more information.
@@ -390,11 +363,11 @@ SlurmctldHost=thebatman
 #KillOnBadExit=0
 #LaunchType=launch/slurm
 #Licenses=foo*4,bar
-#MailProg=/bin/mail
+#MailProg=/usr/bin/mail
 #MaxJobCount=10000
 #MaxStepCount=40000
 #MaxTasksPerNode=512
-#MpiDefault=
+MpiDefault=none
 #MpiParams=ports=#-#
 #PluginDir=
 #PlugStackConfig=
@@ -408,17 +381,17 @@ ProctrackType=proctrack/cgroup
 #PropagateResourceLimitsExcept=
 #RebootProgram=
 ReturnToService=1
-SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmctldPidFile=/run/slurmctld.pid
 SlurmctldPort=6817
-SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPidFile=/run/slurmd.pid
 SlurmdPort=6818
-SlurmdSpoolDir=/var/spool/slurmd
+SlurmdSpoolDir=/var/lib/slurm/slurmd
 SlurmUser=slurm
 #SlurmdUser=root
 #SrunEpilog=
 #SrunProlog=
-StateSaveLocation=/var/spool/slurmctld
-#SwitchType=
+StateSaveLocation=/var/lib/slurm/slurmctld
+SwitchType=switch/none
 #TaskEpilog=
 TaskPlugin=task/affinity,task/cgroup
 #TaskProlog=
@@ -460,7 +433,7 @@ SelectType=select/cons_tres
 #
 # JOB PRIORITY
 #PriorityFlags=
-#PriorityType=priority/multifactor
+#PriorityType=priority/basic
 #PriorityDecayHalfLife=
 #PriorityCalcPeriod=
 #PriorityFavorSmall=
@@ -478,7 +451,7 @@ SelectType=select/cons_tres
 #AccountingStorageHost=
 #AccountingStoragePass=
 #AccountingStoragePort=
-#AccountingStorageType=
+AccountingStorageType=accounting_storage/none
 #AccountingStorageUser=
 #AccountingStoreFlags=
 #JobCompHost=
@@ -488,13 +461,13 @@ SelectType=select/cons_tres
 #JobCompPort=
 JobCompType=jobcomp/none
 #JobCompUser=
-#JobContainerType=
+#JobContainerType=job_container/none
 JobAcctGatherFrequency=30
-#JobAcctGatherType=
+JobAcctGatherType=jobacct_gather/none
 SlurmctldDebug=info
-SlurmctldLogFile=/var/log/slurmctld.log
+SlurmctldLogFile=/var/log/slurm/slurmctld.log
 SlurmdDebug=info
-SlurmdLogFile=/var/log/slurmd.log
+SlurmdLogFile=/var/log/slurm/slurmd.log
 #SlurmSchedLogFile=
 #SlurmSchedLogLevel=
 #DebugFlags=
@@ -515,7 +488,7 @@ SlurmdLogFile=/var/log/slurmd.log
 # COMPUTE NODES
 NodeName=thebatman NodeAddr=192.168.65.101 CPUs=16 RealMemory=31961 Sockets=1 CoresPerSocket=8 ThreadsPerCore=2 State=UNKNOWN
 NodeName=thegodfather NodeAddr=192.168.65.102 CPUs=20 RealMemory=128679 Sockets=1 CoresPerSocket=10 ThreadsPerCore=2 State=UNKNOWN
-PartitionName=debug Nodes=thebatman,thegodfather Default=YES MaxTime=INFINITE State=UP
+PartitionName=khouriosos Nodes=ALL Default=YES MaxTime=INFINITE State=UP
 EOF
 ```
 ```sh
@@ -526,27 +499,31 @@ sudo mkdir -p /var/{log,spool/slurmctld,run}
 sudo chown-R slurm:slurm /var/{log,spool,spool/slurmctld,run}
 ```
 ```sh
-ssh thegodfather << 'EOF'
-sudo mkdir -p /var/{log,spool/slurmctld,run}
-sudo chown-R slurm:slurm /var/{log,spool,spool/slurmctld,run}
-EOF
+ssh thegodfather -t "\
+  sudo mkdir -p /var/{log,spool/slurmctld,run}
+  sudo chown-R slurm:slurm /var/{log,spool,spool/slurmctld,run}"
 ```
 ```sh
-sudo systemctl enable slurmctld
-sudo systemctl start slurmctld
+sudo systemctl enable slurmctld && \
+sudo systemctl restart slurmctld
+```
+```sh
 sudo systemctl status slurmctld
 ```
 ```sh
-sudo systemctl enable slurmd
-sudo systemctl start slurmd
+sudo systemctl enable slurmd && \
+sudo systemctl restart slurmd
+```
+```sh
 sudo systemctl status slurmd
 ```
 ```sh
-ssh thegodfather << 'EOF'
-sudo systemctl enable slurmd
-sudo systemctl start slurmd
-sudo systemctl status slurmd
-EOF
+ssh thegodfather "\
+  sudo systemctl enable slurmd && \
+  sudo systemctl restart slurmd"
+```
+```sh
+ssh thegodfather "sudo systemctl status slurmd"
 ```
 ```sh
 sinfo
@@ -613,6 +590,36 @@ sudo adduser --uid <> --no-create-home --disabled-login --gecos "" "$USER"
 ```
 ```sh
 usermod -aG sudo "$USER"
+```
+
+<br>
+
+
+## Configure NFS Client
+
+**Master Node**
+```sh
+sudo bash -c 'echo -e "\n192.168.65.100\tgladiator" >> /etc/hosts'
+```
+```sh
+sudo mkdir -p /mnt/gladiator
+```
+```sh
+sudo tee -a /etc/fstab <<EOF
+gladiator:/mnt/HD/HD_a2/gladiator  /mnt/gladiator  nfs  rw,noatime,auto,nofail  0  0
+EOF
+```
+```sh
+sudo mount -a
+```
+```sh
+df -hT /mnt/gladiator
+```
+```sh
+sudo reboot
+```
+```sh
+df -hT /mnt/gladiator
 ```
 
 <br>
