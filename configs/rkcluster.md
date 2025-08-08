@@ -5,9 +5,8 @@
 - [Khourious Nodes](#khourious-nodes)
 - [Configure TP Link Wi-Fi Router](#configure-tp-link-wi-fi-router)
 - [Configure NAS (Western Digital My Cloud Expert Series EX4100)](#configure-nas-western-digital-my-cloud-expert-series-ex4100)
-- [Configure NFS Client](#configure-nfs-client)
 - [Configure Passwordless SSH Between Nodes](#configure-passwordless-ssh-between-nodes)
-- [Configure SLURM](#configure-slurm)
+- [Configure NFS Client](#configure-nfs-client)
 - [Configure Multi-Node User](#configure-multi-node-user)
 
 <br>
@@ -17,9 +16,10 @@
 | Hostname      | IP Address     | Role   | CPU Cores/Threads              | GPU                                                 | RAM        | Storage            |
 | ------------- | -------------- | ------ | ------------------------------ | --------------------------------------------------- | ---------- | ------------------ |
 | GLADIATOR     | 192.168.65.100 | NAS    | ARMADA 388 (2c/2t)             |                                                     | 2GB DDR3   | HDD 16TB           |
-| THE BATMAN    | 192.168.65.101 | Master | Intel Core i7-10700KF (8c/16t) | NVIDIA GeForce RTX 2060 Rev. A, 6GB GDDR6 (1,920cc) | 32GB DDR4  | SSD 500GB, HDD 1TB |
-| THE GODFATHER | 192.168.65.102 | Slave  | Intel Core i9-10900 (10c/20t)  | NVIDIA GeForce GTX 1660 Ti, 6GB GDDR6 (1,536cc)     | 128GB DDR4 | SSD 500GB, HDD 2TB |
-| LOTR          | 192.168.65.103 | Slave  | Intel Xeon W5-3423 (12c/24t)   | NVIDIA Quadro RTX 6000, 48GB DDR6 (4,608cc)         | 256GB DDR5 | SSD 512GB, HDD 2TB |
+| THE MATRIX    | 192.168.65.101 | Master | Intel Core i5-12500T (6c/12t)  |                                                     | 8GB DDR5   | SSD 512GB          |
+| THE BATMAN    | 192.168.65.102 | Slave  | Intel Core i7-10700KF (8c/16t) | NVIDIA GeForce RTX 2060 Rev. A, 6GB GDDR6 (1,920cc) | 32GB DDR4  | SSD 500GB, HDD 1TB |
+| THE GODFATHER | 192.168.65.103 | Slave  | Intel Core i9-10900 (10c/20t)  | NVIDIA GeForce GTX 1660 Ti, 6GB GDDR6 (1,536cc)     | 128GB DDR4 | SSD 500GB, HDD 2TB |
+| LOTR          | 192.168.65.104 | Slave  | Intel Xeon W5-3423 (12c/24t)   | NVIDIA Quadro RTX 6000, 48GB DDR6 (4,608cc)         | 256GB DDR5 | SSD 512GB, HDD 2TB |
 
 <br>
 
@@ -40,8 +40,9 @@ http://tplinkwifi.net
 
 **Advanced > Network > LAN > Address Reservation**
 - GLADIATOR: `192.168.65.100`
-- THE BATMAN: `192.168.65.101`
-- THE GODFATHER: `192.168.65.102`
+- THE MATRIX: `192.168.65.101`
+- THE BATMAN: `192.168.65.102`
+- THE GODFATHER: `192.168.65.103`
 
 **Advanced > Wireless > Wireless Settings**
 - Network Name (SSID): `RKhour0-Bioinfo`
@@ -93,7 +94,7 @@ sudo apt install -y \
   slurm-wlm
 ```
 ```sh
-sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+sudo bash -c 'echo -e "\n192.168.65.101\tthematrix\n192.168.65.102\tthebatman\n192.168.65.103\tthegodfather" >> /etc/hosts'
 ```
 ```sh
 iperf3 -s
@@ -145,7 +146,10 @@ ssh-keygen
 cat $HOME/.ssh/id_ed25519.pub >> $HOME/.ssh/authorized_keys
 ```
 ```sh
-ssh lpmor22@thegodfather
+SLAVE=
+```
+```sh
+ssh "$SLAVE"
 ```
 
 **Slave Node**
@@ -169,10 +173,10 @@ sudo apt install -y \
   slurm-wlm
 ```
 ```sh
-sudo bash -c 'echo -e "\n192.168.65.101\tthebatman\n192.168.65.102\tthegodfather" >> /etc/hosts'
+sudo bash -c 'echo -e "\n192.168.65.101\tthematrix\n192.168.65.102\tthebatman\n192.168.65.103\tthegodfather" >> /etc/hosts'
 ```
 ```sh
-iperf3 -c thebatman -t 20 -R
+iperf3 -c thematrix -t 20 -R
 ```
 ```sh
 sudo mkdir /cluster
@@ -193,7 +197,7 @@ sudo exportfs -v
 ```
 ```sh
 sudo tee -a /etc/fstab <<EOF
-thebatman:/cluster  /cluster  nfs  defaults  0  0
+thematrix:/cluster  /cluster  nfs  defaults  0  0
 EOF
 ```
 ```sh
@@ -225,7 +229,7 @@ cat /etc/passwd
 su slurm
 ```
 ```sh
-ssh thebatman
+ssh thematrix
 ```
 ```sh
 exit
@@ -239,7 +243,10 @@ sudo reboot
 su slurm
 ```
 ```sh
-ssh thegodfather
+SLAVE=
+```
+```sh
+ssh "$SLAVE"
 ```
 ```sh
 exit
@@ -267,7 +274,7 @@ EOF
 mpicc helloworld.c -o hello_world
 ```
 ```sh
-mpiexec --oversubscribe -n 20 -host thebatman,thegodfather $HOME/hello_world
+mpiexec --oversubscribe -n 20 -host thematrix,"$SLAVE" $HOME/hello_world
 ```
 ```sh
 munge -n | unmunge | grep STATUS
@@ -277,7 +284,7 @@ sudo /usr/sbin/mungekey --verbose --force
 ```
 ```sh
 cp /etc/munge/munge.key /tmp/ && \
-sudo scp /tmp/munge.key thegodfather:/etc/munge/munge.key
+sudo scp /tmp/munge.key "$SLAVE":/etc/munge/munge.key
 ```
 ```sh
 sudo chown -R munge: /etc/munge{,/munge.key} /var/{log,lib}/munge/ /run/munge/ && \
@@ -300,41 +307,41 @@ sudo systemctl restart munge
 sudo systemctl status munge
 ```
 ```sh
-ssh thegodfather -t "munge -n | unmunge | grep STATUS"
+ssh "$SLAVE" -t "munge -n | unmunge | grep STATUS"
 ```
 ```sh
 sudo cp /etc/munge/munge.key /tmp/ && \
-sudo scp /tmp/munge.key thegodfather:/etc/munge/munge.key
+sudo scp /tmp/munge.key "$SLAVE":/etc/munge/munge.key
 ```
 ```sh
-ssh thegodfather -t "\
+ssh "$SLAVE" -t "\
   sudo chown -R munge: /etc/munge{,/munge.key} /var/{log,lib}/munge/ /run/munge/ && \
   sudo chmod 0700 /etc/munge{,/munge.key} /var/{log,lib}/munge/ && \
   sudo chmod 0755 /run/munge/"
 ```
 ```sh
-ssh thegodfather -t"sudo mkdir -p /etc/systemd/system/munge.service.d/"
-sudo scp /etc/systemd/system/munge.service.d/override.conf thegodfather:/etc/systemd/system/munge.service.d/
+ssh "$SLAVE" -t"sudo mkdir -p /etc/systemd/system/munge.service.d/"
+sudo scp /etc/systemd/system/munge.service.d/override.conf "$SLAVE":/etc/systemd/system/munge.service.d/
 ```
 ```sh
-ssh thegodfather -t "\
+ssh "$SLAVE" -t "\
   sudo systemctl daemon-reload && \
   sudo systemctl enable munge && \
   sudo systemctl restart munge
 ```
 ```sh
-ssh thegodfather -t "sudo systemctl status munge"
+ssh "$SLAVE" -t "sudo systemctl status munge"
 ```
 ```sh
-munge -n | ssh thegodfather unmunge
-ssh thegodfather -t "munge -n | ssh thebatman unmunge"
+munge -n | ssh "$SLAVE" unmunge
+ssh "$SLAVE" -t "munge -n | ssh thematrix unmunge"
 ```
 ```sh
 exit
 ```
 ```sh
 slurmd -C
-ssh thegodfather -t "slurmd -C"
+ssh "$SLAVE" -t "slurmd -C"
 ```
 ```sh
 firefox /usr/share/doc/slurmctld/slurm-wlm-configurator.html
@@ -345,8 +352,8 @@ sudo tee -a /etc/slurm/slurm.conf <<EOF
 # Put this file on all nodes of your cluster.
 # See the slurm.conf man page for more information.
 #
-ClusterName=cluster
-SlurmctldHost=thebatman
+ClusterName=khourious
+SlurmctldHost=thematrix
 #
 #DisableRootJobs=NO
 #EnforcePartLimits=NO
@@ -486,20 +493,20 @@ SlurmdLogFile=/var/log/slurm/slurmd.log
 #
 #
 # COMPUTE NODES
-NodeName=thebatman NodeAddr=192.168.65.101 CPUs=16 RealMemory=31961 Sockets=1 CoresPerSocket=8 ThreadsPerCore=2 State=UNKNOWN
-NodeName=thegodfather NodeAddr=192.168.65.102 CPUs=20 RealMemory=128679 Sockets=1 CoresPerSocket=10 ThreadsPerCore=2 State=UNKNOWN
-PartitionName=khouriosos Nodes=ALL Default=YES MaxTime=INFINITE State=UP
+NodeName=thebatman NodeAddr=192.168.65.102 CPUs=16 RealMemory=31961 Sockets=1 CoresPerSocket=8 ThreadsPerCore=2 State=UNKNOWN
+NodeName=thegodfather NodeAddr=192.168.65.103 CPUs=20 RealMemory=128679 Sockets=1 CoresPerSocket=10 ThreadsPerCore=2 State=UNKNOWN
+PartitionName=khour Nodes=ALL Default=YES MaxTime=INFINITE State=UP
 EOF
 ```
 ```sh
-sudo scp /etc/slurm/slurm.conf thegodfather:/etc/slurm/
+sudo scp /etc/slurm/slurm.conf "$SLAVE":/etc/slurm/
 ```
 ```sh
 sudo mkdir -p /var/{log,spool/slurmctld,run}
 sudo chown-R slurm:slurm /var/{log,spool,spool/slurmctld,run}
 ```
 ```sh
-ssh thegodfather -t "\
+ssh "$SLAVE" -t "\
   sudo mkdir -p /var/{log,spool/slurmctld,run}
   sudo chown-R slurm:slurm /var/{log,spool,spool/slurmctld,run}"
 ```
@@ -511,19 +518,12 @@ sudo systemctl restart slurmctld
 sudo systemctl status slurmctld
 ```
 ```sh
-sudo systemctl enable slurmd && \
-sudo systemctl restart slurmd
-```
-```sh
-sudo systemctl status slurmd
-```
-```sh
-ssh thegodfather "\
+ssh "$SLAVE" "\
   sudo systemctl enable slurmd && \
   sudo systemctl restart slurmd"
 ```
 ```sh
-ssh thegodfather "sudo systemctl status slurmd"
+ssh "$SLAVE" "sudo systemctl status slurmd"
 ```
 ```sh
 sinfo
@@ -550,13 +550,6 @@ srun --pty hostname
 
 ```
 
-
-
-
-
-
-
-
 <br>
 
 ## Configure Multi-Node User
@@ -578,7 +571,10 @@ usermod -aG sudo "$USER"
 id "$USER"
 ```
 ```sh
-ssh mpi@thegodfather # try ssh thegodfather
+SLAVE=
+```
+```sh
+ssh "$SLAVE"
 ```
 
 **Slave Node**
@@ -669,75 +665,4 @@ sudo chown -R root:root /mpicluster/opt/BEASTv10.5.0/
 export LD_LIBRARY_PATH=/mpicluster/opt/beagle/lib:$LD_LIBRARY_PATH
 export PATH=/mpicluster/opt/BEASTv10.5.0/bin:$PATH
 beast -beagle_info
-```
-
-## etc
-```sh
-cat > $HOME/gen_hostfile.sh << EOF
-#!/bin/bash
-
-HOSTFILE="hostfile_auto"
-
-HOSTS=("192.168.65.101" "192.168.65.102")
-
-for HOST in "${HOSTS[@]}"; do
-  CPU_CORES=$(ssh $HOST "nproc --all")
-  GPU_COUNT=$(ssh $HOST "nvidia-smi --query-gpu=count --format=csv,noheader 2>/dev/null" || echo "0")
-  RAM_GB=$(ssh $HOST "free -g | grep Mem | awk '{print \$2}'")
-
-  SLOTS=$CPU_CORES
-  if [ "$GPU_COUNT" -gt 0 ]; then
-    SLOTS=$((CPU_CORES + GPU_COUNT))
-  fi
-
-  echo "$HOST slots=$SLOTS # CPU=$CPU_CORES GPU=$GPU_COUNT RAM=${RAM_GB}GB" >> $HOSTFILE
-done
-EOF
-```
-```sh
-mpirun --hostfile hostfile bash -c "echo \$HOSTNAME; nproc; echo"
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-
-```
-```sh
-tee /etc/mpi_hostfile <<EOF
-batman slots=$(nproc --all)
-godfather slots=$(ssh godfather nproc --all)
-EOF
-```
-```sh
-tee /etc/ld.so.conf.d/mpi.conf <<EOF
-/usr/lib/x86_64-linux-gnu/openmpi/lib
-EOF
-sudo ldconfig
-```
-```sh
-sudo -u nobody mpirun --hostfile /etc/mpi_hostfile -np $(($(nproc)*3)) hostname
-```
-```sh
-apt install -y ocl-icd-opencl-dev nvidia-openmpi
-```
-```sh
-sudo tee /etc/openmpi/openmpi-mca-params.conf <<EOF
-opal_cuda_support=1
-EOF
-```
-```sh
-sudo -u nobody mpirun --hostfile /etc/mpi_hostfile --mca opal_cuda_support 1 /usr/sbin/ompi_info | grep -i cuda
-```
-```sh
-apt install -y htop glances
-```
-```sh
-glances --webserver --bind 0.0.0.0 -p 61208
 ```
