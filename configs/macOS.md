@@ -1,7 +1,6 @@
 ## MacOS Ventura 13.7.6
 
 - [HomeBrew & Core Package Installation](#homebrew--core-package-installation)
-- [NVIDIA GPU Driver Setup](#nvidia-gpu-driver-setup)
 - [Java Setup](#java-setup)
 - [BEAGLE & BEAST Setup](#beagle--beast-setup)
 - [Zsh & Oh My Zsh Setup](#zsh--oh-my-zsh-setup)
@@ -15,7 +14,6 @@ brew tap dail8859/notepadnext
 brew install --no-quarantine notepadnext
 brew install \
     btop \
-    curl \
     dos2unix \
     git \
     htop \
@@ -26,21 +24,16 @@ brew install \
     wget
 ```
 
-## NVIDIA GPU Driver Setup
-NVIDIA GPU Driver - https://us.download.nvidia.com/Mac/cuda_418/cudadriver_418.163_macos.dmg
-
 ## Java Setup
-- Java v8.461 ARM64 - https://javadl.oracle.com/webapps/download/AutoDL?xd_co_f=MzYzMGVmNWUtNTRlOS00Y2MxLWE5NzYtOGQzMTE1OTZhMDRj&BundleId=252313_68ce765258164726922591683c51982c
-- Java v8.461 Intel - https://javadl.oracle.com/webapps/download/AutoDL?xd_co_f=MzYzMGVmNWUtNTRlOS00Y2MxLWE5NzYtOGQzMTE1OTZhMDRj&BundleId=252315_68ce765258164726922591683c51982c
+- https://www.java.com/en/download/
 
 ## BEAGLE & BEAST Setup
-- BEAGLE v4.0.1 - https://github.com/beagle-dev/beagle-lib/releases/download/v4.0.0/BEAGLE-4.0.0-Darwin-x86-ARM.pkg
-- BEAST v1.10.4 - https://github.com/beast-dev/beast-mcmc/releases/download/v1.10.4/BEAST.v1.10.4.dmg
-- BEAST v10.5.0 - https://github.com/beast-dev/beast-mcmc/releases/download/v10.5.0/BEAST.X.v10.5.0.dmg
+- BEAGLE - https://github.com/beagle-dev/beagle-lib/releases/
+- BEAST - https://github.com/beast-dev/beast-mcmc/releases/
 
 ## Zsh & Oh My Zsh Setup
 ```sh
-sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 ```sh
 cat << 	'EOF' > ~/.zshrc
