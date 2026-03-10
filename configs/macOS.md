@@ -1,4 +1,4 @@
-## MacOS Ventura 13.7.6
+## MacOS
 
 - [HomeBrew & Core Package Installation](#homebrew--core-package-installation)
 - [Java Setup](#java-setup)
